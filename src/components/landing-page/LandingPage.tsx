@@ -69,9 +69,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 </section>
 
                 {/* Features Section */}
-                <section className="w-full py-10">
+                <section className="w-full py-16 bg-gradient-to-b from-background to-background/50">
                     <div className="container px-4 md:px-6 mx-auto">
-                        <div className="flex flex-col items-center text-center mb-12 backdrop-blur-[2px] bg-background/40 rounded-lg p-6">
+                        <div className="flex flex-col items-center text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
                                 Comprehensive Exam Management
                             </h2>
@@ -81,17 +81,23 @@ const LandingPage: React.FC<LandingPageProps> = ({
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {featuresData.map((feature, index) => (
-                                <Card key={index} className="bg-background border-2 transition-all hover:shadow-lg">
-                                    <CardHeader>
-                                        <div className="p-2 w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                                            {feature.icon && iconMap[feature.icon as string]}
-                                        </div>
-                                        <CardTitle>{feature.title}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <CardDescription className="text-base">{feature.description}</CardDescription>
-                                    </CardContent>
-                                </Card>
+                                <div
+                                    key={index}
+                                    className="group relative flex flex-col overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 duration-300"
+                                >
+                                    <div className="relative aspect-[16/9] w-full overflow-hidden">
+                                        <Image
+                                            src={feature.imageUrl || `/images/feature-${index + 1}.jpg`}
+                                            alt={feature.title}
+                                            fill
+                                            className="object-cover transition-transform group-hover:scale-105 duration-500"
+                                        />
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
+                                        <p className="text-muted-foreground text-base">{feature.description}</p>
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </div>

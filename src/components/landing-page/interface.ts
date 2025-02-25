@@ -20,6 +20,10 @@ export interface LandingPageProps {
         title: string;
         description: string;
         icon?: React.ReactNode;
+        /**
+         * URL for the feature image (local or remote)
+         */
+        imageUrl?: string;
     }[];
 
     /**
