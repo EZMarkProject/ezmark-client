@@ -68,7 +68,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {featuresData.map((feature, index) => (
-                            <Card key={index} className="bg-background border-2 transition-all hover:border-primary/50 hover:shadow-lg">
+                            <Card key={index} className="bg-background border-2 transition-all hover:shadow-lg">
                                 <CardHeader>
                                     <div className="p-2 w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                                         {feature.icon && iconMap[feature.icon as string]}
