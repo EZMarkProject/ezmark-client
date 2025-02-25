@@ -32,11 +32,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
             />
 
             {/* Hero Section - Updated to match the image */}
-            <section className="relative w-full py-20 md:py-28 bg-background">
+            <section className="relative w-full py-14 md:py-20 bg-background">
                 <div className="container px-4 md:px-6 mx-auto">
                     <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
                         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
-                            Elevate Exams With Seamless Management
+                            EZMark: The Future of Smart Exam Management is Here
                         </h1>
                         <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl">
                             Empower Your Team, Streamline Your Processes, And Boost Educational Outcomes With Our Exam Management Platform
@@ -56,7 +56,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </section>
 
             {/* Features Section */}
-            <section className="w-full py-20 bg-background">
+            <section className="w-full py-10 bg-background">
                 <div className="container px-4 md:px-6 mx-auto">
                     <div className="flex flex-col items-center text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
@@ -85,7 +85,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </section>
 
             {/* Technical Highlights Section */}
-            <section className="w-full py-20 bg-secondary/20">
+            <section className="w-full py-14 bg-secondary/20">
                 <div className="container px-4 md:px-6 mx-auto">
                     <div className="flex flex-col md:flex-row gap-12 items-center">
                         <div className="flex-1 order-2 md:order-1">
@@ -242,7 +242,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </section>
 
             {/* Testimonials Section */}
-            <section className="w-full py-20 bg-background">
+            <section className="w-full py-14 bg-background">
                 <div className="container px-4 md:px-6 mx-auto">
                     <div className="flex flex-col items-center text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
@@ -283,7 +283,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
             </section>
 
             {/* CTA Section */}
-            <section className="w-full py-20 bg-primary text-primary-foreground">
+            <section className="w-full py-14 bg-primary text-primary-foreground">
                 <div className="container px-4 md:px-6 mx-auto">
                     <div className="flex flex-col items-center text-center">
                         <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
@@ -302,7 +302,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                                 Get Started Now
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </Button>
-                            <Button size="lg" variant="outline" className="border-primary-foreground/20 hover:bg-primary-foreground/10">
+                            <Button size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground bg-primary hover:bg-primary/90 hover:border-primary-foreground/30 hover:text-primary-foreground transition-colors">
                                 Request a Demo
                             </Button>
                         </div>

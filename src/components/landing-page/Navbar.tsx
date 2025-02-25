@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { NavbarProps } from "./interface";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 const Navbar: React.FC<NavbarProps> = ({
     className,
@@ -98,6 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
                 {/* Auth Buttons */}
                 <div className="flex items-center gap-4">
+                    <ThemeToggle />
                     <Button
                         variant="ghost"
                         className="hidden md:flex"
