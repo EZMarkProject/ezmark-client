@@ -19,6 +19,8 @@ export interface LandingPageProps {
     featuresData?: {
         title: string;
         description: string;
+        titleKey: string;
+        descriptionKey: string;
         icon?: React.ReactNode;
         /**
          * URL for the feature image (local or remote)
@@ -31,8 +33,10 @@ export interface LandingPageProps {
      */
     testimonialsData?: {
         content: string;
+        contentKey: string;
         author: string;
         role: string;
+        roleKey: string;
         avatar?: string;
     }[];
 }

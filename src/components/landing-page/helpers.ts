@@ -5,18 +5,24 @@ export const defaultFeaturesData = [
     {
         title: "Exam Creation",
         description: "Create and manage exams with an intuitive interface. Support for various question types including multiple choice, short answer, and essay questions.",
+        titleKey: "featureOneTitle",
+        descriptionKey: "featureOneDescription",
         icon: "FileText",
         imageUrl: "/images/features/exam-creation.jpg"
     },
     {
         title: "Grading System",
         description: "Streamline the grading process with automated scoring for objective questions and collaborative tools for subjective assessment.",
+        titleKey: "featureTwoTitle",
+        descriptionKey: "featureTwoDescription",
         icon: "CheckSquare",
         imageUrl: "/images/features/grading-system.jpg"
     },
     {
         title: "Analytics Dashboard",
         description: "Gain insights into student performance with comprehensive analytics and visualizations to identify trends and areas for improvement.",
+        titleKey: "featureThreeTitle",
+        descriptionKey: "featureThreeDescription",
         icon: "BarChart",
         imageUrl: "/images/features/analytics-dashboard.jpg"
     }
@@ -28,20 +34,26 @@ export const defaultFeaturesData = [
 export const defaultTestimonialsData = [
     {
         content: "EZMark has transformed how we manage our examination process. The platform is intuitive and has significantly reduced our grading time.",
+        contentKey: "testimonial1",
         author: "Dr. Sarah Johnson",
         role: "Department Head, University of Technology",
+        roleKey: "departmentHead",
         avatar: "/avatars/avatar-1.png"
     },
     {
         content: "The analytics provided by EZMark have given us valuable insights into student performance patterns that we never had access to before.",
+        contentKey: "testimonial2",
         author: "Prof. Michael Chen",
         role: "Education Technology Director, State College",
+        roleKey: "techDirector",
         avatar: "/avatars/avatar-2.png"
     },
     {
         content: "Implementation was seamless, and the support team has been exceptional. Our faculty adapted to the system quickly and love the collaborative features.",
+        contentKey: "testimonial3",
         author: "Lisa Rodriguez",
         role: "Academic Coordinator, International School",
+        roleKey: "academicCoordinator",
         avatar: "/avatars/avatar-3.png"
     }
 ]; 
