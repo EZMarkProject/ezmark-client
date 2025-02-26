@@ -1,5 +1,3 @@
-import { LucideIcon } from "lucide-react";
-
 /**
  * Default data for the features section
  */
@@ -8,19 +6,19 @@ export const defaultFeaturesData = [
         title: "Exam Creation",
         description: "Create and manage exams with an intuitive interface. Support for various question types including multiple choice, short answer, and essay questions.",
         icon: "FileText",
-        imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+        imageUrl: "/images/features/exam-creation.jpg"
     },
     {
         title: "Grading System",
         description: "Streamline the grading process with automated scoring for objective questions and collaborative tools for subjective assessment.",
         icon: "CheckSquare",
-        imageUrl: "https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+        imageUrl: "/images/features/grading-system.jpg"
     },
     {
         title: "Analytics Dashboard",
         description: "Gain insights into student performance with comprehensive analytics and visualizations to identify trends and areas for improvement.",
         icon: "BarChart",
-        imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
+        imageUrl: "/images/features/analytics-dashboard.jpg"
     }
 ];
 

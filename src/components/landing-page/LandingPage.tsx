@@ -2,21 +2,15 @@
 
 import React from "react";
 import Image from "next/image";
-import { BarChart, CheckSquare, FileText, ArrowRight, ChevronRight, Sparkles, Brain, Layers, Play } from "lucide-react";
+import { BarChart, CheckSquare, ArrowRight, ChevronRight, Brain, Layers, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Tiles } from "@/components/ui/tiles";
 import { cn } from "@/lib/utils";
 import Navbar from "./Navbar";
 import { LandingPageProps } from "./interface";
 import { defaultFeaturesData, defaultTestimonialsData } from "./helpers";
-
-const iconMap: Record<string, React.ReactNode> = {
-    FileText: <FileText className="h-10 w-10" />,
-    CheckSquare: <CheckSquare className="h-10 w-10" />,
-    BarChart: <BarChart className="h-10 w-10" />,
-};
 
 const LandingPage: React.FC<LandingPageProps> = ({
     className,
@@ -45,11 +39,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 />
 
                 {/* Hero Section - Updated to match the image */}
-                <section className="relative w-full py-14 md:py-20">
+                <section className="relative w-full py-12 md:py-20">
                     <div className="container px-4 md:px-6 mx-auto">
                         <div className="flex flex-col items-center text-center max-w-5xl mx-auto backdrop-blur-[2px] bg-background/40 rounded-lg p-8">
                             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tighter mb-4">
-                                EZMark: The Future of Smart Exam Management is Here
+                                EZMark - The Future of Smart Exam Management is Here
                             </h1>
                             <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-3xl">
                                 Empower Your Team, Streamline Your Processes, And Boost Educational Outcomes With Our Exam Management Platform
@@ -69,7 +63,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 </section>
 
                 {/* Features Section */}
-                <section className="w-full py-16 bg-gradient-to-b from-background to-background/50">
+                <section className="w-full py-8 bg-gradient-to-b from-background to-background/50">
                     <div className="container px-4 md:px-6 mx-auto">
                         <div className="flex flex-col items-center text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
@@ -83,7 +77,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                             {featuresData.map((feature, index) => (
                                 <div
                                     key={index}
-                                    className="group relative flex flex-col overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 duration-300"
+                                    className="group relative flex flex-col overflow-hidden rounded-xl bg-card dark:bg-card border border-border dark:border-border shadow-sm transition-all hover:shadow-md hover:-translate-y-1 duration-300"
                                 >
                                     <div className="relative aspect-[16/9] w-full overflow-hidden">
                                         <Image
@@ -261,9 +255,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 </section>
 
                 {/* Testimonials Section */}
-                <section className="w-full py-14">
+                <section className="w-full py-10">
                     <div className="container px-4 md:px-6 mx-auto">
-                        <div className="flex flex-col items-center text-center mb-12 backdrop-blur-[2px] bg-background/40 rounded-lg p-6">
+                        <div className="flex flex-col items-center text-center mb-4 backdrop-blur-[2px] bg-background/40 rounded-lg p-6">
                             <h2 className="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
                                 Trusted by Educators
                             </h2>
@@ -276,7 +270,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                                 <Card key={index} className="bg-background">
                                     <CardContent className="pt-6">
                                         <div className="flex flex-col gap-4">
-                                            <p className="italic text-muted-foreground">"{testimonial.content}"</p>
+                                            <p className="italic text-muted-foreground">&quot;{testimonial.content}&quot;</p>
                                             <div className="flex items-center gap-4 mt-4">
                                                 <div className="relative h-10 w-10 rounded-full overflow-hidden bg-secondary">
                                                     {testimonial.avatar && (
