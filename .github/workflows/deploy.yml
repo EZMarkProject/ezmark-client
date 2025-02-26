@@ -27,10 +27,10 @@ jobs:
           git pull
           
           # Install dependencies
-          pnpm install
+          npx pnpm install
           
           # Build the project
-          pnpm build
+          npx pnpm build
           
           # Restart the application using PM2
-          pm2 restart ezmark-client || pm2 start ecosystem.config.js 
+          npx pm2 restart ezmark-client || npx pm2 start ecosystem.config.js 
