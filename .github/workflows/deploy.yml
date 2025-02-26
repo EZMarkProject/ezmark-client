@@ -20,6 +20,14 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          # Load environment configurations
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          
+          # Add common bin directories to PATH
+          export PATH="$HOME/.npm-global/bin:$HOME/.nvm/versions/node/$(node -v)/bin:$PATH"
+          export PATH="$HOME/.local/bin:$HOME/.local/share/pnpm:$PATH"
+          
           # Create directory if not exists and navigate to it
           mkdir -p ~/document/ezmark-client/ && cd ~/document/ezmark-client/
           
@@ -27,10 +35,10 @@ jobs:
           git pull
           
           # Install dependencies
-          npx pnpm install
+          pnpm install || $HOME/.local/share/pnpm/pnpm install
           
           # Build the project
-          npx pnpm build
+          pnpm build || $HOME/.local/share/pnpm/pnpm build
           
           # Restart the application using PM2
-          npx pm2 restart ezmark-client || npx pm2 start ecosystem.config.js 
+          pm2 restart ezmark-client || $HOME/.local/bin/pm2 restart ezmark-client || $(which pm2) restart ezmark-client || $HOME/.local/bin/pm2 start ecosystem.config.js 
