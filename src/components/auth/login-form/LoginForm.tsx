@@ -12,12 +12,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { signUpSchema } from "./helpers";
-import { SignUpFormProps } from "./interface";
+import { loginSchema } from "./helpers";
+import { LoginFormProps } from "./interface";
 
-type FormData = z.infer<typeof signUpSchema>;
+type FormData = z.infer<typeof loginSchema>;
 
-export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
+export default function LoginForm({ onSubmit }: LoginFormProps) {
     const [isLoading, setIsLoading] = useState(false);
 
     const {
@@ -25,10 +25,9 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
-        resolver: zodResolver(signUpSchema),
+        resolver: zodResolver(loginSchema),
         defaultValues: {
-            name: initialData?.name || "",
-            email: initialData?.email || "",
+            email: "",
             password: "",
         },
     });
@@ -51,19 +50,19 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
 
     return (
         <div className="flex justify-center items-center w-full min-h-screen p-4">
-            <div className="flex w-full  max-w-[1200px] flex-col lg:flex-row gap-8">
+            <div className="flex w-full max-w-[1200px] flex-col lg:flex-row gap-8">
                 {/* Left side: Image */}
                 <div className="hidden lg:flex flex-1 items-center justify-center rounded-lg overflow-hidden bg-muted relative">
                     <Image
-                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80"
-                        alt="Team collaboration"
+                        src="https://images.unsplash.com/photo-1590650046871-92c887180603?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                        alt="Education technology"
                         fill
                         className="object-cover"
                         priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 flex flex-col justify-end p-8 text-white">
-                        <h2 className="text-2xl font-bold mb-2">Transform exam marking with AI assistance</h2>
-                        <p className="text-sm opacity-90">Join our platform to streamline grading workflows and gain valuable insights from student assessments</p>
+                        <h2 className="text-2xl font-bold mb-2">Welcome back to your grading assistant</h2>
+                        <p className="text-sm opacity-90">Login to continue improving assessment efficiency with AI-powered marking tools</p>
                     </div>
                 </div>
 
@@ -72,7 +71,7 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
                     <Card className="w-full">
                         <CardHeader className="pb-6 space-y-3">
                             <div className="flex items-center justify-between">
-                                <CardTitle className="text-2xl">Create an account</CardTitle>
+                                <CardTitle className="text-2xl">Login</CardTitle>
                                 <div className="flex items-center space-x-1">
                                     <Button variant="ghost" size="sm" className="h-8 px-2" asChild>
                                         <Link href="/" title="Back to Home">
@@ -85,24 +84,11 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
                                 </div>
                             </div>
                             <CardDescription>
-                                Enter your information to start using AI-assisted exam marking online
+                                Sign in to access your AI-powered exam marking platform and streamline your grading workflow
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="name">Name</Label>
-                                    <Input
-                                        id="name"
-                                        placeholder="Enter your name"
-                                        {...register("name")}
-                                        disabled={isLoading}
-                                    />
-                                    {errors.name && (
-                                        <div className="text-xs text-red-500 mt-1 mb-1 h-0">{errors.name.message}</div>
-                                    )}
-                                </div>
-
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
                                     <Input
@@ -118,11 +104,19 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="password">Password</Label>
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="password">Password</Label>
+                                        <Link
+                                            href="/auth/forgot-password"
+                                            className="text-xs text-muted-foreground underline underline-offset-4 hover:text-primary"
+                                        >
+                                            Forgot password?
+                                        </Link>
+                                    </div>
                                     <Input
                                         id="password"
                                         type="password"
-                                        placeholder="Create a password"
+                                        placeholder="Enter your password"
                                         {...register("password")}
                                         disabled={isLoading}
                                     />
@@ -133,35 +127,41 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
 
                                 <div className="pt-4">
                                     <Button type="submit" className="w-full" disabled={isLoading}>
-                                        {isLoading ? "Creating Account..." : "Create Account"}
+                                        {isLoading ? "Signing In..." : "Sign In"}
                                     </Button>
-                                </div>
-
-                                <div className="text-center text-sm text-muted-foreground">
-                                    By creating an account, you agree to our{" "}
-                                    <Link href="#" className="underline underline-offset-4 hover:text-primary">
-                                        Terms of Service
-                                    </Link>{" "}
-                                    and{" "}
-                                    <Link href="#" className="underline underline-offset-4 hover:text-primary">
-                                        Privacy Policy
-                                    </Link>
                                 </div>
                             </form>
                         </CardContent>
-                        <CardFooter className="flex flex-col items-center justify-center space-y-2">
+                        <CardFooter className="flex flex-col items-center justify-center space-y-4">
                             <div className="text-center mt-6">
                                 <p className="text-sm text-muted-foreground">
-                                    Already have an account?{" "}
-                                    <Link href="/auth/login" className="underline underline-offset-4 hover:text-primary">
-                                        Login
+                                    Don't have an account?{" "}
+                                    <Link href="/auth/signup" className="underline underline-offset-4 hover:text-primary">
+                                        Create an account
+                                    </Link>
+                                </p>
+                            </div>
+                            <div className="text-center pt-2 border-t border-border w-full">
+                                <p className="text-xs text-muted-foreground mt-4">
+                                    By continuing, you agree to our{" "}
+                                    <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
+                                        Terms of Service
+                                    </Link>{" "}
+                                    and{" "}
+                                    <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
+                                        Privacy Policy
+                                    </Link>
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-2">
+                                    Need help with AI-assisted grading?{" "}
+                                    <Link href="/help" className="underline underline-offset-4 hover:text-primary">
+                                        Visit our help center
                                     </Link>
                                 </p>
                             </div>
                         </CardFooter>
                     </Card>
                 </div>
-
             </div>
         </div>
     );
