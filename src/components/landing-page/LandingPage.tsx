@@ -6,7 +6,6 @@ import { BarChart, CheckSquare, ArrowRight, ChevronRight, Brain, Layers, Play } 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Tiles } from "@/components/ui/tiles";
 import { cn } from "@/lib/utils";
 import Navbar from "./Navbar";
 import { LandingPageProps } from "./interface";
@@ -20,16 +19,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
 }) => {
     return (
         <div className={cn("flex flex-col min-h-screen relative overflow-hidden", className)}>
-            {/* Tiles as Background */}
-            <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0 opacity-40">
-                <Tiles
-                    rows={40}
-                    cols={20}
-                    tileSize="md"
-                    tileClassName="border-opacity-50 dark:border-opacity-50"
-                />
-            </div>
-
             {/* Content Layer with higher z-index */}
             <div className="relative z-10 flex flex-col min-h-screen">
                 {/* Navbar */}
