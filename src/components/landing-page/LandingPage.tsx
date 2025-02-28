@@ -24,13 +24,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
         router.push("/auth/signup");
     };
 
+    const handleLoginClick = () => {
+        router.push("/auth/login");
+    };
+
     return (
         <div className={cn("flex flex-col min-h-screen relative overflow-hidden", className)}>
             {/* Content Layer with higher z-index */}
             <div className="relative z-10 flex flex-col min-h-screen">
                 {/* Navbar */}
                 <Navbar
-                    onLoginClick={() => console.log("Login clicked")}
+                    onLoginClick={handleLoginClick}
                     onSignUpClick={handleSignUpClick}
                 />
 
