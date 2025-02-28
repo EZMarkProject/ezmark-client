@@ -55,7 +55,7 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
                 {/* Left side: Image */}
                 <div className="hidden lg:flex flex-1 items-center justify-center rounded-lg overflow-hidden bg-muted relative">
                     <Image
-                        src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80"
+                        src="/images/auth/signup-background.jpg"
                         alt="Team collaboration"
                         fill
                         className="object-cover"
