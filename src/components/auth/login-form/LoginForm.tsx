@@ -135,7 +135,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
                         <CardFooter className="flex flex-col items-center justify-center space-y-4">
                             <div className="text-center mt-6">
                                 <p className="text-sm text-muted-foreground">
-                                    Don't have an account?{" "}
+                                    Don&apos;t have an account?{" "}
                                     <Link href="/auth/signup" className="underline underline-offset-4 hover:text-primary">
                                         Create an account
                                     </Link>

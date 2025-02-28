@@ -1,11 +1,9 @@
+import { z } from "zod";
+import { signUpSchema } from "./helpers";
+
+export type SignUpFormData = z.infer<typeof signUpSchema>;
+
 export interface SignUpFormProps {
-    initialData?: {
-        name?: string;
-        email?: string;
-    };
-    onSubmit?: (data: {
-        name: string;
-        email: string;
-        password: string;
-    }) => Promise<void>;
+    initialData?: Partial<SignUpFormData>;
+    onSubmit?: (data: SignUpFormData) => Promise<void>;
 } 
