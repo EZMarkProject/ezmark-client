@@ -5,12 +5,13 @@ import { API_HOST } from "@/lib/host";
 import { useToast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { LoginResponse } from "@/types";
 
 export default function LoginPage() {
     const { toast } = useToast();
     const router = useRouter();
 
-    const handleSuccess = (responseData: any) => {
+    const handleSuccess = (responseData: LoginResponse) => {
         Cookies.set("jwt", responseData.jwt, {
             secure: true,
             sameSite: "strict",

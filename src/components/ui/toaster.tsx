@@ -16,7 +16,6 @@ interface ToastData {
     title?: React.ReactNode
     description?: React.ReactNode
     action?: React.ReactElement
-    [key: string]: any
 }
 
 export function Toaster() {

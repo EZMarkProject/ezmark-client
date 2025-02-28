@@ -5,12 +5,13 @@ import { useToast } from "@/hooks/use-toast";
 import Cookies from 'js-cookie';
 import { API_HOST } from "@/lib/host";
 import { useRouter } from "next/navigation";
+import { RegisterResponse } from "@/types";
 
 export default function SignUpPage() {
     const { toast } = useToast();
     const router = useRouter();
 
-    const handleSuccess = (responseData: any) => {
+    const handleSuccess = (responseData: RegisterResponse) => {
         Cookies.set("jwt", responseData.jwt, {
             secure: true,
             sameSite: "strict",
