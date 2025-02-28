@@ -6,11 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Image from "next/image";
 import Link from "next/link";
+import { Home } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { signUpSchema } from "./helpers";
 import { SignUpFormProps } from "./interface";
 
@@ -61,18 +63,30 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
                         priority
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20 flex flex-col justify-end p-8 text-white">
-                        <h2 className="text-2xl font-bold mb-2">Keep your online business organized</h2>
-                        <p className="text-sm opacity-90">Join our platform to manage all your business data in one place</p>
+                        <h2 className="text-2xl font-bold mb-2">Transform exam marking with AI assistance</h2>
+                        <p className="text-sm opacity-90">Join our platform to streamline grading workflows and gain valuable insights from student assessments</p>
                     </div>
                 </div>
 
                 {/* Right side: Form */}
-                <div className="flex w-[500px] flex-col justify-center items-center">
+                <div className="flex w-[450px] flex-col justify-center items-center">
                     <Card className="w-full">
-                        <CardHeader>
-                            <CardTitle className="text-2xl">Create an account</CardTitle>
+                        <CardHeader className="pb-6 space-y-3">
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="text-2xl">Create an account</CardTitle>
+                                <div className="flex items-center space-x-1">
+                                    <Button variant="ghost" size="sm" className="h-8 px-2" asChild>
+                                        <Link href="/" title="Back to Home">
+                                            <Home className="h-4 w-4 mr-1" />
+                                            <span className="text-xs">Home</span>
+                                        </Link>
+                                    </Button>
+                                    <div className="h-4 w-px bg-border mx-1"></div>
+                                    <ThemeToggle />
+                                </div>
+                            </div>
                             <CardDescription>
-                                Enter your information to get started with your 30-day free trial
+                                Enter your information to start using AI-assisted exam marking online
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -124,7 +138,7 @@ export default function SignUpForm({ initialData, onSubmit }: SignUpFormProps) {
                                     </Button>
                                 </div>
 
-                                <div className="text-center text-sm">
+                                <div className="text-center text-sm text-muted-foreground">
                                     By creating an account, you agree to our{" "}
                                     <Link href="#" className="underline underline-offset-4 hover:text-primary">
                                         Terms of Service
