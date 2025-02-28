@@ -1,0 +1,1 @@
+export const API_HOST = 'https://csi420-01-vm7.ucd.ie/strapi/api'
