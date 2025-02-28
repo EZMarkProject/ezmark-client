@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { API_HOST } from "@/lib/host";
 import { useRouter } from "next/navigation";
 import { RegisterResponse } from "@/types";
+import { motion } from "framer-motion";
 
 export default function SignUpPage() {
     const { toast } = useToast();
@@ -63,8 +64,13 @@ export default function SignUpPage() {
     };
 
     return (
-        <div className="container m-auto">
+        <motion.div
+            className="container m-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
             <SignUpForm onSubmit={handleSignUp} />
-        </div>
+        </motion.div>
     );
 } 

@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "@/types";
+import { motion } from "framer-motion";
 
 export default function LoginPage() {
     const { toast } = useToast();
@@ -52,5 +53,14 @@ export default function LoginPage() {
         }
     };
 
-    return <LoginForm onSubmit={handleLogin} />;
+    return (
+        <motion.div
+            className="container m-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+        >
+            <LoginForm onSubmit={handleLogin} />
+        </motion.div>
+    );
 } 
