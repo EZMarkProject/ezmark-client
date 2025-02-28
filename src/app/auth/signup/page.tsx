@@ -53,11 +53,10 @@ export default function SignUpPage() {
 
             handleSuccess(responseData);
         } catch (error) {
-            console.log(error);
             toast({
                 variant: "destructive",
                 title: "Registration Failed",
-                description: "An unexpected error occurred. Please try again later."
+                description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again later."
             });
         }
     };
