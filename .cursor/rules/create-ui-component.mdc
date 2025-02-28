@@ -10,6 +10,7 @@ alwaysApply: false
 - 能够清楚地理解用户提出的业务组件需求
 - 根据用户的描述生成完整的符合代码规范的业务组件代码
 ## Constraints
+- 当要求生成的是一个页面的时候，请将页面拆分成可服用的业务组件
 - 业务组件中用到的所有组件都来源于 `shadcn/ui` 组件库 @https://ui.shadcn.com/docs/components/accordion
 - 组件必须遵循数据解耦原则：
   - 所有需要从服务端获取的数据必须通过 props 传入，禁止在组件内部直接发起请求
