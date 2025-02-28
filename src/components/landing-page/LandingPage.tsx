@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "./Navbar";
 import { LandingPageProps } from "./interface";
 import { defaultFeaturesData, defaultTestimonialsData } from "./helpers";
+import { useRouter } from "next/navigation";
 
 const LandingPage: React.FC<LandingPageProps> = ({
     className,
@@ -17,6 +18,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
     featuresData = defaultFeaturesData,
     testimonialsData = defaultTestimonialsData,
 }) => {
+    const router = useRouter();
+
+    const handleSignUpClick = () => {
+        router.push("/auth/signup");
+    };
+
     return (
         <div className={cn("flex flex-col min-h-screen relative overflow-hidden", className)}>
             {/* Content Layer with higher z-index */}
@@ -24,7 +31,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
                 {/* Navbar */}
                 <Navbar
                     onLoginClick={() => console.log("Login clicked")}
-                    onSignUpClick={() => console.log("Sign up clicked")}
+                    onSignUpClick={handleSignUpClick}
                 />
 
                 {/* Hero Section - Updated to match the image */}
