@@ -7,6 +7,7 @@ import { API_HOST } from "@/lib/host";
 import { useRouter } from "next/navigation";
 import { RegisterResponse } from "@/types";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 export default function SignUpPage() {
     const { toast } = useToast();
@@ -30,36 +31,27 @@ export default function SignUpPage() {
      */
     const handleSignUp = async (data: SignUpFormData) => {
         try {
-            const response = await fetch(`${API_HOST}/auth/local/register`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username: data.name,
-                    email: data.email,
-                    password: data.password
-                }),
+            const response = await axios.post(`${API_HOST}/auth/local/register`, {
+                username: data.name,
+                email: data.email,
+                password: data.password
             });
-            const responseData = await response.json();
 
-            // Toasts
-            if (!response.ok) {
+            handleSuccess(response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
                 toast({
                     variant: "destructive",
                     title: "Registration Failed",
-                    description: responseData.error?.message || "An error occurred during registration. Please try again."
+                    description: error.response.data.error.message || "An error occurred during registration. Please try again."
                 });
-                return;
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Registration Failed",
+                    description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again later."
+                });
             }
-
-            handleSuccess(responseData);
-        } catch (error) {
-            toast({
-                variant: "destructive",
-                title: "Registration Failed",
-                description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again later."
-            });
         }
     };
 

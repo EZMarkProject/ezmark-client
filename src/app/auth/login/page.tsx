@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "@/types";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 export default function LoginPage() {
     const { toast } = useToast();
@@ -26,34 +27,26 @@ export default function LoginPage() {
 
     const handleLogin = async (data: LoginFormData) => {
         try {
-            const response = await fetch(`${API_HOST}/auth/local`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    identifier: data.email,
-                    password: data.password
-                })
+            const response = await axios.post(`${API_HOST}/auth/local`, {
+                identifier: data.email,
+                password: data.password
             });
-            const responseData = await response.json();
 
-            if (!response.ok) {
+            handleSuccess(response.data);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
                 toast({
                     variant: "destructive",
                     title: "Login Failed",
-                    description: responseData.error.message
+                    description: error.response.data.error.message
                 });
-                return;
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "Login Failed",
+                    description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again later."
+                });
             }
-
-            handleSuccess(responseData);
-        } catch (error) {
-            toast({
-                variant: "destructive",
-                title: "Login Failed",
-                description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again later."
-            });
         }
     };
 
