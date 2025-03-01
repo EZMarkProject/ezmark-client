@@ -5,9 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { NavbarProps } from "./interface";
+import { NavbarProps } from "../types";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { UserNav } from "./UserNav";
+import { UserNav } from "../UserNav";
 import { useAuth } from "@/context/Auth";
 import Cookies from "js-cookie";
 

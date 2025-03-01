@@ -2,14 +2,14 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import Navbar from "./Navbar";
-import HeroSection from "./HeroSection";
-import FeaturesSection from "./FeaturesSection";
-import TechnicalHighlightsSection from "./TechnicalHighlightsSection";
-import TestimonialsSection from "./TestimonialsSection";
-import CTASection from "./CTASection";
-import { LandingPageProps } from "./types";
-import { defaultFeaturesData, defaultTestimonialsData } from "./helpers";
+import Navbar from "../Navbar";
+import HeroSection from "../HeroSection";
+import FeaturesSection from "../FeaturesSection";
+import TechnicalHighlightsSection from "../TechnicalHighlightsSection";
+import TestimonialsSection from "../TestimonialsSection";
+import CTASection from "../CTASection";
+import { LandingPageProps } from "../types";
+import { defaultFeaturesData, defaultTestimonialsData } from "../helpers";
 import { useRouter } from "next/navigation";
 
 const LandingPage: React.FC<LandingPageProps> = ({
