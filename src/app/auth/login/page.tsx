@@ -1,13 +1,12 @@
 'use client';
 import LoginForm from "@/components/auth/login-form/LoginForm";
 import { LoginFormData } from "@/components/auth/login-form/interface";
-import { API_HOST } from "@/lib/host";
 import { useToast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { LoginResponse } from "@/types";
 import { motion } from "framer-motion";
-import axios from "axios";
+import { axiosInstance } from "@/lib/axios";
 
 export default function LoginPage() {
     const { toast } = useToast();
@@ -27,26 +26,13 @@ export default function LoginPage() {
 
     const handleLogin = async (data: LoginFormData) => {
         try {
-            const response = await axios.post(`${API_HOST}/auth/local`, {
+            const response = await axiosInstance.post(`/auth/local`, {
                 identifier: data.email,
                 password: data.password
             });
-
             handleSuccess(response.data);
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                toast({
-                    variant: "destructive",
-                    title: "Login Failed",
-                    description: error.response.data.error.message
-                });
-            } else {
-                toast({
-                    variant: "destructive",
-                    title: "Login Failed",
-                    description: error instanceof Error ? error.message : "An unexpected error occurred. Please try again later."
-                });
-            }
+            console.log("Login error was handled by interceptor:", error);
         }
     };
 

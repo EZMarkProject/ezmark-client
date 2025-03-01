@@ -20,7 +20,8 @@ export default function SignUpPage() {
         });
         toast({
             title: "Registration Successful",
-            description: "Your account has been created successfully."
+            description: "Your account has been created successfully.",
+            duration: 2000
         });
         router.push("/");
     }
