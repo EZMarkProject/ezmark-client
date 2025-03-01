@@ -17,6 +17,10 @@ export const axiosInstance = axios.create({
  */
 axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+        // 如果请求路径包含 /auth，则不添加 Authorization 头
+        if (config.url?.includes("/auth")) {
+            return config;
+        }
         const token = Cookies.get("jwt");
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
