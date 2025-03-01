@@ -5,8 +5,14 @@ import type {
     ToastProps,
 } from "@/components/ui/toast"
 
+/**
+ * Toast的关闭机制说明:
+ * 1. TOAST_REMOVE_DELAY(默认3秒)用于控制toast被dismiss后从DOM中完全移除的时间
+ * 2. duration参数用于控制toast显示多久后自动调用dismiss()
+ * 两者作用不同：duration控制显示时长，TOAST_REMOVE_DELAY控制消失动画后的DOM移除
+ */
 const TOAST_LIMIT = 5
-const TOAST_REMOVE_DELAY = 1000 * 60
+const TOAST_REMOVE_DELAY = 1000 * 1
 
 type ToasterToast = ToastProps & {
     id: string
@@ -137,9 +143,15 @@ function dispatch(action: Action) {
     })
 }
 
-type Toast = Omit<ToasterToast, "id">
+type Toast = Omit<ToasterToast, "id"> & {
+    /**
+     * 自定义toast显示持续时间(毫秒)
+     * 设置后会覆盖默认行为，在指定时间后自动关闭toast
+     */
+    duration?: number;
+}
 
-function toast({ ...props }: Toast) {
+function toast({ duration, ...props }: Toast) {
     const id = genId()
 
     const update = (props: ToasterToast) =>
@@ -160,6 +172,14 @@ function toast({ ...props }: Toast) {
             },
         },
     })
+
+    // 如果设置了duration，则在指定时间后自动dismiss
+    // 这会触发DISMISS_TOAST action，然后addToRemoveQueue会在TOAST_REMOVE_DELAY后完全移除toast
+    if (duration) {
+        setTimeout(() => {
+            dismiss();
+        }, duration);
+    }
 
     return {
         id: id,
