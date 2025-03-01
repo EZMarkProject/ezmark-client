@@ -27,6 +27,7 @@ const FeaturesSection: React.FC<FeaturesSectionProps> = ({
                                 <Image
                                     src={feature.imageUrl || `/images/feature-${index + 1}.jpg`}
                                     alt={feature.title}
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     fill
                                     className="object-cover transition-transform group-hover:scale-105 duration-500"
                                 />
