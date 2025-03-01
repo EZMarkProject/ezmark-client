@@ -7,12 +7,27 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { NavbarProps } from "./interface";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { UserNav } from "./UserNav";
+import { useAuth } from "@/context/Auth";
+import Cookies from "js-cookie";
 
 const Navbar: React.FC<NavbarProps> = ({
     className,
     onLoginClick,
     onSignUpClick,
 }) => {
+    const { authenticated, userName, email, setAuthenticated, setUserName, setEmail, setJwt } = useAuth();
+
+    const onLogoutClick = () => {
+        Cookies.remove("jwt");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("email");
+        setAuthenticated(false);
+        setUserName("");
+        setEmail("");
+        setJwt("");
+    }
+
     return (
         <header className={cn("w-full border-b bg-background flex justify-around", className)}>
             <div className="container flex h-16 items-center px-4 md:px-6 justify-around">
@@ -100,19 +115,30 @@ const Navbar: React.FC<NavbarProps> = ({
                 {/* Auth Buttons */}
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
-                    <Button
-                        variant="ghost"
-                        className="hidden md:flex"
-                        onClick={onLoginClick}
-                    >
-                        Login
-                    </Button>
-                    <Button
-                        className="bg-[#1e293b] text-white hover:bg-[#1e293b]/90"
-                        onClick={onSignUpClick}
-                    >
-                        Sign up
-                    </Button>
+
+                    {authenticated ? (
+                        <UserNav
+                            username={userName}
+                            email={email}
+                            onLogoutClick={onLogoutClick}
+                        />
+                    ) : (
+                        <>
+                            <Button
+                                variant="ghost"
+                                className="hidden md:flex"
+                                onClick={onLoginClick}
+                            >
+                                Login
+                            </Button>
+                            <Button
+                                className="bg-[#1e293b] text-white hover:bg-[#1e293b]/90"
+                                onClick={onSignUpClick}
+                            >
+                                Sign up
+                            </Button>
+                        </>
+                    )}
                 </div>
             </div>
         </header>

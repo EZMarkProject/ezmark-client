@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 router.push("/auth/login");
             }
         }
-    }, [])
+    })
 
     return (
         <AuthContext.Provider value={{ userName, email, jwt, authenticated, setUserName, setEmail, setJwt, setAuthenticated }}>

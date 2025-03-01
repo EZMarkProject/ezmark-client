@@ -21,7 +21,8 @@ export default function LoginPage() {
         localStorage.setItem("email", responseData.user.email);
         toast({
             title: "Login Successful",
-            description: "You have been successfully logged in."
+            description: "You have been successfully logged in.",
+            duration: 1000
         });
         router.push("/");
     }
