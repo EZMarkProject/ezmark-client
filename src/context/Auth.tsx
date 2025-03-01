@@ -40,13 +40,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 // 只有当用户名和邮箱都存在时，才认为用户已登录
                 setAuthenticated(true);
             } else {
-                // 检测到JWT但找不到用户信息时
-                toast({
-                    title: "Login Required",
-                    description: "Please login to continue",
-                    duration: 2000
-                });
-                router.push("/auth/login");
+                // 检测到JWT但找不到用户信息时,清除JWT
+                Cookies.remove("jwt");
                 setAuthenticated(false);
             }
         } else {
