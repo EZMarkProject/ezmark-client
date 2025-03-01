@@ -17,6 +17,10 @@ export default function LoginPage() {
             secure: true,
             sameSite: "strict",
         });
+        toast({
+            title: "Login Successful",
+            description: "You have been successfully logged in."
+        });
         router.push("/");
     }
 
