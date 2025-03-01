@@ -17,6 +17,8 @@ export default function LoginPage() {
             secure: true,
             sameSite: "strict",
         });
+        localStorage.setItem("userName", responseData.user.username);
+        localStorage.setItem("email", responseData.user.email);
         toast({
             title: "Login Successful",
             description: "You have been successfully logged in."

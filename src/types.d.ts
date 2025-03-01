@@ -36,3 +36,15 @@ export interface ErrorResponse {
         };
     }
 }
+
+
+export interface AuthContextObject {
+    authenticated: boolean;
+    userName: string;
+    email: string;
+    jwt: string;
+    setAuthenticated: (authenticated: boolean) => void;
+    setJwt: (jwt: string) => void;
+    setUserName: (userName: string) => void;
+    setEmail: (email: string) => void;
+}
