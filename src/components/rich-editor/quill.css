@@ -6,31 +6,6 @@
  * Copyright (c) 2013, salesforce.com
  */
 
-:root {
-    /* shadcn/ui 调色板 */
-    --background: hsl(0, 0%, 100%);
-    --foreground: hsl(224, 71%, 4%);
-    --card: hsl(0, 0%, 100%);
-    --card-foreground: hsl(224, 71%, 4%);
-    --popover: hsl(0, 0%, 100%);
-    --popover-foreground: hsl(224, 71%, 4%);
-    --primary: hsl(262.1, 83.3%, 57.8%);
-    --primary-foreground: hsl(210, 20%, 98%);
-    --secondary: hsl(220, 14.3%, 95.9%);
-    --secondary-foreground: hsl(220.9, 39.3%, 11%);
-    --muted: hsl(220, 14.3%, 95.9%);
-    --muted-foreground: hsl(220, 8.9%, 46.1%);
-    --accent: hsl(220, 14.3%, 95.9%);
-    --accent-foreground: hsl(220.9, 39.3%, 11%);
-    --destructive: hsl(0, 84.2%, 60.2%);
-    --destructive-foreground: hsl(210, 20%, 98%);
-    --border: hsl(220, 13%, 91%);
-    --input: hsl(220, 13%, 91%);
-    --ring: hsl(262.1, 83.3%, 57.8%);
-    --radius: 0.5rem;
-    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-
 .ql-container {
     box-sizing: border-box;
     font-family: var(--font-sans);
@@ -38,8 +13,8 @@
     height: 100%;
     margin: 0;
     position: relative;
-    color: var(--foreground);
-    background-color: var(--background);
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
 }
 
 .ql-container.ql-disabled .ql-tooltip {
@@ -128,7 +103,7 @@
 }
 
 .ql-editor td {
-    border: 1px solid var(--border);
+    border: 1px solid hsl(var(--border));
     padding: 0.5rem;
 }
 
@@ -153,7 +128,7 @@
 
 .ql-editor li[data-list=checked]>.ql-ui,
 .ql-editor li[data-list=unchecked]>.ql-ui {
-    color: var(--muted-foreground);
+    color: hsl(var(--muted-foreground));
 }
 
 .ql-editor li[data-list=bullet]>.ql-ui:before {
@@ -302,7 +277,7 @@
 }
 
 .ql-editor.ql-blank::before {
-    color: var(--muted-foreground);
+    color: hsl(var(--muted-foreground));
     content: attr(data-placeholder);
     font-style: italic;
     left: 1rem;
@@ -362,8 +337,8 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color: var(--primary);
-    background-color: var(--secondary);
+    color: hsl(var(--primary));
+    background-color: hsl(var(--secondary));
 }
 
 .ql-snow.ql-toolbar button:hover .ql-fill,
@@ -394,7 +369,7 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
-    fill: var(--primary);
+    fill: hsl(var(--primary));
 }
 
 .ql-snow.ql-toolbar button:hover .ql-stroke,
@@ -425,28 +400,28 @@
 .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
 .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
 .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
-    stroke: var(--primary);
+    stroke: hsl(var(--primary));
 }
 
 @media (pointer:coarse) {
 
     .ql-snow.ql-toolbar button:hover:not(.ql-active),
     .ql-snow .ql-toolbar button:hover:not(.ql-active) {
-        color: var(--foreground);
+        color: hsl(var(--foreground));
     }
 
     .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-fill,
     .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
     .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
     .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
-        fill: var(--foreground);
+        fill: hsl(var(--foreground));
     }
 
     .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
     .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
     .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
     .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
-        stroke: var(--foreground);
+        stroke: hsl(var(--foreground));
     }
 }
 
@@ -497,7 +472,7 @@
 
 .ql-snow .ql-stroke {
     fill: none;
-    stroke: var(--foreground);
+    stroke: hsl(var(--foreground));
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 2;
@@ -505,14 +480,14 @@
 
 .ql-snow .ql-stroke-miter {
     fill: none;
-    stroke: var(--foreground);
+    stroke: hsl(var(--foreground));
     stroke-miterlimit: 10;
     stroke-width: 2;
 }
 
 .ql-snow .ql-fill,
 .ql-snow .ql-stroke.ql-fill {
-    fill: var(--foreground);
+    fill: hsl(var(--foreground));
 }
 
 .ql-snow .ql-empty {
@@ -582,23 +557,23 @@
 
 .ql-snow .ql-editor a {
     text-decoration: underline;
-    color: var(--primary);
+    color: hsl(var(--primary));
 }
 
 .ql-snow .ql-editor blockquote {
-    border-left: 4px solid var(--primary);
+    border-left: 4px solid hsl(var(--primary));
     margin-bottom: 0.7rem;
     margin-top: 0.7rem;
     padding: 0.5rem 0 0.5rem 1rem;
-    background-color: var(--secondary);
+    background-color: hsl(var(--secondary));
     border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 .ql-snow .ql-editor code,
 .ql-snow .ql-editor .ql-code-block-container {
-    background-color: var(--secondary);
+    background-color: hsl(var(--secondary));
     border-radius: var(--radius);
-    font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+    font-family: var(--code-font);
     font-size: 0.9em;
 }
 
@@ -614,18 +589,28 @@
 }
 
 .ql-snow .ql-editor .ql-code-block-container {
-    background-color: var(--secondary-foreground);
-    color: var(--secondary);
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
     overflow: visible;
+}
+
+/* 修改代码块在暗色模式下的样式 */
+.dark .ql-snow .ql-editor .ql-code-block-container {
+    background-color: hsl(var(--code-block-bg-dark));
+    color: hsl(var(--code-block-text-dark));
+}
+
+.dark .ql-snow .ql-editor code {
+    background-color: hsl(var(--code-block-bg-dark));
+    color: hsl(var(--code-block-text-dark));
 }
 
 .ql-snow .ql-editor img {
     max-width: 100%;
-    border-radius: var(--radius);
 }
 
 .ql-snow .ql-picker {
-    color: var(--foreground);
+    color: hsl(var(--foreground));
     display: inline-block;
     float: left;
     font-size: 14px;
@@ -652,7 +637,7 @@
 }
 
 .ql-snow .ql-picker-options {
-    background-color: var(--popover);
+    background-color: hsl(var(--popover));
     display: none;
     min-width: 100%;
     padding: 0.5rem;
@@ -670,16 +655,16 @@
 }
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-label {
-    color: var(--muted-foreground);
+    color: hsl(var(--muted-foreground));
     z-index: 2;
 }
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill {
-    fill: var(--muted-foreground);
+    fill: hsl(var(--muted-foreground));
 }
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
-    stroke: var(--muted-foreground);
+    stroke: hsl(var(--muted-foreground));
 }
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-options {
@@ -890,12 +875,47 @@
 }
 
 .ql-toolbar.ql-snow {
-    border: 1px solid var(--border);
+    border: none;
+    border-bottom: 1px solid hsl(var(--border));
     box-sizing: border-box;
     font-family: var(--font-sans);
     padding: 8px;
     border-radius: var(--radius) var(--radius) 0 0;
-    background-color: var(--card);
+    background-color: hsl(var(--card));
+}
+
+/* 调整工具栏在暗色模式下的样式 */
+.dark .ql-toolbar.ql-snow {
+    background-color: hsl(var(--card));
+    border-color: hsl(var(--border));
+}
+
+.dark .ql-toolbar.ql-snow button {
+    color: hsl(var(--foreground));
+}
+
+.dark .ql-toolbar.ql-snow .ql-stroke {
+    stroke: hsl(var(--foreground));
+}
+
+.dark .ql-toolbar.ql-snow .ql-fill,
+.dark .ql-toolbar.ql-snow .ql-stroke.ql-fill {
+    fill: hsl(var(--foreground));
+}
+
+.dark .ql-toolbar.ql-snow button:hover,
+.dark .ql-toolbar.ql-snow button.ql-active {
+    background-color: hsl(var(--secondary));
+}
+
+.dark .ql-toolbar.ql-snow button:hover .ql-stroke,
+.dark .ql-toolbar.ql-snow button.ql-active .ql-stroke {
+    stroke: hsl(var(--primary));
+}
+
+.dark .ql-toolbar.ql-snow button:hover .ql-fill,
+.dark .ql-toolbar.ql-snow button.ql-active .ql-fill {
+    fill: hsl(var(--primary));
 }
 
 .ql-toolbar.ql-snow .ql-formats {
@@ -912,16 +932,16 @@
 }
 
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
-    border-color: var(--border);
+    border-color: hsl(var(--border));
 }
 
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
-    border-color: var(--border);
+    border-color: hsl(var(--border));
 }
 
 .ql-toolbar.ql-snow .ql-color-picker .ql-picker-item.ql-selected,
 .ql-toolbar.ql-snow .ql-color-picker .ql-picker-item:hover {
-    border-color: var(--foreground);
+    border-color: hsl(var(--foreground));
 }
 
 .ql-toolbar.ql-snow+.ql-container.ql-snow {
@@ -929,10 +949,10 @@
 }
 
 .ql-snow .ql-tooltip {
-    background-color: var(--popover);
-    border: 1px solid var(--border);
+    background-color: hsl(var(--popover));
+    border: 1px solid hsl(var(--border));
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    color: var(--popover-foreground);
+    color: hsl(var(--popover-foreground));
     padding: 0.7rem 1rem;
     white-space: nowrap;
     border-radius: var(--radius);
@@ -947,7 +967,7 @@
 
 .ql-snow .ql-tooltip input[type=text] {
     display: none;
-    border: 1px solid var(--border);
+    border: 1px solid hsl(var(--border));
     font-size: 13px;
     height: 30px;
     margin: 0;
@@ -962,11 +982,11 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
     vertical-align: top;
-    color: var(--primary);
+    color: hsl(var(--primary));
 }
 
 .ql-snow .ql-tooltip a.ql-action::after {
-    border-right: 1px solid var(--border);
+    border-right: 1px solid hsl(var(--border));
     content: 'Edit';
     margin-left: 16px;
     padding-right: 8px;
@@ -979,7 +999,7 @@
 
 .ql-snow .ql-tooltip a {
     line-height: 26px;
-    color: var(--primary);
+    color: hsl(var(--primary));
 }
 
 .ql-snow .ql-tooltip.ql-editing a.ql-preview,
@@ -1010,24 +1030,48 @@
 }
 
 .ql-snow a {
-    color: var(--primary);
+    color: hsl(var(--primary));
 }
 
 .ql-container.ql-snow {
-    border: 1px solid var(--border);
     border-radius: 0 0 var(--radius) var(--radius);
+}
+
+/* 调整容器样式在暗色模式下 */
+.dark .ql-container.ql-snow {
+    border-color: hsl(var(--border));
+}
+
+/* 调整下拉菜单在暗色模式下的样式 */
+.dark .ql-snow .ql-picker-options {
+    background-color: hsl(var(--popover));
+    border-color: hsl(var(--border));
+}
+
+.dark .ql-snow .ql-picker-item {
+    color: hsl(var(--foreground));
+}
+
+/* 调整占位符文本颜色 */
+.dark .ql-editor.ql-blank::before {
+    color: hsl(var(--muted-foreground));
+}
+
+/* 调整链接颜色 */
+.dark .ql-snow .ql-editor a {
+    color: hsl(var(--primary));
 }
 
 .quill-image {
     max-width: 100%;
-    border-radius: var(--radius);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    box-shadow: none;
 }
 
 /* 富文本输入组件样式 */
 .rich-input-container {
     width: 100%;
-    border: 1px solid var(--border);
+    border: 1px solid hsl(var(--border));
     border-radius: var(--radius);
     transition: all 0.2s ease;
 }
@@ -1038,19 +1082,18 @@
     cursor: text;
     padding: 1rem;
     font-family: var(--font-sans);
-    color: var(--foreground);
+    color: hsl(var(--foreground));
 }
 
 .rich-input-content.read-only {
     cursor: default;
-    background-color: var(--secondary);
+    background-color: hsl(var(--secondary));
 }
 
 /* 确保图片不会超出容器 */
 .rich-input-content img.quill-image {
     max-width: 100%;
     height: auto;
-    border-radius: var(--radius);
 }
 
 /* 修复公式显示问题 */
@@ -1060,11 +1103,11 @@
 
 /* 代码块样式 */
 .rich-input-content code {
-    background-color: var(--secondary);
+    background-color: hsl(var(--secondary));
     border-radius: var(--radius);
     padding: 0.2rem 0.4rem;
     margin: 0 0.2rem;
-    font-family: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+    font-family: var(--code-font);
     font-size: 0.9em;
 }
 
@@ -1406,4 +1449,27 @@
 
 .ql-editor li.ql-direction-rtl {
     padding-right: 1.5em;
+}
+
+/* 确保表格边框在暗色模式下可见 */
+.dark .ql-editor td {
+    border-color: hsl(220.9, 39.3%, 30%);
+}
+
+/* 调整色彩选择器颜色在暗色模式下的显示 */
+.dark .ql-snow .ql-color-picker .ql-picker-options {
+    background-color: hsl(var(--popover));
+}
+
+/* 调整链接工具提示在暗色模式下的显示 */
+.dark .ql-snow .ql-tooltip {
+    background-color: hsl(var(--popover));
+    border-color: hsl(var(--border));
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 调整块引用在暗色模式下的显示 */
+.dark .ql-snow .ql-editor blockquote {
+    background-color: hsl(var(--code-block-bg-dark));
+    border-left-color: hsl(var(--primary));
 }

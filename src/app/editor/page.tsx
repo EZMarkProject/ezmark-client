@@ -18,7 +18,7 @@ export default function Editor() {
             <div className='flex justify-end p-4'>
                 <ThemeToggle />
             </div>
-            <div className='w-[60vw] m-auto mt-10'>
+            <div className='w-[40vw] m-auto mt-10'>
                 <RichInput initialContent='Hello World' onContentChange={handleContentChange} />
             </div>
         </>

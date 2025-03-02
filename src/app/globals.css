@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
 
@@ -57,51 +55,54 @@
 
     --radius: 0.5rem;
 
-    /* 添加Tiles悬停效果和边框颜色的CSS变量 */
-    --tile: rgba(0, 0, 0, 0.2);
-    --tile-border-light: rgba(0, 0, 0, 0.25);
-    --tile-border-dark: rgba(255, 255, 255, 0.25);
+    /* 富文本编辑器相关变量 */
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --code-block-bg-light: 210 40% 96.1%;
+    --code-block-bg-dark: 220.9 39.3% 8%;
+    --code-block-text-light: 222.2 47.4% 11.2%;
+    --code-block-text-dark: 210 20% 92%;
+    --code-font: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
   }
 
   .dark {
 
-    --background: 222.2 84% 4.9%;
+    --background: 0 0% 3.9%;
 
-    --foreground: 210 40% 98%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 0 0% 3.9%;
 
-    --card-foreground: 210 40% 98%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 0 0% 3.9%;
 
-    --popover-foreground: 210 40% 98%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 0 0% 98%;
 
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-foreground: 0 0% 9%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 0 0% 14.9%;
 
-    --secondary-foreground: 210 40% 98%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
+    --muted: 0 0% 14.9%;
 
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted-foreground: 0 0% 63.9%;
 
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 0 0% 14.9%;
 
-    --accent-foreground: 210 40% 98%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
 
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
+    --border: 0 0% 14.9%;
 
-    --input: 217.2 32.6% 17.5%;
+    --input: 0 0% 14.9%;
 
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 0 0% 83.9%;
 
     --chart-1: 220 70% 50%;
 
@@ -112,11 +113,6 @@
     --chart-4: 280 65% 60%;
 
     --chart-5: 340 75% 55%;
-
-    /* 暗色模式下Tiles悬停效果和边框颜色的CSS变量 */
-    --tile: rgba(255, 255, 255, 0.2);
-    --tile-border-light: rgba(255, 255, 255, 0.25);
-    --tile-border-dark: rgba(255, 255, 255, 0.25);
   }
 }
 
