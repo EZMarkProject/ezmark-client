@@ -3,58 +3,22 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
+import { MultipleChoiceQuestionProps } from './interface'
 
-// 使用dynamic import避免SSR问题
+// Use dynamic import to avoid SSR issues
 const RichInput = dynamic(() => import('@/components/rich-editor/RichInput'), { ssr: false })
-
-export interface MultipleChoiceQuestionProps {
-    /**
-     * 问题编号
-     */
-    questionNumber?: number | string
-
-    /**
-     * 问题内容
-     */
-    questionContent?: string
-
-    /**
-     * 选项内容数组
-     */
-    options?: string[]
-
-    /**
-     * 选项前缀，默认为A, B, C, D...
-     */
-    optionPrefixes?: string[]
-
-    /**
-     * 是否只读模式
-     */
-    readOnly?: boolean
-
-    /**
-     * 问题内容变更回调
-     */
-    onQuestionChange?: (content: string) => void
-
-    /**
-     * 选项内容变更回调
-     */
-    onOptionChange?: (index: number, content: string) => void
-}
 
 const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
     questionNumber = 1,
-    questionContent = '',
-    options = ['', '', '', ''],
+    initialQuestionContent = '',
+    initialOptions = ['', '', '', ''],
     optionPrefixes = ['A', 'B', 'C', 'D'],
     readOnly = false,
     onQuestionChange,
     onOptionChange,
 }) => {
-    const [question, setQuestion] = useState(questionContent)
-    const [optionContents, setOptionContents] = useState(options)
+    const [question, setQuestion] = useState(initialQuestionContent)
+    const [optionContents, setOptionContents] = useState(initialOptions)
 
     const handleQuestionChange = (content: string) => {
         setQuestion(content)

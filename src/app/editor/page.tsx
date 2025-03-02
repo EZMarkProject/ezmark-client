@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import MultipleChoiceQuestion from './components/MultipleChoiceQuestion'
+import { MultipleChoiceQuestion } from '@/components/multiple-choice-question'
 
 export default function Editor() {
     const [questionData, setQuestionData] = useState({
@@ -48,8 +48,8 @@ export default function Editor() {
 
                 <MultipleChoiceQuestion
                     questionNumber={1}
-                    questionContent={questionData.question}
-                    options={questionData.options}
+                    initialQuestionContent={questionData.question}
+                    initialOptions={questionData.options}
                     onQuestionChange={handleQuestionChange}
                     onOptionChange={handleOptionChange}
                 />
