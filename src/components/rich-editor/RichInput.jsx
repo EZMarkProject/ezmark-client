@@ -66,8 +66,9 @@ const RichInput = ({
     // 渲染LaTeX公式
     const renderLatexFormulas = (html) => {
         if (!html) return '';
+        // 更精确的正则表达式，确保只处理latex-formula类的span
         return html.replace(
-            /<span class="latex-formula">(.*?)<\/span>/g,
+            /<span\s+class="latex-formula"[^>]*>(.*?)<\/span>/g,
             (match, formula) => {
                 try {
                     return katex.renderToString(formula, { displayMode: false });
