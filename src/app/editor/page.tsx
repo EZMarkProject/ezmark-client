@@ -1,16 +1,36 @@
 'use client'
 
 import { useState } from 'react'
-import dynamic from 'next/dynamic'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-
-const RichInput = dynamic(() => import('@/components/rich-editor/RichInput'), { ssr: false })
+import MultipleChoiceQuestion from './components/MultipleChoiceQuestion'
 
 export default function Editor() {
-    const [content, setContent] = useState('')
+    const [questionData, setQuestionData] = useState({
+        question: '<p>What&nbsp;is&nbsp;the&nbsp;derivative&nbsp;of&nbsp;the&nbsp;function&nbsp;<span class="latex-formula">f(x) = 3x^4 - 5x^3 + 2x - 7</span>&nbsp;</p>',
+        options: [
+            '<p><span class="latex-formula">12x^3 - 15x^2 + 2</span>&nbsp;</p>',
+            '<p><span class="latex-formula">12x^3 - 15x^2 + 2x</span>&nbsp;</p>',
+            '<p><span class="latex-formula">12x^3 - 15x^2 - 5</span>&nbsp;</p>',
+            '<p><span class="latex-formula">12x^3 - 15x^2 + 2x - 7</span>&nbsp;</p>',
+        ]
+    })
 
-    const handleContentChange = (content: string) => {
-        setContent(content)
+    const handleQuestionChange = (content: string) => {
+        setQuestionData(prev => ({
+            ...prev,
+            question: content
+        }))
+    }
+
+    const handleOptionChange = (index: number, content: string) => {
+        setQuestionData(prev => {
+            const newOptions = [...prev.options]
+            newOptions[index] = content
+            return {
+                ...prev,
+                options: newOptions
+            }
+        })
     }
 
     return (
@@ -18,8 +38,22 @@ export default function Editor() {
             <div className='flex justify-end p-4'>
                 <ThemeToggle />
             </div>
-            <div className='w-[40vw] m-auto mt-10'>
-                <RichInput initialContent='Hello World' onContentChange={handleContentChange} />
+            <div className='max-w-3xl mx-auto mt-10 px-4'>
+                <div className="bg-card p-6 rounded-xl mb-6">
+                    <h2 className="text-lg font-medium mb-4">MCQ Demo</h2>
+                    <p className="text-muted-foreground mb-4">
+                        Test the rich text editor functionality for generating multiple choice questions.
+                    </p>
+                </div>
+
+                <MultipleChoiceQuestion
+                    questionNumber={1}
+                    questionContent={questionData.question}
+                    options={questionData.options}
+                    onQuestionChange={handleQuestionChange}
+                    onOptionChange={handleOptionChange}
+                />
+
             </div>
         </>
     )

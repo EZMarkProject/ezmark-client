@@ -1080,7 +1080,7 @@
     width: 100%;
     min-height: 1em;
     cursor: text;
-    padding: 1rem;
+    padding: 5px 10px;
     font-family: var(--font-sans);
     color: hsl(var(--foreground));
 }
