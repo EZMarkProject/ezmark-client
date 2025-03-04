@@ -22,8 +22,8 @@ export function ExamPaperTemplate({
                 </div>
 
                 {/* Student Information */}
-                <div className="grid grid-cols-2 gap-8 mb-5">
-                    <div className="space-y-4">
+                <div className="flex items-center gap-8 mb-5">
+                    <div className="flex-1 space-y-4">
                         <div className="flex items-center">
                             <div className="text-lg font-bold mr-2">NAME :</div>
                             <div className="border-b-2 border-black dark:border-white flex-grow min-h-[1.5rem]"></div>
@@ -34,10 +34,16 @@ export function ExamPaperTemplate({
                         </div>
                     </div>
 
-                    {/* Grade Box */}
-                    <div className="border-2 border-black dark:border-white flex flex-col items-center justify-center">
-                        <div className="text-2xl font-bold">
-                            MARK = ____________
+                    {/* Academic Information Box */}
+                    <div className="flex-1 border-2 border-black dark:border-white flex flex-col items-center justify-center p-4">
+                        <div className="text-xl">
+                            <span className="font-bold">Year:</span> {exam.year}
+                        </div>
+                        <div className="text-xl">
+                            <span className="font-bold">Semester:</span> {exam.semester}
+                        </div>
+                        <div className="text-xl">
+                            <span className="font-bold">Duration:</span> {exam.duration}
                         </div>
                     </div>
                 </div>
@@ -48,17 +54,6 @@ export function ExamPaperTemplate({
                     <div className="flex items-center flex-wrap">
                         <div className="text-5xl font-bold uppercase tracking-tight mr-4">{exam.course}</div>
                         <div className="text-lg">{exam.description}</div>
-                    </div>
-                </div>
-
-                {/* Academic Year and Semester */}
-                <div className="flex justify-between items-center mb-4">
-                    <div className="text-lg">
-                        <span className="font-semibold">Year:</span> {exam.year} | <span className="font-semibold">Semester:</span> {exam.semester}
-                    </div>
-                    {/* Exam Duration */}
-                    <div className="text-xl font-bold">
-                        DURATION = {exam.duration}
                     </div>
                 </div>
 
