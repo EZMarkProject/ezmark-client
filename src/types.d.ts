@@ -55,6 +55,13 @@ export interface Exam {
     title: string;
     description: string;
     questions: Question[];
+    duration: string; // 3 HOURS
+    university: string; // 大学名称
+    course: string; // 课程名称
+    year: string; // 2024-2025
+    semester: string; // 学期 Spring
+    createdAt: string; // 2024-01-01
+    examDate: string; // 考试日期
 }
 
 // 定义题目类型

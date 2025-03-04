@@ -2,10 +2,8 @@
 
 import { useState } from 'react'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { MultipleChoiceQuestion } from '@/components/multiple-choice-question'
-import FillInBlankQuestion from '@/components/fill-in-blank-question'
+import ExamPaperTemplate from '@/components/exam-paper-template'
 import { Exam } from '@/types'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { EyeIcon, PencilIcon } from 'lucide-react'
 
@@ -17,7 +15,14 @@ export default function Editor() {
     const [exam, setExam] = useState<Exam>({
         id: '1',
         title: 'Sample Exam',
-        description: 'This is a sample exam for demonstration purposes',
+        description: 'Final examination for the Cloud Computing module.',
+        duration: '3 HOURS',
+        university: 'University College Dublin',
+        course: 'COMP3030 Cloud Computing',
+        year: '2024-2025',
+        semester: 'Spring',
+        createdAt: '2024-01-01',
+        examDate: '2024-01-01',
         questions: [
             {
                 id: '1',
@@ -124,66 +129,33 @@ export default function Editor() {
         <>
             <div className='flex justify-end p-4'>
                 <ThemeToggle />
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleRenderMode}
+                    className="ml-4"
+                >
+                    {renderMode ? (
+                        <>
+                            <EyeIcon className="h-4 w-4 mr-1" />
+                            Preview Mode
+                        </>
+                    ) : (
+                        <>
+                            <PencilIcon className="h-4 w-4 mr-1" />
+                            Edit Mode
+                        </>
+                    )}
+                </Button>
             </div>
-            <div className='max-w-3xl mx-auto mt-10 px-4'>
-                <Card className="mb-6">
-                    <CardHeader className="pb-3 flex flex-row items-center justify-between">
-                        <div>
-                            <h2 className="text-lg font-medium">{exam.title}</h2>
-                            <p className="text-muted-foreground">
-                                {exam.description}
-                            </p>
-                        </div>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={toggleRenderMode}
-                            className="ml-auto"
-                        >
-                            {renderMode ? (
-                                <>
-                                    <EyeIcon className="h-4 w-4 mr-1" />
-                                    Preview Mode
-                                </>
-                            ) : (
-                                <>
-                                    <PencilIcon className="h-4 w-4 mr-1" />
-                                    Edit Mode
-                                </>
-                            )}
-                        </Button>
-                    </CardHeader>
-                    <CardContent>
-                        {exam.questions.map((question, index) => {
-                            if (question.type === 'multiple-choice') {
-                                return (
-                                    <div key={question.id} className="mb-6 last:mb-0">
-                                        <MultipleChoiceQuestion
-                                            initialQuestionContent={question.question}
-                                            initialOptions={question.options.map(opt => opt.content)}
-                                            onQuestionChange={(content) => handleMCQQuestionChange(question.id, content)}
-                                            onOptionChange={(index, content) => handleMCQOptionChange(question.id, index, content)}
-                                            renderMode={renderMode}
-                                            questionNumber={index + 1}
-                                        />
-                                    </div>
-                                );
-                            } else if (question.type === 'fill-in-blank') {
-                                return (
-                                    <div key={question.id} className="mb-6 last:mb-0">
-                                        <FillInBlankQuestion
-                                            initialContent={question.content}
-                                            onContentChange={(content) => handleFillInBlankContentChange(question.id, content)}
-                                            renderMode={renderMode}
-                                            questionNumber={index + 1}
-                                        />
-                                    </div>
-                                );
-                            }
-                            return null;
-                        })}
-                    </CardContent>
-                </Card>
+            <div className='max-w-5xl mx-auto mt-10 px-4 pb-20'>
+                <ExamPaperTemplate
+                    exam={exam}
+                    renderMode={renderMode}
+                    onMCQQuestionChange={handleMCQQuestionChange}
+                    onMCQOptionChange={handleMCQOptionChange}
+                    onFillInBlankContentChange={handleFillInBlankContentChange}
+                />
             </div>
         </>
     )
