@@ -1,10 +1,5 @@
 export interface FillInBlankQuestionProps {
     /**
-     * Question number to display
-     */
-    questionNumber?: number;
-
-    /**
      * Initial content for the fill-in-blank question
      */
     initialContent?: string;
@@ -28,4 +23,9 @@ export interface FillInBlankQuestionProps {
      * Additional CSS class name
      */
     className?: string;
+
+    /**
+     * Render mode - hides editor borders and disables editing
+     */
+    renderMode?: boolean;
 } 

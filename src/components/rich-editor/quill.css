@@ -1076,6 +1076,11 @@
     transition: all 0.2s ease;
 }
 
+.rich-input-container.render-mode {
+    border: none;
+    box-shadow: none;
+}
+
 .rich-input-content {
     width: 100%;
     min-height: 1em;
@@ -1083,6 +1088,13 @@
     padding: 5px 10px;
     font-family: var(--font-sans);
     color: hsl(var(--foreground));
+}
+
+.rich-input-content.render-mode {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: default;
 }
 
 /* 添加标题样式支持 */

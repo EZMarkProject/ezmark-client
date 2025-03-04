@@ -2,20 +2,19 @@
 
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { MultipleChoiceQuestionProps } from './interface'
 
 // Use dynamic import to avoid SSR issues
 const RichInput = dynamic(() => import('@/components/rich-editor/RichInput'), { ssr: false })
 
 const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
-    questionNumber = 1,
     initialQuestionContent = '',
     initialOptions = ['', '', '', ''],
     optionPrefixes = ['A', 'B', 'C', 'D'],
     readOnly = false,
     onQuestionChange,
     onOptionChange,
+    renderMode = false,
 }) => {
     const [question, setQuestion] = useState(initialQuestionContent)
     const [optionContents, setOptionContents] = useState(initialOptions)
@@ -33,40 +32,33 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
     }
 
     return (
-        <Card className="mb-6">
-            <CardHeader className="pb-3">
-                <div className="flex items-center gap-2">
-                    <div className="font-medium text-base w-6 flex items-center">
-                        {questionNumber}.
-                    </div>
-                    <div className="flex-1">
-                        <RichInput
-                            initialContent={question}
-                            onContentChange={handleQuestionChange}
-                            readOnly={readOnly}
-                        />
-                    </div>
-                </div>
-            </CardHeader>
-            <CardContent>
-                <div className="pl-8 space-y-3">
-                    {optionContents.map((option, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                            <div className="font-medium text-base w-6 flex items-center">
-                                {optionPrefixes[index] || String.fromCharCode(65 + index)}.
-                            </div>
-                            <div className="flex-1">
-                                <RichInput
-                                    initialContent={option}
-                                    onContentChange={(content) => handleOptionChange(index, content)}
-                                    readOnly={readOnly}
-                                />
-                            </div>
+        <div>
+            <div className="flex-1">
+                <RichInput
+                    initialContent={question}
+                    onContentChange={handleQuestionChange}
+                    readOnly={readOnly}
+                    renderMode={renderMode}
+                />
+            </div>
+            <div className="mt-3 space-y-3 pl-8">
+                {optionContents.map((option, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                        <div className="font-medium text-base w-6 flex items-center">
+                            {optionPrefixes[index] || String.fromCharCode(65 + index)}.
                         </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
+                        <div className="flex-1">
+                            <RichInput
+                                initialContent={option}
+                                onContentChange={(content) => handleOptionChange(index, content)}
+                                readOnly={readOnly}
+                                renderMode={renderMode}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 

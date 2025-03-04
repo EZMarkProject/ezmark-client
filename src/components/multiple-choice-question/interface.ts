@@ -1,10 +1,5 @@
 interface MultipleChoiceQuestionProps {
     /**
-     * Question number
-     */
-    questionNumber?: number | string;
-
-    /**
      * Question content
      */
     initialQuestionContent?: string;
@@ -33,6 +28,11 @@ interface MultipleChoiceQuestionProps {
      * Option content change callback
      */
     onOptionChange?: (index: number, content: string) => void;
+
+    /**
+     * Render mode - hides editor borders and disables editing
+     */
+    renderMode?: boolean;
 }
 
 export type { MultipleChoiceQuestionProps }; 

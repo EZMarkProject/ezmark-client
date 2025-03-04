@@ -10,7 +10,8 @@ const RichInput = ({
     onContentChange = (text) => { },
     readOnly = false,
     onBlur = () => { },
-    className = ''
+    className = '',
+    renderMode = false
 }) => {
     // 保存原始HTML(包含LaTeX标记)
     const [rawHTML, setRawHTML] = useState(initialContent);
@@ -29,7 +30,7 @@ const RichInput = ({
 
     // 点击内容区域显示编辑器
     const handleClickContent = () => {
-        if (readOnly) return;
+        if (readOnly || renderMode) return;
 
         setShowEditor(true);
         // 粘贴原始HTML内容到编辑器（包含LaTeX标记）
@@ -88,17 +89,17 @@ const RichInput = ({
     };
 
     return (
-        <div className={`rich-input-container ${className}`} ref={containerRef}>
+        <div className={`rich-input-container ${className} ${renderMode ? 'render-mode' : ''}`} ref={containerRef}>
             {showEditor ? (
                 <Editor
                     ref={quillRef}
                     onTextChange={handleTextChange}
                     onBlur={onBlur}
-                    readOnly={readOnly}
+                    readOnly={readOnly || renderMode}
                 />
             ) : (
                 <div
-                    className={`rich-input-content ${readOnly ? 'read-only' : ''}`}
+                    className={`rich-input-content ${readOnly && !renderMode ? 'read-only' : ''} ${renderMode ? 'render-mode' : ''}`}
                     onClick={handleClickContent}
                     dangerouslySetInnerHTML={{
                         __html: processHtmlContent(rawHTML)
