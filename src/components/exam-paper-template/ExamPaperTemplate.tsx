@@ -1,8 +1,7 @@
 'use client'
 
 import React from 'react'
-import { MultipleChoiceQuestion } from '@/components/multiple-choice-question'
-import FillInBlankQuestion from '@/components/fill-in-blank-question'
+import { QuestionSection } from '@/components/question-section'
 import { ExamPaperTemplateProps } from './interface'
 
 export function ExamPaperTemplate({
@@ -76,36 +75,13 @@ export function ExamPaperTemplate({
             </div>
 
             {/* Questions Section */}
-            <div className="space-y-8">
-                {exam.questions.map((question, index) => {
-                    if (question.type === 'multiple-choice') {
-                        return (
-                            <div key={question.id} className="border-t border-slate-300 dark:border-slate-700 pt-4">
-                                <MultipleChoiceQuestion
-                                    initialQuestionContent={question.question}
-                                    initialOptions={question.options.map(opt => opt.content)}
-                                    onQuestionChange={(content) => onMCQQuestionChange?.(question.id, content)}
-                                    onOptionChange={(index, content) => onMCQOptionChange?.(question.id, index, content)}
-                                    renderMode={renderMode}
-                                    questionNumber={index + 1}
-                                />
-                            </div>
-                        );
-                    } else if (question.type === 'fill-in-blank') {
-                        return (
-                            <div key={question.id} className="border-t border-slate-300 dark:border-slate-700 pt-4">
-                                <FillInBlankQuestion
-                                    initialContent={question.content}
-                                    onContentChange={(content) => onFillInBlankContentChange?.(question.id, content)}
-                                    renderMode={renderMode}
-                                    questionNumber={index + 1}
-                                />
-                            </div>
-                        );
-                    }
-                    return null;
-                })}
-            </div>
+            <QuestionSection
+                questions={exam.questions}
+                renderMode={renderMode}
+                onMCQQuestionChange={onMCQQuestionChange}
+                onMCQOptionChange={onMCQOptionChange}
+                onFillInBlankContentChange={onFillInBlankContentChange}
+            />
         </div>
     )
 } 
