@@ -148,7 +148,7 @@ export default function Editor() {
                     )}
                 </Button>
             </div>
-            <div className='max-w-5xl mx-auto mt-10 px-4 pb-20'>
+            <div className='exame-paper-container'>
                 <ExamPaperTemplate
                     exam={exam}
                     renderMode={renderMode}

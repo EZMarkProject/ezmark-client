@@ -13,7 +13,7 @@ export function ExamPaperTemplate({
     onFillInBlankContentChange
 }: ExamPaperTemplateProps) {
     return (
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-md shadow-sm border border-slate-200 dark:border-slate-800 max-w-4xl mx-auto print:shadow-none print:border-none">
+        <div className="">
             {/* Header Section */}
             <div className="mb-8">
                 {/* Top Row - School Name and Date */}
@@ -23,7 +23,7 @@ export function ExamPaperTemplate({
                 </div>
 
                 {/* Student Information */}
-                <div className="grid grid-cols-2 gap-8 mb-6">
+                <div className="grid grid-cols-2 gap-8 mb-5">
                     <div className="space-y-4">
                         <div className="flex items-center">
                             <div className="text-lg font-bold mr-2">NAME :</div>
@@ -36,9 +36,9 @@ export function ExamPaperTemplate({
                     </div>
 
                     {/* Grade Box */}
-                    <div className="border-2 border-black dark:border-white p-4 flex flex-col items-center justify-center">
+                    <div className="border-2 border-black dark:border-white flex flex-col items-center justify-center">
                         <div className="text-2xl font-bold">
-                            MARK = _____
+                            MARK = ____________
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@ export function ExamPaperTemplate({
                     </div>
                     {/* Exam Duration */}
                     <div className="text-xl font-bold">
-                        LENGTH = {exam.duration}
+                        DURATION = {exam.duration}
                     </div>
                 </div>
 
