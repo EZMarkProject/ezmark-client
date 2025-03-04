@@ -64,16 +64,23 @@ const RichInput = ({
     }, [showEditor, onBlur]);
 
     // 渲染LaTeX公式
-    const renderLatexFormulas = (html) => {
+    const processHtmlContent = (html) => {
         if (!html) return '';
-        // 更精确的正则表达式，确保只处理latex-formula类的span
-        return html.replace(
+
+        // 先处理${input}模式，替换为下划线
+        let processedHtml = html.replace(
+            /\${input}/g,
+            '<span class="input-placeholder">________</span>'
+        );
+
+        // 再处理LaTeX公式
+        return processedHtml.replace(
             /<span\s+class="latex-formula"[^>]*>(.*?)<\/span>/g,
             (match, formula) => {
                 try {
                     return katex.renderToString(formula, { displayMode: false });
                 } catch (e) {
-                    console.error('LaTeX渲染错误:', e);
+                    console.error('LaTeX rendering error:', e);
                     return match;
                 }
             }
@@ -94,7 +101,7 @@ const RichInput = ({
                     className={`rich-input-content ${readOnly ? 'read-only' : ''}`}
                     onClick={handleClickContent}
                     dangerouslySetInnerHTML={{
-                        __html: renderLatexFormulas(rawHTML)
+                        __html: processHtmlContent(rawHTML)
                     }}
                 />
             )}

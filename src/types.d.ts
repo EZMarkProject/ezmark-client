@@ -48,3 +48,31 @@ export interface AuthContextObject {
     setUserName: (userName: string) => void;
     setEmail: (email: string) => void;
 }
+
+
+
+// 定义题目类型
+export type QuestionType = 'multiple-choice' | 'fill-in-blank'
+
+// 定义基础题目接口
+export interface BaseQuestion {
+    id: string;
+    type: QuestionType;
+    questionNumber: number;
+}
+
+// 多选题接口
+export interface MultipleChoiceQuestionData extends BaseQuestion {
+    type: 'multiple-choice';
+    question: string;
+    options: string[];
+}
+
+// 填空题接口
+export interface FillInBlankQuestionData extends BaseQuestion {
+    type: 'fill-in-blank';
+    content: string;
+}
+
+// 题目类型联合
+export type Question = MultipleChoiceQuestionData | FillInBlankQuestionData;
