@@ -33,6 +33,11 @@ interface MultipleChoiceQuestionProps {
      * Render mode - hides editor borders and disables editing
      */
     renderMode?: boolean;
+
+    /**
+     * Question number to display
+     */
+    questionNumber?: number;
 }
 
 export type { MultipleChoiceQuestionProps }; 

@@ -18,6 +18,7 @@ const FillInBlankQuestion: React.FC<FillInBlankQuestionProps> = ({
     onBlur,
     className = '',
     renderMode = false,
+    questionNumber,
 }) => {
     const [content, setContent] = useState(initialContent)
 
@@ -28,13 +29,22 @@ const FillInBlankQuestion: React.FC<FillInBlankQuestionProps> = ({
 
     return (
         <div className={className}>
-            <RichInput
-                initialContent={content}
-                onContentChange={handleContentChange}
-                readOnly={readOnly}
-                onBlur={onBlur}
-                renderMode={renderMode}
-            />
+            <div className="flex items-center">
+                {questionNumber !== undefined && (
+                    <div className="font-medium text-base">
+                        {questionNumber}.
+                    </div>
+                )}
+                <div className="flex-1">
+                    <RichInput
+                        initialContent={content}
+                        onContentChange={handleContentChange}
+                        readOnly={readOnly}
+                        onBlur={onBlur}
+                        renderMode={renderMode}
+                    />
+                </div>
+            </div>
         </div>
     )
 }

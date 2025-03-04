@@ -15,6 +15,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
     onQuestionChange,
     onOptionChange,
     renderMode = false,
+    questionNumber,
 }) => {
     const [question, setQuestion] = useState(initialQuestionContent)
     const [optionContents, setOptionContents] = useState(initialOptions)
@@ -33,13 +34,20 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
 
     return (
         <div>
-            <div className="flex-1">
-                <RichInput
-                    initialContent={question}
-                    onContentChange={handleQuestionChange}
-                    readOnly={readOnly}
-                    renderMode={renderMode}
-                />
+            <div className="flex items-center gap-2">
+                {questionNumber !== undefined && (
+                    <div className="font-medium text-base">
+                        {questionNumber}.
+                    </div>
+                )}
+                <div className="flex-1">
+                    <RichInput
+                        initialContent={question}
+                        onContentChange={handleQuestionChange}
+                        readOnly={readOnly}
+                        renderMode={renderMode}
+                    />
+                </div>
             </div>
             <div className="mt-3 space-y-3 pl-8">
                 {optionContents.map((option, index) => (

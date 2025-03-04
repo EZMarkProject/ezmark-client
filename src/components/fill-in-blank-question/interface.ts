@@ -28,4 +28,9 @@ export interface FillInBlankQuestionProps {
      * Render mode - hides editor borders and disables editing
      */
     renderMode?: boolean;
+
+    /**
+     * Question number to display
+     */
+    questionNumber?: number;
 } 
