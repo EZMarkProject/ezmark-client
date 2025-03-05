@@ -1,22 +1,65 @@
 'use client'
 import { cn } from "@/lib/utils"
 import { type CanvasProps } from "./interface"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { ZoomIn, ZoomOut, Eye, EyeOff, Pen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { A4ExamPaper } from "@/components/editor/A4ExamPaper"
 
+// A4 paper dimensions in pixels (assuming 96 DPI)
+const A4_WIDTH_PX = 794 // 210mm
+const A4_HEIGHT_PX = 1123 // 297mm
+
 export function Canvas({ className, exam, renderMode, onRenderModeChange, ...props }: CanvasProps) {
     const [scale, setScale] = useState(1)
+    const containerRef = useRef<HTMLDivElement>(null)
     const MIN_SCALE = 0.1
     const MAX_SCALE = 2
     const SCALE_STEP = 0.1
 
+    const calculateAutoScale = useCallback(() => {
+        if (!containerRef.current) return 1
+
+        const padding = 10; // 10px on each side
+        // Subtract padding from container width and height
+        const containerWidth = containerRef.current.clientWidth - padding * 2
+
+        // Calculate scale based on width and height ratios
+        // Height is not important in this case, because the page can scroll
+        const widthScale = containerWidth / A4_WIDTH_PX
+
+        // When container width > A4 width
+        if (widthScale > 1) {
+            return 1 // 100%
+        }
+
+        // Ensure the scale is within bounds
+        return Math.min(Math.max(widthScale, MIN_SCALE), MAX_SCALE)
+    }, [])
+
+    // Handle window resize
+    useEffect(() => {
+        const handleResize = () => {
+            if (containerRef.current) {
+                setScale(calculateAutoScale())
+            }
+        }
+
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [calculateAutoScale])
+
+    // Set scale to auto when component mounts
+    useEffect(() => {
+        setScale(calculateAutoScale())
+    }, [calculateAutoScale])
+
+    // Press ctrl or command to zoom in and out
     const handleWheel = useCallback((e: React.WheelEvent) => {
         if (e.ctrlKey || e.metaKey) {
             e.preventDefault()
             setScale(prev => {
-                const newScale = prev - (e.deltaY * 0.001)
+                const newScale = prev - (e.deltaY * 0.005)
                 return Math.min(Math.max(newScale, MIN_SCALE), MAX_SCALE)
             })
         }
@@ -55,9 +98,9 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setScale(1)}
+                        onClick={() => setScale(calculateAutoScale())}
                     >
-                        <span className="text-sm">1:1</span>
+                        <span className="text-sm">Auto</span>
                     </Button>
                     <Button
                         variant="ghost"
@@ -79,6 +122,7 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
                 </div>
             </div>
             <div
+                ref={containerRef}
                 className="flex-1 overflow-auto p-8 flex items-start justify-center"
                 onWheel={handleWheel}
             >
