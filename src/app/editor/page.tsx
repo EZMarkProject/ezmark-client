@@ -10,6 +10,8 @@ import { mockExamData } from "@/mock/exam-data"
 
 export default function Editor() {
     const [exam, setExam] = useState<Exam>(mockExamData);
+    const [renderMode, setRenderMode] = useState(true);
+
     return (
         <div className="min-h-screen bg-background">
             <EditorNavbar />
@@ -17,7 +19,12 @@ export default function Editor() {
                 <SectionSelection className="w-40 border-r shrink-0" />
                 <QuestionSelectionPanel className="w-64 border-r shrink-0" />
                 <div className="flex-1 min-w-0 overflow-auto">
-                    <Canvas className="h-full w-full" exam={exam} renderMode={true} />
+                    <Canvas
+                        className="h-full w-full"
+                        exam={exam}
+                        renderMode={renderMode}
+                        onRenderModeChange={setRenderMode}
+                    />
                 </div>
                 <ConfigEditPanel className="w-80 border-l shrink-0" />
             </div>

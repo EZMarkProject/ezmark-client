@@ -1,5 +1,5 @@
-import { type HTMLAttributes } from "react"
-
-interface QuestionSelectionPanelProps extends HTMLAttributes<HTMLDivElement> { }
+interface QuestionSelectionPanelProps {
+    className: string
+}
 
 export type { QuestionSelectionPanelProps }; 

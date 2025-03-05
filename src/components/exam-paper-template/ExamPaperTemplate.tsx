@@ -12,7 +12,7 @@ export function ExamPaperTemplate({
     onFillInBlankContentChange
 }: ExamPaperTemplateProps) {
     return (
-        <div className="bg-white w-[210mm] min-h-[297mm] mx-auto p-8 shadow-lg">
+        <div className="bg-background w-[210mm] min-h-[297mm] mx-auto p-8 shadow-lg">
             {/* Header Section */}
             <div className="mb-8">
                 {/* Top Row - School Name and Date */}
