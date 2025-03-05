@@ -12,6 +12,7 @@ alwaysApply: false
 ## Constraints
 - 当要求生成的是一个页面的时候，请将页面拆分成可服用的业务组件
 - 每一个组件都需要有一个单独的文件夹（shadcn的组件可以按照规范都放在ui文件夹下面,不需要每一个都创建单独的文件夹）
+- 如果这个组件是属于某一个页面,请把组件的文件夹放到components/{页面名称}/{组件文件夹}内
 - 如果需要用到图片，请使用unsplash中的免费图片
 - 业务组件中用到的所有组件都来源于 `shadcn/ui` 组件库 @https://ui.shadcn.com/docs/components/accordion
 - 组件必须遵循数据解耦原则：
