@@ -16,6 +16,7 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
     const MAX_SCALE = 2
     const SCALE_STEP = 0.1
 
+    // Calculate scale to fit the A4 paper in the container
     const calculateAutoScale = useCallback(() => {
         if (!containerRef.current) return 1
 
@@ -64,9 +65,9 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
         setScale(calculateAutoScale())
     }, [calculateAutoScale])
 
-    // Press ctrl or command to zoom in and out
-    const handleWheel = useCallback((e: React.WheelEvent) => {
-        if (e.ctrlKey || e.metaKey) {
+    // Press ctrl or command or shift to zoom in and out
+    const handleWheel = useCallback((e: WheelEvent) => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey) {
             e.preventDefault()
             setScale(prev => {
                 const newScale = prev - (e.deltaY * 0.005)
@@ -74,6 +75,17 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
             })
         }
     }, [])
+
+    // Add non-passive wheel event listener
+    useEffect(() => {
+        const element = containerRef.current
+        if (!element) return
+
+        element.addEventListener('wheel', handleWheel as unknown as EventListener, { passive: false })
+        return () => {
+            element.removeEventListener('wheel', handleWheel as unknown as EventListener)
+        }
+    }, [handleWheel])
 
     const adjustScale = (delta: number) => {
         setScale(prev => {
@@ -134,7 +146,6 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
             <div
                 ref={containerRef}
                 className="flex-1 overflow-auto p-8 flex items-start justify-center"
-                onWheel={handleWheel}
             >
                 <A4ExamPaper
                     exam={exam}
