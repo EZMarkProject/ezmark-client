@@ -6,9 +6,8 @@ import { ZoomIn, ZoomOut, Eye, EyeOff, Pen } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { A4ExamPaper } from "@/components/editor/A4ExamPaper"
 
-// A4 paper dimensions in pixels (assuming 96 DPI)
-const A4_WIDTH_PX = 794 // 210mm
-const A4_HEIGHT_PX = 1123 // 297mm
+// A4 paper dimensions in millimeters
+const A4_WIDTH_MM = 210 // A4 width in mm
 
 export function Canvas({ className, exam, renderMode, onRenderModeChange, ...props }: CanvasProps) {
     const [scale, setScale] = useState(1)
@@ -20,13 +19,24 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
     const calculateAutoScale = useCallback(() => {
         if (!containerRef.current) return 1
 
-        const padding = 10; // 10px on each side
-        // Subtract padding from container width and height
+        const padding = 10 // 10px on each side
         const containerWidth = containerRef.current.clientWidth - padding * 2
 
-        // Calculate scale based on width and height ratios
-        // Height is not important in this case, because the page can scroll
-        const widthScale = containerWidth / A4_WIDTH_PX
+        // Create a temporary div to measure mm to px conversion
+        // 不知道屏幕dpi，所以先用CSS的mm单位来创建一个隐藏的A4大小div
+        // 再通过getBoundingClientRect()获取在这块屏幕上对应多少px
+        const temp = document.createElement('div')
+        temp.style.width = `${A4_WIDTH_MM}mm`
+        temp.style.position = 'absolute'
+        temp.style.visibility = 'hidden'
+        document.body.appendChild(temp)
+
+        // Get the actual width in pixels
+        const a4WidthInPx = temp.getBoundingClientRect().width
+        document.body.removeChild(temp)
+
+        // Calculate scale based on width ratio
+        const widthScale = containerWidth / a4WidthInPx
 
         // When container width > A4 width
         if (widthScale > 1) {
