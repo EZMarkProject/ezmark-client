@@ -9,10 +9,13 @@ import { Exam, MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestion
 import { mockExamData } from "@/mock/exam-data"
 import { nanoid } from "nanoid"
 import cloneDeep from 'lodash/cloneDeep'
+import { TemplateSelectionPanel } from "@/components/editor/TemplateSelectionPanel"
+import { BankSelectionPanel } from "@/components/editor/BankSelectionPanel"
 
 export default function Editor() {
     const [exam, setExam] = useState<Exam>(mockExamData);
     const [renderMode, setRenderMode] = useState(true);
+    const [activeTab, setActiveTab] = useState("components");
 
     const onMCQQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
@@ -124,12 +127,39 @@ export default function Editor() {
         });
     }
 
+    const handleTemplateSelect = (templateId: string) => {
+        // TODO: Load template data
+        console.log("Selected template:", templateId);
+    };
+
+    const handleBankSelect = (bankId: string) => {
+        // TODO: Load questions from bank
+        console.log("Selected bank:", bankId);
+    };
+
+    const renderSidePanel = () => {
+        switch (activeTab) {
+            case "components":
+                return <QuestionSelectionPanel className="w-64 border-r shrink-0" onAddComponent={handleAddComponent} />;
+            case "templates":
+                return <TemplateSelectionPanel className="w-64 border-r shrink-0" onSelectTemplate={handleTemplateSelect} />;
+            case "bank":
+                return <BankSelectionPanel className="w-64 border-r shrink-0" onSelectBank={handleBankSelect} />;
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className="min-h-screen bg-background">
             <EditorNavbar />
             <div className="flex h-[calc(100vh-4rem)]">
-                <SectionSelection className="w-33 border-r shrink-0" />
-                <QuestionSelectionPanel className="w-64 border-r shrink-0" onAddComponent={handleAddComponent} />
+                <SectionSelection
+                    className="w-33 border-r shrink-0"
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                />
+                {renderSidePanel()}
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
                         exam={exam}
@@ -143,6 +173,6 @@ export default function Editor() {
                 </div>
                 <ConfigEditPanel className="w-80 border-l shrink-0" />
             </div>
-        </div >
+        </div>
     )
 }   
