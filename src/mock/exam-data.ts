@@ -1,7 +1,8 @@
 import { Exam } from "@/types/exam";
+import { nanoid } from 'nanoid'
 
 export const mockExamData: Exam = {
-    id: '1',
+    id: nanoid(),
     title: 'Sample Exam',
     description: 'Final examination for the Cloud Computing module.',
     duration: '3 HOURS',
@@ -14,13 +15,14 @@ export const mockExamData: Exam = {
     examDate: '2024-01-01',
     components: [
         {
-            id: '1',
+            id: nanoid(),
             type: 'default-header',
         },
         {
-            id: '2',
+            id: nanoid(),
             type: 'multiple-choice',
             score: 10,
+            questionNumber: 1,
             question: '<p>What&nbsp;is&nbsp;the&nbsp;derivative&nbsp;of&nbsp;the&nbsp;function&nbsp;<span class="latex-formula">f(x) = 3x^4 - 5x^3 + 2x - 7</span>&nbsp; ${input}</p>',
             options: [
                 {
@@ -43,9 +45,10 @@ export const mockExamData: Exam = {
             answer: ['A']
         },
         {
-            id: '3',
+            id: nanoid(),
             type: 'fill-in-blank',
             score: 5,
+            questionNumber: 2,
             content: '<p>The library is a quiet place where people can ${input} and enjoy reading.</p>',
             answer: 'dance'
         }

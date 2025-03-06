@@ -27,6 +27,7 @@ export interface BaseComponent {
 export interface BaseQuestion extends BaseComponent {
     type: QuestionType;
     score: number; // 每道题的分数
+    questionNumber: number; // 题目编号
 }
 
 // 定义题目类型

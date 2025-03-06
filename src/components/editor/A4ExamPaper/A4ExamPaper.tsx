@@ -41,7 +41,7 @@ export function A4ExamPaper({
                                     onQuestionChange={onMCQQuestionChange}
                                     onOptionChange={onMCQOptionChange}
                                     renderMode={renderMode}
-                                    questionNumber={Number(item.id)}
+                                    questionNumber={item.questionNumber}
                                 />
                             );
                         case 'fill-in-blank':
@@ -51,7 +51,7 @@ export function A4ExamPaper({
                                     questionObj={item}
                                     onContentChange={onFillInBlankContentChange}
                                     renderMode={renderMode}
-                                    questionNumber={Number(item.id)}
+                                    questionNumber={item.questionNumber}
                                 />
                             );
                         default:
