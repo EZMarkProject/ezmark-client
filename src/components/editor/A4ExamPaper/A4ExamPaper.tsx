@@ -4,6 +4,7 @@ import { type A4ExamPaperProps } from "./interface"
 import DefaultHeader from "@/components/exam-header-templates";
 import MultipleChoiceQuestion from "@/components/questions-type/multiple-choice-question";
 import FillInBlankQuestion from "@/components/questions-type/fill-in-blank-question";
+import { Blank } from "@/components/layout-components/Blank";
 
 export function A4ExamPaper({
     exam,
@@ -52,6 +53,13 @@ export function A4ExamPaper({
                                     onContentChange={onFillInBlankContentChange}
                                     renderMode={renderMode}
                                     questionNumber={item.questionNumber}
+                                />
+                            );
+                        case 'blank':
+                            return (
+                                <Blank
+                                    key={item.id}
+                                    lines={item.lines}
                                 />
                             );
                         default:

@@ -15,7 +15,11 @@ export interface Exam {
 }
 
 // 联合组建
-export type UnionComponent = MultipleChoiceQuestionData | FillInBlankQuestionData | BaseLayoutComponent | BaseHeaderComponent
+export type UnionComponent =
+    MultipleChoiceQuestionData
+    | FillInBlankQuestionData
+    | BaseHeaderComponent
+    | BlankComponent
 
 // 基础组件接口
 export interface BaseComponent {
@@ -55,11 +59,17 @@ export interface FillInBlankQuestionData extends BaseQuestion {
 }
 
 // 布局组件类型
-export type LayoutType = 'horizontal' | 'vertical'
+export type LayoutType = 'blank' | 'other'
 
 // 基础布局组件接口
 export interface BaseLayoutComponent extends BaseComponent {
     type: LayoutType;
+}
+
+// 空白组件接口
+export interface BlankComponent extends BaseLayoutComponent {
+    type: 'blank';
+    lines: number; // 空白行数
 }
 
 // 头部组件类型

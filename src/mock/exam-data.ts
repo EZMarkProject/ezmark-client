@@ -20,6 +20,11 @@ export const mockExamData: Exam = {
         },
         {
             id: nanoid(),
+            type: 'blank',
+            lines: 5
+        },
+        {
+            id: nanoid(),
             type: 'multiple-choice',
             score: 10,
             questionNumber: 1,
