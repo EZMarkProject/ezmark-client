@@ -16,8 +16,8 @@ const OpenQuestion: React.FC<OpenQuestionProps> = ({
     return (
         <div className="my-2">
             <div>
-                <div className="flex">
-                    <div className="font-medium text-base pt-[5px]">
+                <div className="flex items-center">
+                    <div className="font-medium text-base">
                         {questionNumber}.
                     </div>
                     <RichInput
@@ -25,9 +25,9 @@ const OpenQuestion: React.FC<OpenQuestionProps> = ({
                         onContentChange={handleContentChange}
                         renderMode={renderMode}
                     />
-                </div>
-                <div className="text-sm text-muted-foreground text-right">
-                    Score: {questionObj.score}
+                    <div className="text-muted-foreground">
+                        Score: {questionObj.score}
+                    </div>
                 </div>
             </div>
 
