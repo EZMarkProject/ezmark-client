@@ -1,5 +1,5 @@
 'use client'
-import { cn } from "@/lib/utils"
+
 import { type CanvasProps } from "./interface"
 import { useState, useCallback, useRef, useEffect } from "react"
 import { ZoomIn, ZoomOut, Eye, EyeOff, Pen, FileJson } from "lucide-react"
@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast"
 // A4 paper dimensions in millimeters
 const A4_WIDTH_MM = 210 // A4 width in mm
 
-export function Canvas({ className, exam, renderMode, onRenderModeChange, onMCQQuestionChange, onMCQOptionChange, onFillInBlankContentChange, ...props }: CanvasProps) {
+export function Canvas({ exam, renderMode, onRenderModeChange, onMCQQuestionChange, onMCQOptionChange, onFillInBlankContentChange, ...props }: CanvasProps) {
     const [scale, setScale] = useState(1)
     const containerRef = useRef<HTMLDivElement>(null)
     const MIN_SCALE = 0.1
@@ -110,7 +110,7 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, onMCQQ
 
     return (
         <div
-            className={cn("bg-muted/50 flex flex-col", className)}
+            className={"bg-muted/50 flex flex-col"}
         >
             <div className="flex items-center justify-between gap-2 p-2 border-b">
                 <div className="flex items-center gap-2">

@@ -1,9 +1,9 @@
 'use client'
 
 import { type A4ExamPaperProps } from "./interface"
-import { MultipleChoiceQuestion } from '@/components/multiple-choice-question'
-import FillInBlankQuestion from '@/components/fill-in-blank-question'
 import DefaultHeader from "@/components/exam-header-templates";
+import MultipleChoiceQuestion from "@/components/questions-type/multiple-choice-question";
+import FillInBlankQuestion from "@/components/questions-type/fill-in-blank-question";
 
 export function A4ExamPaper({
     exam,

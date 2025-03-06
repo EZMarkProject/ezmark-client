@@ -1,10 +1,5 @@
-import { Exam } from "@/types/exam"
+import { CanvasSharedProps } from "../Canvas/interface"
 
-export interface A4ExamPaperProps {
-    exam: Exam
-    renderMode: boolean
+export interface A4ExamPaperProps extends CanvasSharedProps {
     scale: number
-    onMCQQuestionChange: (questionId: string, content: string) => void
-    onMCQOptionChange: (questionId: string, optionIndex: number, content: string) => void
-    onFillInBlankContentChange: (questionId: string, content: string) => void
 } 
