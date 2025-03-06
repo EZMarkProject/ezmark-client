@@ -1,7 +1,7 @@
 'use client'
 import { useContext, useEffect, useState, useCallback } from "react";
 import Cookies from "js-cookie";
-import { AuthContextObject } from "@/types";
+import { AuthContextObject } from "@/types/types";
 import { createContext } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";

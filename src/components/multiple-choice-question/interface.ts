@@ -1,43 +1,28 @@
-interface MultipleChoiceQuestionProps {
-    /**
-     * Question content
-     */
-    initialQuestionContent?: string;
+import { MCQOption, MultipleChoiceQuestionData } from "@/types/exam";
 
+export interface MultipleChoiceQuestionProps {
     /**
-     * Option contents array
+     * Question object
      */
-    initialOptions?: string[];
-
-    /**
-     * Option prefixes, default is A, B, C, D...
-     */
-    optionPrefixes?: string[];
-
-    /**
-     * Read-only mode
-     */
-    readOnly?: boolean;
+    questionObj: MultipleChoiceQuestionData
 
     /**
      * Question content change callback
      */
-    onQuestionChange?: (content: string) => void;
+    onQuestionChange: (questionId: string, content: string) => void;
 
     /**
      * Option content change callback
      */
-    onOptionChange?: (index: number, content: string) => void;
+    onOptionChange: (questionId: string, optionIndex: number, content: string) => void;
 
     /**
      * Render mode - hides editor borders and disables editing
      */
-    renderMode?: boolean;
+    renderMode: boolean;
 
     /**
      * Question number to display
      */
-    questionNumber?: number;
+    questionNumber: number;
 }
-
-export type { MultipleChoiceQuestionProps }; 

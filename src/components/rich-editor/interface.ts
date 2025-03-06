@@ -2,17 +2,12 @@ export interface RichInputProps {
     /**
      * 初始HTML内容
      */
-    initialContent?: string;
+    initialContent: string;
 
     /**
      * 内容变更回调
      */
-    onContentChange?: (html: string) => void;
-
-    /**
-     * 是否只读
-     */
-    readOnly?: boolean;
+    onContentChange: (html: string) => void;
 
     /**
      * 编辑器失焦回调

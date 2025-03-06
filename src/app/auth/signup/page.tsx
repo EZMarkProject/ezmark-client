@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import Cookies from 'js-cookie';
 import { API_HOST } from "@/lib/host";
 import { useRouter } from "next/navigation";
-import { RegisterResponse } from "@/types";
+import { RegisterResponse } from "@/types/types";
 import { motion } from "framer-motion";
 import axios from "axios";
 

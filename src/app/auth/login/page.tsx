@@ -4,7 +4,7 @@ import { LoginFormData } from "@/components/auth/login-form/interface";
 import { useToast } from "@/hooks/use-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { LoginResponse } from "@/types";
+import { LoginResponse } from "@/types/types";
 import { motion } from "framer-motion";
 import { axiosInstance } from "@/lib/axios";
 

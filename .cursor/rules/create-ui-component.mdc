@@ -17,6 +17,7 @@ alwaysApply: false
 - 业务组件中用到的所有组件都来源于 `shadcn/ui` 组件库 @https://ui.shadcn.com/docs/components/accordion
 - 组件必须遵循数据解耦原则：
   - 所有需要从服务端获取的数据必须通过 props 传入，禁止在组件内部直接发起请求
+  - interface内不要有可选参数
   - 数据源相关的 props 必须提供以下内容：
     - 初始化数据（initialData/defaultData 等）
   - 所有会触发数据变更的操作必须通过回调函数形式的 props 传递，例如：

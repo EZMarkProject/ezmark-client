@@ -1,18 +1,13 @@
 'use client'
 
 import React from 'react'
-import { QuestionSection } from '@/components/question-section'
-import { ExamPaperTemplateProps } from './interface'
+import { DefaultHeaderProps } from './interface'
 
-export function ExamPaperTemplate({
+export function DefaultHeader({
     exam,
-    renderMode,
-    onMCQQuestionChange,
-    onMCQOptionChange,
-    onFillInBlankContentChange
-}: ExamPaperTemplateProps) {
+}: DefaultHeaderProps) {
     return (
-        <div className="bg-background w-[210mm] min-h-[297mm] mx-auto p-8 shadow-lg">
+        <div className="">
             {/* Header Section */}
             <div className="mb-8">
                 {/* Top Row - School Name and Date */}
@@ -68,15 +63,6 @@ export function ExamPaperTemplate({
                     </ul>
                 </div>
             </div>
-
-            {/* Questions Section */}
-            <QuestionSection
-                questions={exam.questions}
-                renderMode={renderMode}
-                onMCQQuestionChange={onMCQQuestionChange}
-                onMCQOptionChange={onMCQOptionChange}
-                onFillInBlankContentChange={onFillInBlankContentChange}
-            />
         </div>
     )
 } 

@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "ax
 import { API_HOST } from "./host";
 import Cookies from "js-cookie";
 import { toast } from "@/hooks/use-toast";
-import { ErrorResponse } from "@/types";
+import { ErrorResponse } from "@/types/types";
 
 /**
  * Custom Axios instance for API requests
