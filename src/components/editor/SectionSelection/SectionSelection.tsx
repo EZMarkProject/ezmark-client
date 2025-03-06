@@ -13,7 +13,7 @@ export function SectionSelection({ className, ...props }: SectionSelectionProps)
                         className="w-full flex items-center gap-3 justify-start px-3 py-2 data-[state=active]:bg-accent"
                     >
                         <Grid2X2 className="w-5 h-5" />
-                        <span>Questions</span>
+                        <span>Components</span>
                     </TabsTrigger>
                     <TabsTrigger
                         value="templates"

@@ -128,7 +128,7 @@ export default function Editor() {
         <div className="min-h-screen bg-background">
             <EditorNavbar />
             <div className="flex h-[calc(100vh-4rem)]">
-                <SectionSelection className="w-32 border-r shrink-0" />
+                <SectionSelection className="w-33 border-r shrink-0" />
                 <QuestionSelectionPanel className="w-64 border-r shrink-0" onAddComponent={handleAddComponent} />
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
