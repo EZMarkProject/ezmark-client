@@ -1,7 +1,10 @@
 import React from "react";
 import { OpenQuestionProps } from "./interface";
-import RichInput from "@/components/rich-editor/RichInput";
 import { Blank } from "@/components/layout-components/Blank";
+import dynamic from "next/dynamic";
+
+// Dynamic import RichInput to avoid SSR issues
+const RichInput = dynamic(() => import('@/components/rich-editor/RichInput'), { ssr: false })
 
 const OpenQuestion: React.FC<OpenQuestionProps> = ({
     questionNumber,
