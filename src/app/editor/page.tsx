@@ -54,7 +54,6 @@ export default function Editor() {
                 <QuestionSelectionPanel className="w-64 border-r shrink-0" />
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
-                        className="h-full w-full"
                         exam={exam}
                         renderMode={renderMode}
                         onRenderModeChange={setRenderMode}

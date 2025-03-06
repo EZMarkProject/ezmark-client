@@ -110,9 +110,9 @@ export function Canvas({ exam, renderMode, onRenderModeChange, onMCQQuestionChan
 
     return (
         <div
-            className={"bg-muted/50 flex flex-col"}
+            className={"bg-muted/50 flex flex-col h-full"}
         >
-            <div className="flex items-center justify-between gap-2 p-2 border-b">
+            <div className="flex items-center justify-between gap-2 p-2 border-b sticky top-0 bg-background z-10">
                 <div className="flex items-center gap-2">
                     <Button
                         variant="outline"
