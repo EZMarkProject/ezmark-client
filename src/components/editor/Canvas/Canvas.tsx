@@ -2,9 +2,10 @@
 import { cn } from "@/lib/utils"
 import { type CanvasProps } from "./interface"
 import { useState, useCallback, useRef, useEffect } from "react"
-import { ZoomIn, ZoomOut, Eye, EyeOff, Pen } from "lucide-react"
+import { ZoomIn, ZoomOut, Eye, EyeOff, Pen, FileJson } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { A4ExamPaper } from "@/components/editor/A4ExamPaper"
+import { useToast } from "@/hooks/use-toast"
 
 // A4 paper dimensions in millimeters
 const A4_WIDTH_MM = 210 // A4 width in mm
@@ -15,6 +16,19 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
     const MIN_SCALE = 0.1
     const MAX_SCALE = 2
     const SCALE_STEP = 0.1
+    const { toast } = useToast()
+
+    // Copy exam JSON to clipboard
+    const copyExamToClipboard = useCallback(() => {
+        const examJson = JSON.stringify(exam, null, 2)
+        navigator.clipboard.writeText(examJson)
+            .then(() => {
+                toast({
+                    title: "Copied to clipboard",
+                    duration: 1000,
+                })
+            })
+    }, [exam, toast])
 
     // Calculate scale to fit the A4 paper in the container
     const calculateAutoScale = useCallback(() => {
@@ -99,23 +113,33 @@ export function Canvas({ className, exam, renderMode, onRenderModeChange, ...pro
             className={cn("bg-muted/50 flex flex-col", className)}
         >
             <div className="flex items-center justify-between gap-2 p-2 border-b">
-                <Button
-                    variant="outline"
-                    className="flex items-center gap-2"
-                    onClick={() => onRenderModeChange(!renderMode)}
-                >
-                    {renderMode ? (
-                        <>
-                            <Eye className="h-4 w-4" />
-                            <span>Preview</span>
-                        </>
-                    ) : (
-                        <>
-                            <Pen className="h-4 w-4" />
-                            <span>Edit</span>
-                        </>
-                    )}
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="outline"
+                        className="flex items-center gap-2"
+                        onClick={() => onRenderModeChange(!renderMode)}
+                    >
+                        {renderMode ? (
+                            <>
+                                <Eye className="h-4 w-4" />
+                                <span>Preview</span>
+                            </>
+                        ) : (
+                            <>
+                                <Pen className="h-4 w-4" />
+                                <span>Edit</span>
+                            </>
+                        )}
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="flex items-center gap-2"
+                        onClick={copyExamToClipboard}
+                    >
+                        <FileJson className="h-4 w-4" />
+                        <span>Copy JSON</span>
+                    </Button>
+                </div>
                 <div className="flex items-center gap-2">
                     <Button
                         variant="ghost"
