@@ -20,11 +20,6 @@ export const mockExamData: Exam = {
         },
         {
             id: nanoid(),
-            type: 'blank',
-            lines: 5
-        },
-        {
-            id: nanoid(),
             type: 'multiple-choice',
             score: 10,
             questionNumber: 1,
@@ -54,6 +49,23 @@ export const mockExamData: Exam = {
             type: 'fill-in-blank',
             score: 5,
             questionNumber: 2,
+            content: '<p>The library is a quiet place where people can ${input} and enjoy reading.</p>',
+            answer: 'dance'
+        },
+        {
+            id: nanoid(),
+            type: 'open',
+            score: 10,
+            questionNumber: 3,
+            content: '<p>Describe the main features of the cloud computing model.</p>',
+            answer: 'The main features of the cloud computing model are: ...',
+            lines: 5
+        },
+        {
+            id: nanoid(),
+            type: 'fill-in-blank',
+            score: 5,
+            questionNumber: 4,
             content: '<p>The library is a quiet place where people can ${input} and enjoy reading.</p>',
             answer: 'dance'
         }

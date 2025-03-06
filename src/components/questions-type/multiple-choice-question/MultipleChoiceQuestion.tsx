@@ -22,8 +22,8 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
     }
 
     return (
-        <div>
-            <div className="flex items-center gap-2">
+        <div className='my-2'>
+            <div className="flex items-center">
                 {questionNumber !== undefined && (
                     <div className="font-medium text-base">
                         {questionNumber}.
@@ -37,7 +37,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
                     />
                 </div>
             </div>
-            <div className="mt-3 space-y-3 pl-8">
+            <div className="pl-8">
                 {questionObj.options.map((option, index: number) => (
                     <div key={index} className="flex items-center gap-2">
                         <div className="font-medium text-base w-6 flex items-center">

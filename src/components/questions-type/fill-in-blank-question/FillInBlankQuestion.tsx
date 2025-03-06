@@ -21,7 +21,7 @@ const FillInBlankQuestion: React.FC<FillInBlankQuestionProps> = ({
     }
 
     return (
-        <div className="">
+        <div className="my-2">
             <div className="flex items-center">
                 {questionNumber !== undefined && (
                     <div className="font-medium text-base">

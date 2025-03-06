@@ -5,6 +5,8 @@ import DefaultHeader from "@/components/exam-header-templates";
 import MultipleChoiceQuestion from "@/components/questions-type/multiple-choice-question";
 import FillInBlankQuestion from "@/components/questions-type/fill-in-blank-question";
 import { Blank } from "@/components/layout-components/Blank";
+import { nanoid } from "nanoid";
+import { OpenQuestion } from "@/components/questions-type/open-question";
 
 export function A4ExamPaper({
     exam,
@@ -13,6 +15,7 @@ export function A4ExamPaper({
     onMCQQuestionChange,
     onMCQOptionChange,
     onFillInBlankContentChange,
+    onOpenQuestionChange,
 }: A4ExamPaperProps) {
     return (
         <div
@@ -55,6 +58,16 @@ export function A4ExamPaper({
                                     questionNumber={item.questionNumber}
                                 />
                             );
+                        case 'open':
+                            return (
+                                <OpenQuestion
+                                    key={item.id}
+                                    questionObj={item}
+                                    onContentChange={onOpenQuestionChange}
+                                    renderMode={renderMode}
+                                    questionNumber={item.questionNumber}
+                                />
+                            );
                         case 'blank':
                             return (
                                 <Blank
@@ -63,7 +76,7 @@ export function A4ExamPaper({
                                 />
                             );
                         default:
-                            return <div>Component Not Found</div>
+                            return <div className="text-red-500" key={nanoid()}>Component Not Found</div>
                     }
                 })}
             </div>

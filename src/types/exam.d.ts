@@ -18,6 +18,7 @@ export interface Exam {
 export type UnionComponent =
     MultipleChoiceQuestionData
     | FillInBlankQuestionData
+    | OpenQuestionData
     | BaseHeaderComponent
     | BlankComponent
 
@@ -55,6 +56,14 @@ export interface MCQOption {
 export interface FillInBlankQuestionData extends BaseQuestion {
     type: 'fill-in-blank';
     content: string;
+    answer: string; // 创建卷子的时候设定
+}
+
+// 开放题接口
+export interface OpenQuestionData extends BaseQuestion {
+    type: 'open';
+    content: string;
+    lines: number; // 答题区域的行数
     answer: string; // 创建卷子的时候设定
 }
 

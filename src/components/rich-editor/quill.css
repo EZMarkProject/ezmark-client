@@ -1088,6 +1088,18 @@
     padding: 5px 10px;
     font-family: var(--font-sans);
     color: hsl(var(--foreground));
+    white-space: pre-wrap;
+    /* 允许文本换行 */
+    word-wrap: break-word;
+    /* 允许长单词换行 */
+    overflow-wrap: break-word;
+    /* 现代浏览器中的长单词换行 */
+    max-width: 100%;
+    /* 限制最大宽度 */
+    display: block;
+    /* 确保元素占据整行 */
+    box-sizing: border-box;
+    /* 确保padding不会导致溢出 */
 }
 
 .rich-input-content.render-mode {

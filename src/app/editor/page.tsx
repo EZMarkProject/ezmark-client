@@ -5,7 +5,7 @@ import { QuestionSelectionPanel } from "@/components/editor/QuestionSelectionPan
 import { Canvas } from "@/components/editor/Canvas"
 import { ConfigEditPanel } from "@/components/editor/ConfigEditPanel"
 import { useState } from "react"
-import { Exam, MultipleChoiceQuestionData, FillInBlankQuestionData } from "@/types/exam"
+import { Exam, MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestionData } from "@/types/exam"
 import { mockExamData } from "@/mock/exam-data"
 
 export default function Editor() {
@@ -45,6 +45,16 @@ export default function Editor() {
         })
     }
 
+    const onOpenQuestionChange = (questionId: string, content: string) => {
+        setExam(prev => {
+            const updatedExam = { ...prev }
+            const questionIndex = updatedExam.components.findIndex(component => component.id === questionId)
+            if (questionIndex !== -1) {
+                (updatedExam.components[questionIndex] as OpenQuestionData).content = content
+            }
+            return updatedExam
+        })
+    }
 
     return (
         <div className="min-h-screen bg-background">
@@ -60,6 +70,7 @@ export default function Editor() {
                         onMCQQuestionChange={onMCQQuestionChange}
                         onMCQOptionChange={onMCQOptionChange}
                         onFillInBlankContentChange={onFillInBlankContentChange}
+                        onOpenQuestionChange={onOpenQuestionChange}
                     />
                 </div>
                 <ConfigEditPanel className="w-80 border-l shrink-0" />

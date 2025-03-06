@@ -6,6 +6,7 @@ export interface CanvasSharedProps {
     onMCQQuestionChange: (questionId: string, content: string) => void
     onMCQOptionChange: (questionId: string, optionIndex: number, content: string) => void
     onFillInBlankContentChange: (questionId: string, content: string) => void
+    onOpenQuestionChange: (questionId: string, content: string) => void
 }
 
 
