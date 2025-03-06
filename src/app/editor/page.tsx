@@ -2,7 +2,7 @@
 import { EditorNavbar } from "@/components/editor/EditorNavbar"
 import { SectionSelection } from "@/components/editor/SectionSelection"
 import { QuestionSelectionPanel } from "@/components/editor/QuestionSelectionPanel"
-import { Canvas } from "@/components/editor/Canvas/Canvas"
+import { Canvas } from "@/components/editor/Canvas"
 import { ConfigEditPanel } from "@/components/editor/ConfigEditPanel"
 import { useState } from "react"
 import { Exam, MultipleChoiceQuestionData, FillInBlankQuestionData } from "@/types/exam"
