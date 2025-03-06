@@ -22,11 +22,11 @@ export default function QuestionSection({
     onFillInBlankContentChange
 }: QuestionSectionProps) {
     return (
-        <div className="space-y-8">
+        <div className="space-y-4">
             {questions.map((question, index) => {
                 if (question.type === 'multiple-choice') {
                     return (
-                        <div key={question.id} className="border-t border-slate-300 dark:border-slate-700 pt-4">
+                        <div key={question.id} className="">
                             <MultipleChoiceQuestion
                                 initialQuestionContent={question.question}
                                 initialOptions={question.options?.map(opt => opt.content) || []}
@@ -39,7 +39,7 @@ export default function QuestionSection({
                     );
                 } else if (question.type === 'fill-in-blank') {
                     return (
-                        <div key={question.id} className="border-t border-slate-300 dark:border-slate-700 pt-4">
+                        <div key={question.id} className="">
                             <FillInBlankQuestion
                                 initialContent={question.content}
                                 onContentChange={(content) => onFillInBlankContentChange?.(question.id, content)}
