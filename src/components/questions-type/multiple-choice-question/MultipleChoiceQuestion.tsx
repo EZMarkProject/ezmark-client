@@ -37,7 +37,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
                     />
                 </div>
             </div>
-            <div className="pl-8">
+            <div className="pl-8 mt-1 space-y-1">
                 {questionObj.options.map((option, index: number) => (
                     <div key={index} className="flex items-center gap-2">
                         <div className="font-medium text-base w-6 flex items-center">

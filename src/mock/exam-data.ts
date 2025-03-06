@@ -62,25 +62,5 @@ export const mockExamData: Exam = {
             answer: 'The main features of the cloud computing model are: ...',
             lines: 10
         },
-        {
-            id: nanoid(),
-            type: 'fill-in-blank',
-            score: 5,
-            questionNumber: 4,
-            content: '<p>The library is a quiet place where people can ${input} and enjoy reading.</p>',
-            answer: 'dance'
-        },
-        {
-            id: nanoid(),
-            type: 'divider',
-        },
-        {
-            id: nanoid(),
-            type: 'fill-in-blank',
-            score: 5,
-            questionNumber: 4,
-            content: '<p>The library is a quiet place where people can ${input} and enjoy reading.</p>',
-            answer: 'dance'
-        },
     ]
 }

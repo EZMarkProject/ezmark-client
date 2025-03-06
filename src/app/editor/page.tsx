@@ -172,7 +172,7 @@ export default function Editor() {
                         onOpenQuestionChange={onOpenQuestionChange}
                     />
                 </div>
-                <ConfigEditPanel className="w-80 border-l shrink-0" />
+                <ConfigEditPanel className="w-72 border-l shrink-0" />
             </div>
         </div>
     )
