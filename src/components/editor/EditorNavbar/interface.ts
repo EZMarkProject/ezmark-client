@@ -1,5 +1,8 @@
+import { Exam } from "@/types/exam";
+
 interface EditorNavbarProps {
-    className?: string
+    exam: Exam
+    isSaved: boolean
 }
 
 export type { EditorNavbarProps }; 

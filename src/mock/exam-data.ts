@@ -10,9 +10,10 @@ export const mockExamData: Exam = {
     course: 'COMP3030 Cloud Computing',
     projectName: 'Cloud Computing Exam',
     year: '2024-2025',
+    savedAt: '19:28',
     semester: 'Spring',
-    createdAt: '2024-01-01',
-    examDate: '2024-01-01',
+    createdAt: '2024-01-01 12:00:00',
+    examDate: '2024-01-01 12:00:00',
     components: [
         {
             id: nanoid(),

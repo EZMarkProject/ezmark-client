@@ -16,6 +16,7 @@ export default function Editor() {
     const [exam, setExam] = useState<Exam>(mockExamData);
     const [renderMode, setRenderMode] = useState(true);
     const [activeTab, setActiveTab] = useState("components");
+    const [isSaved, setIsSaved] = useState(true);
 
     const onMCQQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
@@ -152,7 +153,7 @@ export default function Editor() {
 
     return (
         <div className="min-h-screen bg-background">
-            <EditorNavbar />
+            <EditorNavbar exam={exam} isSaved={false} />
             <div className="flex h-[calc(100vh-4rem)]">
                 <SectionSelection
                     className="w-33 border-r shrink-0"

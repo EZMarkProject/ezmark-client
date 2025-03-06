@@ -10,6 +10,7 @@ export interface Exam {
     year: string; // 2024-2025
     semester: string; // 学期 Spring
     createdAt: string; // 2024-01-01
+    savedAt: string; // 最近保存时间 (19:28)
     examDate: string; // 考试日期
     components: UnionComponent[]; // 试卷中的所有组件
 }
