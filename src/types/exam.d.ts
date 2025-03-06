@@ -21,6 +21,7 @@ export type UnionComponent =
     | OpenQuestionData
     | BaseHeaderComponent
     | BlankComponent
+    | DividerComponent
 
 // 基础组件接口
 export interface BaseComponent {
@@ -68,7 +69,7 @@ export interface OpenQuestionData extends BaseQuestion {
 }
 
 // 布局组件类型
-export type LayoutType = 'blank' | 'other'
+export type LayoutType = 'blank' | 'divider'
 
 // 基础布局组件接口
 export interface BaseLayoutComponent extends BaseComponent {
@@ -79,6 +80,11 @@ export interface BaseLayoutComponent extends BaseComponent {
 export interface BlankComponent extends BaseLayoutComponent {
     type: 'blank';
     lines: number; // 空白行数
+}
+
+// 分割线组件接口
+export interface DividerComponent extends BaseLayoutComponent {
+    type: 'divider';
 }
 
 // 头部组件类型

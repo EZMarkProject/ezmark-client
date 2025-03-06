@@ -7,6 +7,7 @@ import FillInBlankQuestion from "@/components/questions-type/fill-in-blank-quest
 import { Blank } from "@/components/layout-components/Blank";
 import { nanoid } from "nanoid";
 import { OpenQuestion } from "@/components/questions-type/open-question";
+import { Divider } from "@/components/layout-components/Divider";
 
 export function A4ExamPaper({
     exam,
@@ -73,6 +74,12 @@ export function A4ExamPaper({
                                 <Blank
                                     key={item.id}
                                     lines={item.lines}
+                                />
+                            );
+                        case 'divider':
+                            return (
+                                <Divider
+                                    key={item.id}
                                 />
                             );
                         default:

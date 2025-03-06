@@ -71,6 +71,10 @@ export const mockExamData: Exam = {
         },
         {
             id: nanoid(),
+            type: 'divider',
+        },
+        {
+            id: nanoid(),
             type: 'fill-in-blank',
             score: 5,
             questionNumber: 4,
