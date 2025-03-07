@@ -78,7 +78,7 @@ export default function Editor() {
                     newComponent = {
                         id: nanoid(),
                         type: 'multiple-choice',
-                        score: 10,
+                        score: 5,
                         questionNumber: updatedExam.components.length,
                         question: '<p>New multiple choice question</p>',
                         options: [
@@ -87,7 +87,7 @@ export default function Editor() {
                             { label: 'C', content: '<p>Option C</p>' },
                             { label: 'D', content: '<p>Option D</p>' }
                         ],
-                        answer: []
+                        answer: ['A']
                     };
                     break;
                 case 'fill-in-blank-question':
@@ -97,7 +97,7 @@ export default function Editor() {
                         score: 5,
                         questionNumber: updatedExam.components.length,
                         content: '<p>New fill-in-the-blank question ${input}</p>',
-                        answer: ''
+                        answer: 'The answer is XXX'
                     };
                     break;
                 case 'open-question':
@@ -107,7 +107,7 @@ export default function Editor() {
                         score: 10,
                         questionNumber: updatedExam.components.length,
                         content: '<p>New open question</p>',
-                        answer: '',
+                        answer: 'The answer is XXX',
                         lines: 10
                     };
                     break;
