@@ -25,8 +25,8 @@ export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            score: mcq.score || 2,
-            answer: mcq.answer || [],
+            score: mcq.score,
+            answer: mcq.answer,
         },
     })
 

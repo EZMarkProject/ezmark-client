@@ -25,8 +25,8 @@ export default function FillInBlankConfigForm({ fillInBlank, onFillInBlankChange
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            score: fillInBlank.score || 1,
-            answer: fillInBlank.answer || "",
+            score: fillInBlank.score,
+            answer: fillInBlank.answer,
         },
     });
 

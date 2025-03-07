@@ -81,7 +81,7 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                             <FormItem>
                                 <FormLabel>Exam Title</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="AI-Assisted Grading Final Exam" {...field} />
+                                    <Input placeholder="Enter exam title" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -95,7 +95,7 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                             <FormItem>
                                 <FormLabel>Course</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Advanced AI-Assisted Marking Techniques" {...field} />
+                                    <Input placeholder="Enter course name" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -111,7 +111,7 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                                 <FormLabel>Description</FormLabel>
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Final examination for AI-Assisted Teachers Marking System course"
+                                        placeholder="Enter exam description"
                                         className="min-h-[80px]"
                                         {...field}
                                     />
@@ -128,7 +128,7 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                             <FormItem>
                                 <FormLabel>Duration</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="3 HOURS" {...field} />
+                                    <Input placeholder="Enter exam duration" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -156,7 +156,7 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                             <FormItem>
                                 <FormLabel>University</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="AI Teachers Training Institute" {...field} />
+                                    <Input placeholder="Enter university name" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -171,7 +171,7 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                                 <FormItem>
                                     <FormLabel>Academic Year</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="2024-2025" {...field} />
+                                        <Input placeholder="Enter academic year" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

@@ -28,9 +28,9 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            score: openQuestion.score || 5,
-            lines: openQuestion.lines || 10,
-            answer: openQuestion.answer || "",
+            score: openQuestion.score,
+            lines: openQuestion.lines,
+            answer: openQuestion.answer,
         },
     });
 
