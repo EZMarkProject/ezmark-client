@@ -6,6 +6,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FillInBlankConfigFormProps } from "./interface";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
     score: z.coerce.number().min(1, {
@@ -17,6 +20,8 @@ const formSchema = z.object({
 });
 
 export default function FillInBlankConfigForm({ fillInBlank, onFillInBlankChange }: FillInBlankConfigFormProps) {
+    const [isLoading, setIsLoading] = useState(false);
+    const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -33,11 +38,21 @@ export default function FillInBlankConfigForm({ fillInBlank, onFillInBlankChange
         });
     };
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        onFillInBlankChange({
-            score: values.score,
-            answer: values.answer
-        });
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
+        try {
+            await onFillInBlankChange({
+                score: values.score,
+                answer: values.answer
+            });
+            toast({
+                title: "Exam configuration saved",
+                description: "The exam configuration has been saved successfully",
+                duration: 1500,
+            })
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -92,7 +107,16 @@ export default function FillInBlankConfigForm({ fillInBlank, onFillInBlankChange
                     )}
                 />
 
-                <Button type="submit">Save Changes</Button>
+                <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        'Save Changes'
+                    )}
+                </Button>
             </form>
         </Form>
     );

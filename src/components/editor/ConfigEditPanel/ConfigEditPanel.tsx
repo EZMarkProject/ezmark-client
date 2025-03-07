@@ -14,7 +14,7 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
     const [selectedComponent, setSelectedComponent] = useState<UnionComponent | null>(null);
 
     // 更新 exam 的配置
-    const handleExamConfigChange = (updatedExam: Partial<typeof exam>) => {
+    const handleExamConfigChange = async (updatedExam: Partial<typeof exam>) => {
         setExam(prev => {
             const prevClone = cloneDeep(prev);
             return {
@@ -22,63 +22,58 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                 ...updatedExam
             }
         });
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // 更新 MCQ 组件的配置
-    const handleMCQComponentChange = (updatedMCQ: Partial<MultipleChoiceQuestionData>) => {
+    const handleMCQComponentChange = async (updatedMCQ: Partial<MultipleChoiceQuestionData>) => {
         if (!selectedComponentId) return;
-
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
             const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
-
             if (componentIndex !== -1) {
                 updatedExam.components[componentIndex] = {
                     ...updatedExam.components[componentIndex],
                     ...updatedMCQ
                 } as UnionComponent;
             }
-
             return updatedExam;
         });
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // 更新 Fill In Blank 组件的配置
-    const handleFillInBlankComponentChange = (updatedFillInBlank: Partial<FillInBlankQuestionData>) => {
+    const handleFillInBlankComponentChange = async (updatedFillInBlank: Partial<FillInBlankQuestionData>) => {
         if (!selectedComponentId) return;
-
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
             const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
-
             if (componentIndex !== -1) {
                 updatedExam.components[componentIndex] = {
                     ...updatedExam.components[componentIndex],
                     ...updatedFillInBlank
                 } as UnionComponent;
             }
-
             return updatedExam;
         });
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // 更新 Open Question 组件的配置
-    const handleOpenQuestionComponentChange = (updatedOpenQuestion: Partial<OpenQuestionData>) => {
+    const handleOpenQuestionComponentChange = async (updatedOpenQuestion: Partial<OpenQuestionData>) => {
         if (!selectedComponentId) return;
-
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
             const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
-
             if (componentIndex !== -1) {
                 updatedExam.components[componentIndex] = {
                     ...updatedExam.components[componentIndex],
                     ...updatedOpenQuestion
                 } as UnionComponent;
             }
-
             return updatedExam;
         });
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // 根据 selectedComponentId 设置选中的组件

@@ -6,6 +6,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { OpenQuestionConfigFormProps } from "./interface";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
     score: z.coerce.number().min(1, {
@@ -20,6 +23,8 @@ const formSchema = z.object({
 });
 
 export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionChange }: OpenQuestionConfigFormProps) {
+    const [isLoading, setIsLoading] = useState(false);
+    const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -29,36 +34,22 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
         },
     });
 
-    // 当分数变化时通知父组件
-    const handleScoreChange = (value: number) => {
-        form.setValue('score', value);
-        onOpenQuestionChange({
-            score: value
-        });
-    };
-
-    // 当行数变化时通知父组件
-    const handleLinesChange = (value: number) => {
-        form.setValue('lines', value);
-        onOpenQuestionChange({
-            lines: value
-        });
-    };
-
-    // 当答案变化时通知父组件
-    const handleAnswerChange = (value: string) => {
-        form.setValue('answer', value);
-        onOpenQuestionChange({
-            answer: value
-        });
-    };
-
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        onOpenQuestionChange({
-            score: values.score,
-            lines: values.lines,
-            answer: values.answer
-        });
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true);
+        try {
+            await onOpenQuestionChange({
+                score: values.score,
+                lines: values.lines,
+                answer: values.answer
+            });
+            toast({
+                title: "Exam configuration saved",
+                description: "The exam configuration has been saved successfully",
+                duration: 1500,
+            })
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -77,7 +68,6 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                                     {...field}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        handleScoreChange(parseInt(e.target.value));
                                     }}
                                 />
                             </FormControl>
@@ -99,7 +89,6 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                                     {...field}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        handleLinesChange(parseInt(e.target.value));
                                     }}
                                 />
                             </FormControl>
@@ -124,7 +113,6 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                                     {...field}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        handleAnswerChange(e.target.value);
                                     }}
                                 />
                             </FormControl>
@@ -136,7 +124,16 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                     )}
                 />
 
-                <Button type="submit">Save Changes</Button>
+                <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        'Save Changes'
+                    )}
+                </Button>
             </form>
         </Form>
     );

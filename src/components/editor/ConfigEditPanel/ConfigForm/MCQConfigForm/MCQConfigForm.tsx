@@ -6,6 +6,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { MCQConfigFormProps } from "./interface"
 import { MultipleSelector } from "@/components/ui/multiple-selector"
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
     score: z.coerce.number().min(1, {
@@ -17,6 +20,8 @@ const formSchema = z.object({
 })
 
 export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) {
+    const [isLoading, setIsLoading] = useState(false)
+    const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,11 +44,21 @@ export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) 
         });
     };
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        onCMQChange({
-            score: values.score,
-            answer: values.answer
-        });
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
+        try {
+            await onCMQChange({
+                score: values.score,
+                answer: values.answer
+            })
+            toast({
+                title: "Exam configuration saved",
+                description: "The exam configuration has been saved successfully",
+                duration: 1500,
+            })
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -88,7 +103,16 @@ export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) 
                     />
                 </div>
 
-                <Button type="submit" className="w-full mt-6">Save Changes</Button>
+                <Button disabled={isLoading} type="submit" className="w-full mt-6">
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        'Save Changes'
+                    )}
+                </Button>
             </form>
         </Form>
     )

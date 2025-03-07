@@ -37,6 +37,15 @@ export interface ErrorResponse {
     }
 }
 
+export interface GeneralResponse {
+    data: any;
+    error: {
+        status: string; // HTTP status
+        name: string; // Strapi error name ('ApplicationError' or 'ValidationError')
+        message: string; // A human readable error message
+    }
+}
+
 
 export interface AuthContextObject {
     authenticated: boolean;

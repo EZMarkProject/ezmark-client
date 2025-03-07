@@ -2,11 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { ExamConfigFormProps } from "./interface"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
     title: z.string().min(2, {
@@ -34,6 +37,9 @@ const formSchema = z.object({
 })
 
 export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigFormProps) {
+    const [isLoading, setIsLoading] = useState(false)
+    const { toast } = useToast()
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,8 +54,18 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        onExamConfigChange(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
+        try {
+            await onExamConfigChange(values)
+            toast({
+                title: "Exam configuration saved",
+                description: "The exam configuration has been saved successfully",
+                duration: 1500,
+            })
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     const semesters = ["Spring", "Summer", "Fall", "Winter"]
@@ -189,7 +205,16 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
                     </div>
                 </div>
 
-                <Button type="submit" className="w-full">Save Changes</Button>
+                <Button disabled={isLoading} type="submit" className="w-full">
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Saving...
+                        </>
+                    ) : (
+                        'Save Changes'
+                    )}
+                </Button>
             </form>
         </Form>
     )
