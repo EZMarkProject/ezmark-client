@@ -5,8 +5,9 @@ import { Settings } from "lucide-react"
 import { ExamConfigForm } from "./ConfigForm/ExamConfigForm"
 import { MCQConfigForm } from "./ConfigForm/MCQConfigForm"
 import { FillInBlankConfigForm } from "./ConfigForm/FillInBlankConfigForm"
+import { OpenQuestionConfigForm } from "./ConfigForm/OpenQuestionConfigForm"
 import { useEffect, useState } from "react";
-import { FillInBlankQuestionData, MultipleChoiceQuestionData, UnionComponent } from "@/types/exam"
+import { FillInBlankQuestionData, MultipleChoiceQuestionData, OpenQuestionData, UnionComponent } from "@/types/exam"
 import cloneDeep from 'lodash/cloneDeep'
 
 export function ConfigEditPanel({ className, setExam, selectedComponentId, exam }: ConfigEditPanelProps) {
@@ -61,6 +62,25 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
         });
     }
 
+    // 更新 Open Question 组件的配置
+    const handleOpenQuestionComponentChange = (updatedOpenQuestion: Partial<OpenQuestionData>) => {
+        if (!selectedComponentId) return;
+
+        setExam(prev => {
+            const updatedExam = cloneDeep(prev);
+            const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
+
+            if (componentIndex !== -1) {
+                updatedExam.components[componentIndex] = {
+                    ...updatedExam.components[componentIndex],
+                    ...updatedOpenQuestion
+                } as UnionComponent;
+            }
+
+            return updatedExam;
+        });
+    }
+
     // 根据 selectedComponentId 设置选中的组件
     useEffect(() => {
         if (selectedComponentId) {
@@ -98,6 +118,12 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                     <FillInBlankConfigForm
                         fillInBlank={selectedComponent as FillInBlankQuestionData}
                         onFillInBlankChange={handleFillInBlankComponentChange}
+                    />
+                ) : selectedComponent?.type === 'open' ? (
+                    // 如果选中的是 Open Question 组件，则渲染 OpenQuestionConfigForm
+                    <OpenQuestionConfigForm
+                        openQuestion={selectedComponent as OpenQuestionData}
+                        onOpenQuestionChange={handleOpenQuestionComponentChange}
                     />
                 ) : (
                     // 根据 selectedComponentId 渲染对应的组件配置
