@@ -28,12 +28,15 @@ const FillInBlankQuestion: React.FC<FillInBlankQuestionProps> = ({
                         {questionNumber}.
                     </div>
                 )}
-                <div className="flex-1">
+                <div className="flex items-center">
                     <RichInput
                         initialContent={questionObj.content}
                         onContentChange={handleContentChange}
                         renderMode={renderMode}
                     />
+                    <div className="text-muted-foreground">
+                        [{questionObj.score} marks]
+                    </div>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@ const OpenQuestion: React.FC<OpenQuestionProps> = ({
                         renderMode={renderMode}
                     />
                     <div className="text-muted-foreground">
-                        Score: {questionObj.score}
+                        [{questionObj.score} marks]
                     </div>
                 </div>
             </div>

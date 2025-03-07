@@ -29,12 +29,15 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
                         {questionNumber}.
                     </div>
                 )}
-                <div className="flex-1">
+                <div className="flex items-center">
                     <RichInput
                         initialContent={questionObj.question}
                         onContentChange={handleQuestionChange}
                         renderMode={renderMode}
                     />
+                    <div className="text-muted-foreground">
+                        [{questionObj.score} marks]
+                    </div>
                 </div>
             </div>
             <div className="pl-8 mt-1 space-y-1">
