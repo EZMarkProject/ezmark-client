@@ -178,7 +178,7 @@ export default function Editor() {
                         handleComponentClick={handleComponentClick}
                     />
                 </div>
-                <ConfigEditPanel className="w-72 border-l shrink-0" />
+                <ConfigEditPanel setExam={setExam} selectedComponentId={selectedComponentId} exam={exam} className="w-80 border-l shrink-0" />
             </div>
         </div>
     )

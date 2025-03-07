@@ -13,7 +13,7 @@ export const mockExamData: Exam = {
     savedAt: '19:28',
     semester: 'Spring',
     createdAt: '2024-01-01 12:00:00',
-    examDate: '2024-01-01 12:00:00',
+    examDate: '2024-01-01', // 精确到日
     components: [
         {
             id: nanoid(),

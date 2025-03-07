@@ -15,7 +15,7 @@ export default function ClickDragContainer({
     return (
         <div
             className={
-                'cursor-pointer transition-colors duration-150 ease-in-out px-1 hover:bg-gray-100'
+                'cursor-pointer transition-colors duration-150 ease-in-out hover:bg-gray-100'
             }
             onClick={handleClick}
         >
