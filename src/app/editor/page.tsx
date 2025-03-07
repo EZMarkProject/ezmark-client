@@ -63,7 +63,7 @@ export default function Editor() {
         })
     }
 
-    const handleComponentClick = (componentId: string) => {
+    const handleComponentClick = (componentId: string | null) => {
         setSelectedComponentId(componentId);
     }
 
