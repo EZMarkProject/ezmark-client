@@ -8,7 +8,7 @@ import { MCQConfigFormProps } from "./interface"
 import { MultipleSelector } from "@/components/ui/multiple-selector"
 
 const formSchema = z.object({
-    score: z.coerce.number().min(0, {
+    score: z.coerce.number().min(1, {
         message: "Score must be a positive number."
     }),
     answer: z.array(z.string()).min(1, {
@@ -20,7 +20,7 @@ export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            score: mcq.score || 0,
+            score: mcq.score || 2,
             answer: mcq.answer || [],
         },
     })
