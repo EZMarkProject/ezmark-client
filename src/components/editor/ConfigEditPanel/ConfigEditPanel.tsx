@@ -4,8 +4,9 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Settings } from "lucide-react"
 import { ExamConfigForm } from "./ConfigForm/ExamConfigForm"
 import { MCQConfigForm } from "./ConfigForm/MCQConfigForm"
+import { FillInBlankConfigForm } from "./ConfigForm/FillInBlankConfigForm"
 import { useEffect, useState } from "react";
-import { MultipleChoiceQuestionData, UnionComponent } from "@/types/exam"
+import { FillInBlankQuestionData, MultipleChoiceQuestionData, UnionComponent } from "@/types/exam"
 import cloneDeep from 'lodash/cloneDeep'
 
 export function ConfigEditPanel({ className, setExam, selectedComponentId, exam }: ConfigEditPanelProps) {
@@ -34,6 +35,25 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                 updatedExam.components[componentIndex] = {
                     ...updatedExam.components[componentIndex],
                     ...updatedMCQ
+                } as UnionComponent;
+            }
+
+            return updatedExam;
+        });
+    }
+
+    // 更新 Fill In Blank 组件的配置
+    const handleFillInBlankComponentChange = (updatedFillInBlank: Partial<FillInBlankQuestionData>) => {
+        if (!selectedComponentId) return;
+
+        setExam(prev => {
+            const updatedExam = cloneDeep(prev);
+            const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
+
+            if (componentIndex !== -1) {
+                updatedExam.components[componentIndex] = {
+                    ...updatedExam.components[componentIndex],
+                    ...updatedFillInBlank
                 } as UnionComponent;
             }
 
@@ -72,6 +92,12 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                     <MCQConfigForm
                         mcq={selectedComponent as MultipleChoiceQuestionData}
                         onCMQChange={handleMCQComponentChange}
+                    />
+                ) : selectedComponent?.type === 'fill-in-blank' ? (
+                    // 如果选中的是 Fill In Blank 组件，则渲染 FillInBlankConfigForm
+                    <FillInBlankConfigForm
+                        fillInBlank={selectedComponent as FillInBlankQuestionData}
+                        onFillInBlankChange={handleFillInBlankComponentChange}
                     />
                 ) : (
                     // 根据 selectedComponentId 渲染对应的组件配置
