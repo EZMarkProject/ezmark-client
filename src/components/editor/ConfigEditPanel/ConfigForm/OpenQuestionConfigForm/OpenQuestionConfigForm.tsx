@@ -105,10 +105,10 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                     name="answer"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Model Answer</FormLabel>
+                            <FormLabel>Answer</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Enter the model answer for AI-assisted grading"
+                                    placeholder="Enter the correct answer"
                                     className="min-h-[120px]"
                                     {...field}
                                     onChange={(e) => {
