@@ -23,22 +23,17 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
 
     return (
         <div className='my-2'>
-            <div className="flex items-center">
+            <div className="flex items-center justify-start">
                 {questionNumber !== undefined && (
                     <div className="font-medium text-base">
                         {questionNumber}.
                     </div>
                 )}
-                <div className="flex items-center">
-                    <RichInput
-                        initialContent={questionObj.question}
-                        onContentChange={handleQuestionChange}
-                        renderMode={renderMode}
-                    />
-                    <div className="text-muted-foreground">
-                        [{questionObj.score} marks]
-                    </div>
-                </div>
+                <RichInput
+                    initialContent={questionObj.question}
+                    onContentChange={handleQuestionChange}
+                    renderMode={renderMode}
+                />
             </div>
             <div className="pl-8 mt-1 space-y-1">
                 {questionObj.options.map((option, index: number) => (
@@ -46,7 +41,7 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
                         <div className="font-medium text-base w-6 flex items-center">
                             {String.fromCharCode(65 + index)}.
                         </div>
-                        <div className="flex-1">
+                        <div className="">
                             <RichInput
                                 initialContent={option.content}
                                 onContentChange={(content) => handleOptionChange(index, content)}
@@ -55,6 +50,9 @@ const MultipleChoiceQuestion: React.FC<MultipleChoiceQuestionProps> = ({
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className="text-muted-foreground ml-6 text-sm flex justify-end">
+                [{questionObj.score} marks]
             </div>
         </div>
     )

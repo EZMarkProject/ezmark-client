@@ -18,22 +18,21 @@ const OpenQuestion: React.FC<OpenQuestionProps> = ({
 
     return (
         <div className="my-2">
-            <div>
-                <div className="flex items-center">
+            <div className="flex items-center justify-start">
+                {questionNumber !== undefined && (
                     <div className="font-medium text-base">
                         {questionNumber}.
                     </div>
-                    <RichInput
-                        initialContent={questionObj.content}
-                        onContentChange={handleContentChange}
-                        renderMode={renderMode}
-                    />
-                    <div className="text-muted-foreground">
-                        [{questionObj.score} marks]
-                    </div>
-                </div>
+                )}
+                <RichInput
+                    initialContent={questionObj.content}
+                    onContentChange={handleContentChange}
+                    renderMode={renderMode}
+                />
             </div>
-
+            <div className="text-muted-foreground ml-6 text-sm flex justify-end">
+                [{questionObj.score} marks]
+            </div>
             <div className="">
                 <Blank lines={questionObj.lines} />
             </div>

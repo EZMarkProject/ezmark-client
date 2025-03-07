@@ -22,22 +22,20 @@ const FillInBlankQuestion: React.FC<FillInBlankQuestionProps> = ({
 
     return (
         <div className="my-2">
-            <div className="flex items-center">
+            <div className="flex items-center justify-start">
                 {questionNumber !== undefined && (
                     <div className="font-medium text-base">
                         {questionNumber}.
                     </div>
                 )}
-                <div className="flex items-center">
-                    <RichInput
-                        initialContent={questionObj.content}
-                        onContentChange={handleContentChange}
-                        renderMode={renderMode}
-                    />
-                    <div className="text-muted-foreground">
-                        [{questionObj.score} marks]
-                    </div>
-                </div>
+                <RichInput
+                    initialContent={questionObj.content}
+                    onContentChange={handleContentChange}
+                    renderMode={renderMode}
+                />
+            </div>
+            <div className="text-muted-foreground ml-6 text-sm flex justify-end">
+                [{questionObj.score} marks]
             </div>
         </div>
     )
