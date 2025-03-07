@@ -17,6 +17,7 @@ export default function Editor() {
     const [renderMode, setRenderMode] = useState(true);
     const [activeTab, setActiveTab] = useState("components");
     const [isSaved, setIsSaved] = useState(true);
+    const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null);
 
     const onMCQQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
@@ -60,6 +61,10 @@ export default function Editor() {
             }
             return updatedExam
         })
+    }
+
+    const handleComponentClick = (componentId: string) => {
+        setSelectedComponentId(componentId);
     }
 
     const handleAddComponent = (componentType: string) => {
@@ -170,6 +175,7 @@ export default function Editor() {
                         onMCQOptionChange={onMCQOptionChange}
                         onFillInBlankContentChange={onFillInBlankContentChange}
                         onOpenQuestionChange={onOpenQuestionChange}
+                        handleComponentClick={handleComponentClick}
                     />
                 </div>
                 <ConfigEditPanel className="w-72 border-l shrink-0" />

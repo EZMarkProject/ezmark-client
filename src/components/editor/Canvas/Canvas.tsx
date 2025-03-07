@@ -15,6 +15,7 @@ export function Canvas({ exam, renderMode,
     onRenderModeChange,
     onMCQQuestionChange,
     onMCQOptionChange,
+    handleComponentClick,
     onFillInBlankContentChange, ...props }: CanvasProps) {
     const [scale, setScale] = useState(1)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -184,6 +185,7 @@ export function Canvas({ exam, renderMode,
                     onMCQOptionChange={onMCQOptionChange}
                     onFillInBlankContentChange={onFillInBlankContentChange}
                     onOpenQuestionChange={onOpenQuestionChange}
+                    handleComponentClick={handleComponentClick}
                 />
             </div>
         </div>

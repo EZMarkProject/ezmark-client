@@ -8,6 +8,7 @@ import { Blank } from "@/components/layout-components/Blank";
 import { nanoid } from "nanoid";
 import { OpenQuestion } from "@/components/questions-type/open-question";
 import { Divider } from "@/components/layout-components/Divider";
+import { ClickDragContainer } from "../ClickDragContainer";
 
 export function A4ExamPaper({
     exam,
@@ -17,6 +18,7 @@ export function A4ExamPaper({
     onMCQOptionChange,
     onFillInBlankContentChange,
     onOpenQuestionChange,
+    handleComponentClick
 }: A4ExamPaperProps) {
     return (
         <div
@@ -33,54 +35,101 @@ export function A4ExamPaper({
                     switch (item.type) {
                         case 'default-header':
                             return (
-                                <DefaultHeader
+                                <ClickDragContainer
                                     key={item.id}
-                                    exam={exam}
-                                />
+                                    componentId={item.id}
+                                    onClick={() => {
+                                        handleComponentClick(item.id);
+                                    }}
+                                >
+                                    <DefaultHeader
+                                        key={`header-${item.id}`}
+                                        exam={exam}
+                                    />
+                                </ClickDragContainer>
                             );
                         case 'multiple-choice':
                             return (
-                                <MultipleChoiceQuestion
+                                <ClickDragContainer
                                     key={item.id}
-                                    questionObj={item}
-                                    onQuestionChange={onMCQQuestionChange}
-                                    onOptionChange={onMCQOptionChange}
-                                    renderMode={renderMode}
-                                    questionNumber={item.questionNumber}
-                                />
+                                    componentId={item.id}
+                                    onClick={() => {
+                                        handleComponentClick(item.id);
+                                    }}
+                                >
+                                    <MultipleChoiceQuestion
+                                        questionObj={item}
+                                        onQuestionChange={onMCQQuestionChange}
+                                        onOptionChange={onMCQOptionChange}
+                                        renderMode={renderMode}
+                                        questionNumber={item.questionNumber}
+                                    />
+                                </ClickDragContainer>
                             );
                         case 'fill-in-blank':
                             return (
-                                <FillInBlankQuestion
+                                <ClickDragContainer
                                     key={item.id}
-                                    questionObj={item}
-                                    onContentChange={onFillInBlankContentChange}
-                                    renderMode={renderMode}
-                                    questionNumber={item.questionNumber}
-                                />
+                                    componentId={item.id}
+                                    onClick={() => {
+                                        handleComponentClick(item.id)
+                                    }}
+                                >
+                                    <FillInBlankQuestion
+                                        key={`fill-${item.id}`}
+                                        questionObj={item}
+                                        onContentChange={onFillInBlankContentChange}
+                                        renderMode={renderMode}
+                                        questionNumber={item.questionNumber}
+                                    />
+                                </ClickDragContainer>
                             );
                         case 'open':
                             return (
-                                <OpenQuestion
+                                <ClickDragContainer
                                     key={item.id}
-                                    questionObj={item}
-                                    onContentChange={onOpenQuestionChange}
-                                    renderMode={renderMode}
-                                    questionNumber={item.questionNumber}
-                                />
+                                    componentId={item.id}
+                                    onClick={() => {
+                                        handleComponentClick(item.id)
+                                    }}
+                                >
+                                    <OpenQuestion
+                                        key={`open-${item.id}`}
+                                        questionObj={item}
+                                        onContentChange={onOpenQuestionChange}
+                                        renderMode={renderMode}
+                                        questionNumber={item.questionNumber}
+                                    />
+                                </ClickDragContainer>
                             );
                         case 'blank':
                             return (
-                                <Blank
+                                <ClickDragContainer
                                     key={item.id}
-                                    lines={item.lines}
-                                />
+                                    componentId={item.id}
+                                    onClick={() => {
+                                        handleComponentClick(item.id)
+                                    }}
+                                >
+                                    <Blank
+                                        key={`blank-${item.id}`}
+                                        lines={item.lines}
+                                    />
+                                </ClickDragContainer>
                             );
                         case 'divider':
                             return (
-                                <Divider
+                                <ClickDragContainer
                                     key={item.id}
-                                />
+                                    componentId={item.id}
+                                    onClick={() => {
+                                        handleComponentClick(item.id)
+                                    }}
+                                >
+                                    <Divider
+                                        key={`divider-${item.id}`}
+                                    />
+                                </ClickDragContainer>
                             );
                         default:
                             return <div className="text-red-500" key={nanoid()}>Component Not Found</div>
