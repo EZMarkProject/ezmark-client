@@ -96,6 +96,11 @@ export function Canvas({ exam, renderMode,
         }
     }, [])
 
+    // 点击空白区域，取消选中组件
+    const handleClickCanvaOuterArea = () => {
+        handleComponentClick(null)
+    }
+
     // Add non-passive wheel event listener
     useEffect(() => {
         const element = containerRef.current
@@ -176,6 +181,11 @@ export function Canvas({ exam, renderMode,
             <div
                 ref={containerRef}
                 className="flex-1 overflow-auto p-8 flex items-start justify-center"
+                onClick={(e) => {
+                    if (e.currentTarget === e.target) {
+                        handleClickCanvaOuterArea()
+                    }
+                }}
             >
                 <A4ExamPaper
                     exam={exam}
