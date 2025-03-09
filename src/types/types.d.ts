@@ -46,4 +46,5 @@ export interface AuthContextObject {
     setJwt: (jwt: string) => void;
     setUserName: (userName: string) => void;
     setEmail: (email: string) => void;
+    logout: () => Promise<void>;
 }

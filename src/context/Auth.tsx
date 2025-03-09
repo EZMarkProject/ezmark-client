@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import { AuthContextObject } from "@/types/types";
 import { createContext } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 
 export const AuthContext = createContext<AuthContextObject>({
     userName: "",
@@ -14,7 +13,8 @@ export const AuthContext = createContext<AuthContextObject>({
     setUserName: () => { },
     setEmail: () => { },
     setJwt: () => { },
-    setAuthenticated: () => { }
+    setAuthenticated: () => { },
+    logout: () => Promise.resolve()
 })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -23,6 +23,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [jwt, setJwt] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
+
+    const logout = useCallback(async () => {
+        // Clear authentication data
+        Cookies.remove("jwt");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("email");
+
+        // Update auth context
+        setAuthenticated(false);
+        setUserName("");
+        setEmail("");
+        setJwt("");
+
+        // Redirect to home page
+        router.push("/");
+    }, [router]);
 
     // 封装验证逻辑为可重用函数
     const checkAuthStatus = useCallback(() => {
@@ -57,7 +74,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [pathname]);
 
     return (
-        <AuthContext.Provider value={{ userName, email, jwt, authenticated, setUserName, setEmail, setJwt, setAuthenticated }}>
+        <AuthContext.Provider value={{
+            userName,
+            email,
+            jwt,
+            authenticated,
+            setUserName,
+            setEmail,
+            setJwt,
+            setAuthenticated,
+            logout
+        }}>
             {children}
         </AuthContext.Provider>
     )
