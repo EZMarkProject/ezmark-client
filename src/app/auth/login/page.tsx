@@ -15,7 +15,7 @@ export default function LoginPage() {
     const handleSuccess = (responseData: LoginResponse) => {
         Cookies.set("jwt", responseData.jwt, {
             secure: true,
-            sameSite: "strict",
+            // sameSite: "strict",
         });
         localStorage.setItem("userName", responseData.user.username);
         localStorage.setItem("email", responseData.user.email);
