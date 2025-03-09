@@ -14,10 +14,7 @@ export default function SignUpPage() {
     const router = useRouter();
 
     const handleSuccess = (responseData: RegisterResponse) => {
-        Cookies.set("jwt", responseData.jwt, {
-            secure: true,
-            sameSite: "strict",
-        });
+        Cookies.set("jwt", responseData.jwt);
         toast({
             title: "Registration Successful",
             description: "Your account has been created successfully.",

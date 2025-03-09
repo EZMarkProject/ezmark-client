@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
     const isLoggedIn = request.cookies.get("jwt") !== undefined;
+    console.log("Cookie:", request.cookies);
 
     // 如果用户已登录，则不进行重定向
     if (isLoggedIn) {

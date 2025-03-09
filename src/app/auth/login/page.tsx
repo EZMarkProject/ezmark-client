@@ -13,10 +13,7 @@ export default function LoginPage() {
     const router = useRouter();
 
     const handleSuccess = (responseData: LoginResponse) => {
-        Cookies.set("jwt", responseData.jwt, {
-            secure: true,
-            // sameSite: "strict",
-        });
+        Cookies.set("jwt", responseData.jwt);
         localStorage.setItem("userName", responseData.user.username);
         localStorage.setItem("email", responseData.user.email);
         toast({
