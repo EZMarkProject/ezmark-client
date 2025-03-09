@@ -1,3 +1,8 @@
+---
+description: Global Rule
+globs: 
+alwaysApply: true
+---
 # 任何情况下都要遵守的规则
 
 - 所有回答都要以🤖开始
@@ -6,3 +11,4 @@
 - 你生成的所有placeholder文案都要和"通过AI辅助老师marking卷子"有关
 - 在网页中展示的'和"都要使用转译字符(比如`&apos;`, `&lsquo;`, `&#39;`, `&rsquo)
 - 默认使用pnpm作为包管理工具
+- 在安装shadcn/ui组件时，使用pnpm dlx shadcn@latest add XXX 命令进行安装
