@@ -24,28 +24,28 @@ export interface TestimonialItem {
  * 英雄区组件Props接口
  */
 export interface HeroSectionProps {
-    onGetStartedClick?: () => void;
+    onGetStartedClick: () => void;
 }
 
 /**
  * 特性区组件Props接口
  */
 export interface FeaturesSectionProps {
-    featuresData?: FeatureItem[];
+    featuresData: FeatureItem[];
 }
 
 /**
  * 评价区组件Props接口
  */
 export interface TestimonialsSectionProps {
-    testimonialsData?: TestimonialItem[];
+    testimonialsData: TestimonialItem[];
 }
 
 /**
  * CTA区组件Props接口
  */
 export interface CTASectionProps {
-    onGetStartedClick?: () => void;
+    onGetStartedClick: () => void;
 }
 
 /**
@@ -56,13 +56,3 @@ export interface NavbarProps {
     onLoginClick?: () => void;
     onSignUpClick?: () => void;
 }
-
-/**
- * 着陆页组件Props接口
- */
-export interface LandingPageProps {
-    className?: string;
-    onGetStartedClick?: () => void;
-    featuresData?: FeatureItem[];
-    testimonialsData?: TestimonialItem[];
-} 
