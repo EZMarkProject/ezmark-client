@@ -22,9 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [email, setEmail] = useState("");
     const [jwt, setJwt] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
-    const router = useRouter();
     const pathname = usePathname();
-    const { toast } = useToast();
 
     // 封装验证逻辑为可重用函数
     const checkAuthStatus = useCallback(() => {
@@ -42,21 +40,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             } else {
                 // 检测到JWT但找不到用户信息时,清除JWT
                 Cookies.remove("jwt");
+                localStorage.removeItem("userName");
+                localStorage.removeItem("email");
                 setAuthenticated(false);
             }
         } else {
             // 没有JWT，清除认证状态
             setAuthenticated(false);
-            setUserName("");
-            setEmail("");
-            setJwt("");
         }
-    }, [router, toast]);
+    }, [pathname]);
+
 
     // 组件挂载时和路径变化时检查认证状态
     useEffect(() => {
         checkAuthStatus();
-    }, [checkAuthStatus, pathname]);
+    }, [pathname]);
 
     return (
         <AuthContext.Provider value={{ userName, email, jwt, authenticated, setUserName, setEmail, setJwt, setAuthenticated }}>
