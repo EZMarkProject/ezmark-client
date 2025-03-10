@@ -1,16 +1,22 @@
+// 试卷响应接口
+export interface ExamResponse {
+    documentId: string;
+    projectName: string;
+    createdAt: string;
+    updatedAt: string;
+    examData: Exam;
+}
+
 // 定义试卷接口
 export interface Exam {
     id: string;
     title: string;
     description: string;
-    projectName: string; // 项目名称,会显示在dashboard中 (放到exam外面)
     duration: string; // 3 HOURS
     university: string; // 大学名称
     course: string; // 课程名称
     year: string; // 2024-2025
     semester: string; // 学期 Spring
-    createdAt: string; // 2024-01-01 (放到exam外面)
-    savedAt: string; // 最近保存时间 (19:28) (放到exam外面)
     examDate: string; // 考试日期
     components: UnionComponent[]; // 试卷中的所有组件
 }

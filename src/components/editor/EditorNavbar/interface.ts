@@ -1,7 +1,7 @@
-import { Exam } from "@/types/exam";
+import { ExamResponse } from "@/types/exam";
 
 interface EditorNavbarProps {
-    exam: Exam
+    exam: ExamResponse
     isSaved: boolean
 }
 

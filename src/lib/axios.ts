@@ -70,6 +70,20 @@ axiosInstance.interceptors.response.use(
             });
         }
 
-        return Promise.reject(error);
+        // Return a resolved promise with a standardized error response
+        // instead of rejecting the promise
+        return Promise.resolve({
+            data: {
+                success: false,
+                error: error.response?.data.error || {
+                    name: error.response?.data.error.name || "Error",
+                    message: error.response?.data.error.message || "An unexpected error occurred"
+                }
+            },
+            status: error.response?.status || 500,
+            statusText: error.response?.statusText || "Error",
+            headers: error.response?.headers || {},
+            config: error.config || {}
+        } as AxiosResponse);
     }
 );

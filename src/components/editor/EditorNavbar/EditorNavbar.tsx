@@ -20,17 +20,17 @@ export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
                         <MoveLeft className="h-4 w-4" />
                     </Link>
                 </Button>
-                <h1 className="">{exam.projectName}</h1>
+                <h1 className="">{exam.examData.title}</h1>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     {isSaved ? (
                         <>
                             <Check className="h-4 w-4 text-green-500" />
-                            <span>Last saved {exam.savedAt}</span>
+                            <span>Last saved {exam.updatedAt}</span>
                         </>
                     ) : (
                         <>
                             <X className="h-4 w-4 text-red-500" />
-                            <span>Unsaved changes. Last saved {exam.savedAt}</span>
+                            <span>Unsaved changes. Last saved {exam.updatedAt}</span>
                         </>
                     )}
                 </div>
