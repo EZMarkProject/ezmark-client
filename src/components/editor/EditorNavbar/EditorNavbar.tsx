@@ -3,16 +3,10 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { Check, MoveLeft, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { EditorNavbarProps } from "./interface"
 
 export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
-    const router = useRouter()
-
-    const handleClickBack = () => {
-        router.push('/')
-    }
-
     return (
         <nav className="flex h-[50px] items-center border-b px-4 justify-between">
             <div className="flex items-center gap-3">
@@ -20,9 +14,11 @@ export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
-                    onClick={handleClickBack}
+                    asChild
                 >
-                    <MoveLeft className="h-4 w-4" />
+                    <Link href="/">
+                        <MoveLeft className="h-4 w-4" />
+                    </Link>
                 </Button>
                 <h1 className="">{exam.projectName}</h1>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">

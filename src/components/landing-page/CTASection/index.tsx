@@ -3,11 +3,9 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CTASectionProps } from "../types";
+import Link from "next/link";
 
-const CTASection: React.FC<CTASectionProps> = ({
-    onGetStartedClick,
-}) => {
+const CTASection: React.FC = () => {
     return (
         <section className="w-full py-14 relative">
             <div className="absolute inset-0 bg-primary opacity-90 z-0"></div>
@@ -23,14 +21,23 @@ const CTASection: React.FC<CTASectionProps> = ({
                         <Button
                             size="lg"
                             variant="secondary"
-                            onClick={onGetStartedClick}
+                            asChild
                             className="bg-background text-primary hover:bg-background/90"
                         >
-                            Get Started Now
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                            <Link href="/dashboard">
+                                Get Started Now
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </Link>
                         </Button>
-                        <Button size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:border-primary-foreground/30 hover:text-primary-foreground transition-colors">
-                            Request a Demo
+                        <Button
+                            size="lg"
+                            variant="outline"
+                            asChild
+                            className="border-primary-foreground/20 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:border-primary-foreground/30 hover:text-primary-foreground transition-colors"
+                        >
+                            <Link href="/dashboard">
+                                Request a Demo
+                            </Link>
                         </Button>
                     </div>
                 </div>

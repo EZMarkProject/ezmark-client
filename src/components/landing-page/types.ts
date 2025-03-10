@@ -20,12 +20,6 @@ export interface TestimonialItem {
     avatar?: string;
 }
 
-/**
- * 英雄区组件Props接口
- */
-export interface HeroSectionProps {
-    onGetStartedClick: () => void;
-}
 
 /**
  * 特性区组件Props接口
@@ -39,13 +33,6 @@ export interface FeaturesSectionProps {
  */
 export interface TestimonialsSectionProps {
     testimonialsData: TestimonialItem[];
-}
-
-/**
- * CTA区组件Props接口
- */
-export interface CTASectionProps {
-    onGetStartedClick: () => void;
 }
 
 /**

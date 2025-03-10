@@ -3,11 +3,9 @@
 import React from "react";
 import { ChevronRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { HeroSectionProps } from "../types";
+import Link from "next/link";
 
-const HeroSection: React.FC<HeroSectionProps> = ({
-    onGetStartedClick,
-}) => {
+const HeroSection: React.FC = () => {
     return (
         <section className="relative w-full py-12 md:py-20">
             <div className="container px-4 md:px-6 mx-auto">
@@ -19,13 +17,17 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                         Empower Your Team, Streamline Your Processes, And Boost Educational Outcomes With Our Exam Management Platform
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button size="default" className="px-6 py-2 h-auto" onClick={onGetStartedClick}>
-                            Get Started
-                            <ChevronRight className="ml-2 h-4 w-4" />
+                        <Button asChild size="default" className="px-6 py-2 h-auto">
+                            <Link href="/dashboard" >
+                                Get Started
+                                <ChevronRight className="ml-2 h-4 w-4" />
+                            </Link>
                         </Button>
-                        <Button size="default" variant="outline" className="px-6 py-2 h-auto border-[#e5e7eb]">
-                            <Play className="mr-2 h-4 w-4" />
-                            Play Video
+                        <Button asChild size="default" variant="outline" className="px-6 py-2 h-auto border-[#e5e7eb]">
+                            <Link href="#">
+                                <Play className="mr-2 h-4 w-4" />
+                                Play Video
+                            </Link>
                         </Button>
                     </div>
                 </div>

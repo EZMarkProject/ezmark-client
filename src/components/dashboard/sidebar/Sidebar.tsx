@@ -7,11 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Home, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     const { theme, setTheme } = useTheme();
-    const router = useRouter();
 
     return (
         <div className="flex flex-col h-full w-64 bg-muted/80">
@@ -27,10 +26,12 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
                         variant="outline"
                         size="sm"
                         className="flex-1"
-                        onClick={() => { router.push("/"); }}
+                        asChild
                     >
-                        <Home className="mr-1 h-4 w-4" />
-                        Home
+                        <Link href="/">
+                            <Home className="mr-1 h-4 w-4" />
+                            Home
+                        </Link>
                     </Button>
                     <Button
                         variant="outline"

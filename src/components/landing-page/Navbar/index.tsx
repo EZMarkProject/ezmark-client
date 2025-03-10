@@ -5,17 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { NavbarProps } from "../types";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserNav } from "../UserNav";
 import { useAuth } from "@/context/Auth";
 import Cookies from "js-cookie";
 
-const Navbar: React.FC<NavbarProps> = ({
-    className,
-    onLoginClick,
-    onSignUpClick,
-}) => {
+const Navbar: React.FC = () => {
     const { authenticated, userName, email, setAuthenticated, setUserName, setEmail, setJwt } = useAuth();
 
     const onLogoutClick = () => {
@@ -29,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({
     }
 
     return (
-        <header className={cn("w-full border-b bg-background flex justify-around", className)}>
+        <header className="w-full border-b bg-background flex justify-around">
             <div className="container flex h-16 items-center px-4 md:px-6 justify-around">
                 <div className="flex items-center gap-2">
                     {/* Logo */}
@@ -124,19 +119,21 @@ const Navbar: React.FC<NavbarProps> = ({
                         />
                     ) : (
                         <>
-                            <Button
-                                variant="ghost"
-                                className="hidden md:flex"
-                                onClick={onLoginClick}
-                            >
-                                Login
-                            </Button>
-                            <Button
-                                className="bg-[#1e293b] text-white hover:bg-[#1e293b]/90"
-                                onClick={onSignUpClick}
-                            >
-                                Sign up
-                            </Button>
+                            <Link href="/auth/login">
+                                <Button
+                                    variant="ghost"
+                                    className="hidden md:flex"
+                                >
+                                    Login
+                                </Button>
+                            </Link>
+                            <Link href="/auth/signup">
+                                <Button
+                                    className="bg-[#1e293b] text-white hover:bg-[#1e293b]/90"
+                                >
+                                    Sign up
+                                </Button>
+                            </Link>
                         </>
                     )}
                 </div>
