@@ -30,7 +30,7 @@ export function ExamTable({ exams, searchQuery, onSearchChange, handleEdit, hand
                     <Table>
                         <TableHeader>
                             <TableRow className="hover:bg-transparent">
-                                <TableHead>Title</TableHead>
+                                <TableHead className="w-[250px]">Title</TableHead>
                                 <TableHead className="w-[120px] hidden sm:table-cell">Exam Date</TableHead>
                                 <TableHead className="w-[120px] hidden md:table-cell">Last Updated</TableHead>
                                 <TableHead className="w-[140px] hidden sm:table-cell">Duration</TableHead>
@@ -51,10 +51,10 @@ export function ExamTable({ exams, searchQuery, onSearchChange, handleEdit, hand
                                         >
                                             <TableCell>
                                                 <div className="flex flex-col">
-                                                    <span className="font-medium">{exam.projectName}</span>
-                                                    <span className="text-sm text-muted-foreground">{exam.examData.course}</span>
+                                                    <span className="font-medium line-clamp-2">{exam.projectName}</span>
+                                                    <span className="text-sm text-muted-foreground line-clamp-2">{exam.examData.course}</span>
                                                     <div className="flex flex-wrap gap-2 mt-1 sm:hidden">
-                                                        <Badge variant="outline" className="bg-orange-50 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800">
+                                                        <Badge variant="outline" className="whitespace-nowrap bg-orange-50 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800">
                                                             {exam.examData.examDate}
                                                         </Badge>
                                                         <div className="flex items-center gap-1">
@@ -65,12 +65,12 @@ export function ExamTable({ exams, searchQuery, onSearchChange, handleEdit, hand
                                                 </div>
                                             </TableCell>
                                             <TableCell className="hidden sm:table-cell">
-                                                <Badge variant="outline" className="bg-orange-50 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800">
+                                                <Badge variant="outline" className="whitespace-nowrap bg-orange-50 dark:bg-orange-950/50 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800">
                                                     {exam.examData.examDate}
                                                 </Badge>
                                             </TableCell>
                                             <TableCell className="hidden md:table-cell">
-                                                <Badge variant="outline" className="bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800">
+                                                <Badge variant="outline" className="whitespace-nowrap bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800">
                                                     {format(new Date(exam.updatedAt), "MMM d, yyyy")}
                                                 </Badge>
                                             </TableCell>
@@ -81,7 +81,7 @@ export function ExamTable({ exams, searchQuery, onSearchChange, handleEdit, hand
                                                 </div>
                                             </TableCell>
                                             <TableCell className="hidden lg:table-cell">
-                                                <Badge variant="outline" className="bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800">
+                                                <Badge variant="outline" className="whitespace-nowrap bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800">
                                                     {exam.examData.year}
                                                 </Badge>
                                             </TableCell>
