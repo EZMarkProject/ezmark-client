@@ -1,8 +1,10 @@
-import { OpenQuestionData } from "@/types/exam";
+import { ExamResponse, OpenQuestionData } from "@/types/exam";
 
 interface OpenQuestionConfigFormProps {
     openQuestion: OpenQuestionData;
-    onOpenQuestionChange: (updatedOpenQuestion: Partial<OpenQuestionData>) => Promise<void>;
+    exam: ExamResponse;
+    selectedComponentId: string;
+    onExamConfigChange: (updatedExam: ExamResponse) => Promise<void>;
 }
 
 export type { OpenQuestionConfigFormProps }; 

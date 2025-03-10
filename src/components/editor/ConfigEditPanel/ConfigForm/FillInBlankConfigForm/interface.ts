@@ -1,8 +1,10 @@
-import { FillInBlankQuestionData } from "@/types/exam";
+import { ExamResponse, FillInBlankQuestionData } from "@/types/exam";
 
 interface FillInBlankConfigFormProps {
     fillInBlank: FillInBlankQuestionData;
-    onFillInBlankChange: (updatedFillInBlank: Partial<FillInBlankQuestionData>) => Promise<void>;
+    exam: ExamResponse;
+    selectedComponentId: string;
+    onExamConfigChange: (updatedExam: ExamResponse) => Promise<void>;
 }
 
 export type { FillInBlankConfigFormProps }; 

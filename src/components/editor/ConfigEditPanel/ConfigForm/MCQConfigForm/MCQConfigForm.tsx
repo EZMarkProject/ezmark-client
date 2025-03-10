@@ -9,6 +9,8 @@ import { MultipleSelector } from "@/components/ui/multiple-selector"
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import cloneDeep from 'lodash/cloneDeep'
+import { MultipleChoiceQuestionData } from "@/types/exam"
 
 const formSchema = z.object({
     score: z.coerce.number().min(1, {
@@ -19,7 +21,7 @@ const formSchema = z.object({
     })
 })
 
-export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) {
+export default function MCQConfigForm({ mcq, exam, selectedComponentId, onExamConfigChange }: MCQConfigFormProps) {
     const [isLoading, setIsLoading] = useState(false)
     const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
@@ -39,18 +41,26 @@ export default function MCQConfigForm({ mcq, onCMQChange }: MCQConfigFormProps) 
     // 当选择变化时通知父组件
     const handleAnswerChange = (selectedAnswers: string[]) => {
         form.setValue('answer', selectedAnswers);
-        onCMQChange({
-            answer: selectedAnswers
-        });
     };
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true)
         try {
-            await onCMQChange({
-                score: values.score,
-                answer: values.answer
-            })
+            // 创建更新后的完整 ExamResponse
+            const updatedExam = cloneDeep(exam);
+            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
+
+            if (componentIndex !== -1) {
+                // 确保保持原始类型
+                const originalComponent = updatedExam.examData.components[componentIndex] as MultipleChoiceQuestionData;
+                updatedExam.examData.components[componentIndex] = {
+                    ...originalComponent,
+                    score: values.score,
+                    answer: values.answer
+                };
+                await onExamConfigChange(updatedExam);
+            }
+
             toast({
                 title: "Exam configuration saved",
                 description: "The exam configuration has been saved successfully",

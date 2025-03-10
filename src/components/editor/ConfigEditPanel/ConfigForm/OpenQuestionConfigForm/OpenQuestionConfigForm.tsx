@@ -9,6 +9,8 @@ import { OpenQuestionConfigFormProps } from "./interface";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import cloneDeep from 'lodash/cloneDeep';
+import { OpenQuestionData } from "@/types/exam";
 
 const formSchema = z.object({
     score: z.coerce.number().min(1, {
@@ -22,7 +24,7 @@ const formSchema = z.object({
     })
 });
 
-export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionChange }: OpenQuestionConfigFormProps) {
+export default function OpenQuestionConfigForm({ openQuestion, exam, selectedComponentId, onExamConfigChange }: OpenQuestionConfigFormProps) {
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast()
     const form = useForm<z.infer<typeof formSchema>>({
@@ -37,11 +39,22 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
         try {
-            await onOpenQuestionChange({
-                score: values.score,
-                lines: values.lines,
-                answer: values.answer
-            });
+            // 创建更新后的完整 ExamResponse
+            const updatedExam = cloneDeep(exam);
+            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
+
+            if (componentIndex !== -1) {
+                // 确保保持原始类型
+                const originalComponent = updatedExam.examData.components[componentIndex] as OpenQuestionData;
+                updatedExam.examData.components[componentIndex] = {
+                    ...originalComponent,
+                    score: values.score,
+                    lines: values.lines,
+                    answer: values.answer
+                };
+                await onExamConfigChange(updatedExam);
+            }
+
             toast({
                 title: "Exam configuration saved",
                 description: "The exam configuration has been saved successfully",
@@ -66,9 +79,6 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                                     type="number"
                                     placeholder="Enter score for this question"
                                     {...field}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                    }}
                                 />
                             </FormControl>
                             <FormMessage />
@@ -87,9 +97,6 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                                     type="number"
                                     placeholder="Enter number of lines for answer space"
                                     {...field}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                    }}
                                 />
                             </FormControl>
                             <FormDescription>
@@ -111,9 +118,6 @@ export default function OpenQuestionConfigForm({ openQuestion, onOpenQuestionCha
                                     placeholder="Enter the correct answer"
                                     className="min-h-[120px]"
                                     {...field}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                    }}
                                 />
                             </FormControl>
                             <FormDescription>

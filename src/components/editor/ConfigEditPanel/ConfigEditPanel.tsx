@@ -26,57 +26,6 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
         });
     }
 
-    // 更新 MCQ 组件的配置
-    const handleMCQComponentChange = async (updatedMCQ: Partial<MultipleChoiceQuestionData>) => {
-        if (!selectedComponentId) return;
-        setExam(prev => {
-            const updatedExam = cloneDeep(prev);
-            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
-            if (componentIndex !== -1) {
-                updatedExam.examData.components[componentIndex] = {
-                    ...updatedExam.examData.components[componentIndex],
-                    ...updatedMCQ
-                } as UnionComponent;
-            }
-            return updatedExam;
-        });
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
-
-    // 更新 Fill In Blank 组件的配置
-    const handleFillInBlankComponentChange = async (updatedFillInBlank: Partial<FillInBlankQuestionData>) => {
-        if (!selectedComponentId) return;
-        setExam(prev => {
-            const updatedExam = cloneDeep(prev);
-            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
-            if (componentIndex !== -1) {
-                updatedExam.examData.components[componentIndex] = {
-                    ...updatedExam.examData.components[componentIndex],
-                    ...updatedFillInBlank
-                } as UnionComponent;
-            }
-            return updatedExam;
-        });
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
-
-    // 更新 Open Question 组件的配置
-    const handleOpenQuestionComponentChange = async (updatedOpenQuestion: Partial<OpenQuestionData>) => {
-        if (!selectedComponentId) return;
-        setExam(prev => {
-            const updatedExam = cloneDeep(prev);
-            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
-            if (componentIndex !== -1) {
-                updatedExam.examData.components[componentIndex] = {
-                    ...updatedExam.examData.components[componentIndex],
-                    ...updatedOpenQuestion
-                } as UnionComponent;
-            }
-            return updatedExam;
-        });
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
-
     // 根据 selectedComponentId 设置选中的组件
     useEffect(() => {
         if (selectedComponentId) {
@@ -104,27 +53,27 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                         onExamConfigChange={handleExamConfigChange}
                     />
                 ) : selectedComponent?.type === 'multiple-choice' ? (
-                    // 如果选中的是 MCQ 组件，则渲染 MCQConfigForm
                     <MCQConfigForm
                         mcq={selectedComponent as MultipleChoiceQuestionData}
-                        onCMQChange={handleMCQComponentChange}
+                        exam={exam}
+                        selectedComponentId={selectedComponentId}
+                        onExamConfigChange={handleExamConfigChange}
                     />
                 ) : selectedComponent?.type === 'fill-in-blank' ? (
-                    // 如果选中的是 Fill In Blank 组件，则渲染 FillInBlankConfigForm
                     <FillInBlankConfigForm
                         fillInBlank={selectedComponent as FillInBlankQuestionData}
-                        onFillInBlankChange={handleFillInBlankComponentChange}
+                        exam={exam}
+                        selectedComponentId={selectedComponentId}
+                        onExamConfigChange={handleExamConfigChange}
                     />
                 ) : selectedComponent?.type === 'open' ? (
-                    // 如果选中的是 Open Question 组件，则渲染 OpenQuestionConfigForm
                     <OpenQuestionConfigForm
                         openQuestion={selectedComponent as OpenQuestionData}
-                        onOpenQuestionChange={handleOpenQuestionComponentChange}
+                        exam={exam}
+                        selectedComponentId={selectedComponentId}
+                        onExamConfigChange={handleExamConfigChange}
                     />
-                ) : (
-                    // 根据 selectedComponentId 渲染对应的组件配置
-                    <div>Component configuration not available for this type</div>
-                )}
+                ) : null}
             </ScrollArea>
         </div>
     )

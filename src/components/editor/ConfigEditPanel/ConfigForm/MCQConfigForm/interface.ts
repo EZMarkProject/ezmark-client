@@ -1,6 +1,8 @@
-import { MultipleChoiceQuestionData } from "@/types/exam";
+import { ExamResponse, MultipleChoiceQuestionData } from "@/types/exam";
 
 export interface MCQConfigFormProps {
     mcq: MultipleChoiceQuestionData;
-    onCMQChange: (updatedMCQ: Partial<MultipleChoiceQuestionData>) => Promise<void>;
+    exam: ExamResponse;
+    selectedComponentId: string;
+    onExamConfigChange: (updatedExam: ExamResponse) => Promise<void>;
 } 
