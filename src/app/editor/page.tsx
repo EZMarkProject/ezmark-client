@@ -5,7 +5,7 @@ import { QuestionSelectionPanel } from "@/components/editor/QuestionSelectionPan
 import { Canvas } from "@/components/editor/Canvas"
 import { ConfigEditPanel } from "@/components/editor/ConfigEditPanel"
 import { useState } from "react"
-import { Exam, MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestionData, UnionComponent } from "@/types/exam"
+import { MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestionData, UnionComponent, ExamResponse } from "@/types/exam"
 import { mockExamData } from "@/mock/exam-data"
 import { nanoid } from "nanoid"
 import cloneDeep from 'lodash/cloneDeep'
@@ -13,7 +13,7 @@ import { TemplateSelectionPanel } from "@/components/editor/TemplateSelectionPan
 import { BankSelectionPanel } from "@/components/editor/BankSelectionPanel"
 
 export default function Editor() {
-    const [exam, setExam] = useState<Exam>(mockExamData);
+    const [exam, setExam] = useState<ExamResponse>(mockExamData);
     const [renderMode, setRenderMode] = useState(true);
     const [activeTab, setActiveTab] = useState("components");
     const [isSaved, setIsSaved] = useState(true);
@@ -22,9 +22,9 @@ export default function Editor() {
     const onMCQQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const questionIndex = updatedExam.components.findIndex((component: UnionComponent) => component.id === questionId)
+            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
-                (updatedExam.components[questionIndex] as MultipleChoiceQuestionData).question = content
+                (updatedExam.examData.components[questionIndex] as MultipleChoiceQuestionData).question = content
             }
             return updatedExam
         })
@@ -33,9 +33,9 @@ export default function Editor() {
     const onMCQOptionChange = (questionId: string, optionIndex: number, content: string) => {
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const questionIndex = updatedExam.components.findIndex((component: UnionComponent) => component.id === questionId)
+            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
-                (updatedExam.components[questionIndex] as MultipleChoiceQuestionData).options[optionIndex].content = content
+                (updatedExam.examData.components[questionIndex] as MultipleChoiceQuestionData).options[optionIndex].content = content
             }
             return updatedExam
         })
@@ -44,9 +44,9 @@ export default function Editor() {
     const onFillInBlankContentChange = (questionId: string, content: string) => {
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const questionIndex = updatedExam.components.findIndex((component: UnionComponent) => component.id === questionId)
+            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
-                (updatedExam.components[questionIndex] as FillInBlankQuestionData).content = content
+                (updatedExam.examData.components[questionIndex] as FillInBlankQuestionData).content = content
             }
             return updatedExam
         })
@@ -55,9 +55,9 @@ export default function Editor() {
     const onOpenQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const questionIndex = updatedExam.components.findIndex((component: UnionComponent) => component.id === questionId)
+            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
-                (updatedExam.components[questionIndex] as OpenQuestionData).content = content
+                (updatedExam.examData.components[questionIndex] as OpenQuestionData).content = content
             }
             return updatedExam
         })
@@ -79,7 +79,7 @@ export default function Editor() {
                         id: nanoid(),
                         type: 'multiple-choice',
                         score: 5,
-                        questionNumber: updatedExam.components.length,
+                        questionNumber: updatedExam.examData.components.length,
                         question: '<p>New multiple choice question</p>',
                         options: [
                             { label: 'A', content: '<p>Option A</p>' },
@@ -95,7 +95,7 @@ export default function Editor() {
                         id: nanoid(),
                         type: 'fill-in-blank',
                         score: 5,
-                        questionNumber: updatedExam.components.length,
+                        questionNumber: updatedExam.examData.components.length,
                         content: '<p>New fill-in-the-blank question ${input}</p>',
                         answer: 'The answer is XXX'
                     };
@@ -105,7 +105,7 @@ export default function Editor() {
                         id: nanoid(),
                         type: 'open',
                         score: 10,
-                        questionNumber: updatedExam.components.length,
+                        questionNumber: updatedExam.examData.components.length,
                         content: '<p>New open question</p>',
                         answer: 'The answer is XXX',
                         lines: 10
@@ -128,7 +128,7 @@ export default function Editor() {
                     return prev; // 如果类型不匹配，返回原状态
             }
 
-            updatedExam.components.push(newComponent);
+            updatedExam.examData.components.push(newComponent);
             return updatedExam;
         });
     }
@@ -168,7 +168,7 @@ export default function Editor() {
                 {renderSidePanel()}
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
-                        exam={exam}
+                        exam={exam.examData}
                         renderMode={renderMode}
                         onRenderModeChange={setRenderMode}
                         onMCQQuestionChange={onMCQQuestionChange}

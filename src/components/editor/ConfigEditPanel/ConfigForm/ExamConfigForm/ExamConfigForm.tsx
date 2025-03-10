@@ -10,8 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react"
 import { Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { ExamResponse } from "@/types/exam"
 
 const formSchema = z.object({
+    projectName: z.string().min(2, {
+        message: "Project name must be at least 2 characters."
+    }),
     title: z.string().min(2, {
         message: "Title must be at least 2 characters."
     }),
@@ -43,18 +47,19 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: exam.title,
-            description: exam.description,
-            duration: exam.duration,
-            university: exam.university,
-            course: exam.course,
-            year: exam.year,
-            semester: exam.semester,
-            examDate: exam.examDate,
+            projectName: exam.projectName,
+            title: exam.examData.title,
+            description: exam.examData.description,
+            duration: exam.examData.duration,
+            university: exam.examData.university,
+            course: exam.examData.course,
+            year: exam.examData.year,
+            semester: exam.examData.semester,
+            examDate: exam.examData.examDate,
         },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: Partial<ExamResponse>) {
         setIsLoading(true)
         try {
             await onExamConfigChange(values)
@@ -74,6 +79,20 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-1">
                 <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="projectName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Project Name</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Enter project name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
                     <FormField
                         control={form.control}
                         name="title"

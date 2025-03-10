@@ -20,7 +20,7 @@ export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
                         <MoveLeft className="h-4 w-4" />
                     </Link>
                 </Button>
-                <h1 className="">{exam.examData.title}</h1>
+                <h1 >{exam.projectName}</h1>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     {isSaved ? (
                         <>

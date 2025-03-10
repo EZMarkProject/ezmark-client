@@ -1,8 +1,8 @@
-import { Exam } from "@/types/exam";
+import { ExamResponse } from "@/types/exam";
 
 interface ExamConfigFormProps {
-    exam: Exam;
-    onExamConfigChange: (updatedExam: Partial<Exam>) => Promise<void>;
+    exam: ExamResponse;
+    onExamConfigChange: (updatedExam: Partial<ExamResponse>) => Promise<void>;
 }
 
 export type { ExamConfigFormProps }; 

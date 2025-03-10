@@ -28,8 +28,8 @@ export function ExamCard({ exam, onEdit, onDelete }: ExamCardProps) {
         <Card className="w-30 overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-5">
                 <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-semibold tracking-tight">
-                        {exam.examData.title}
+                    <h3 className="text-lg font-semibold tracking-tight">
+                        {exam.projectName}
                     </h3>
 
                     <Badge variant="outline" className="text-sm">
@@ -37,7 +37,7 @@ export function ExamCard({ exam, onEdit, onDelete }: ExamCardProps) {
                     </Badge>
                 </div>
 
-                <div className="mt-2 text-muted-foreground">
+                <div className="mt-1 text-muted-foreground">
                     {exam.examData.university} • {exam.examData.course}
                 </div>
 

@@ -30,10 +30,10 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
         if (!selectedComponentId) return;
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
+            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
             if (componentIndex !== -1) {
-                updatedExam.components[componentIndex] = {
-                    ...updatedExam.components[componentIndex],
+                updatedExam.examData.components[componentIndex] = {
+                    ...updatedExam.examData.components[componentIndex],
                     ...updatedMCQ
                 } as UnionComponent;
             }
@@ -47,10 +47,10 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
         if (!selectedComponentId) return;
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
+            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
             if (componentIndex !== -1) {
-                updatedExam.components[componentIndex] = {
-                    ...updatedExam.components[componentIndex],
+                updatedExam.examData.components[componentIndex] = {
+                    ...updatedExam.examData.components[componentIndex],
                     ...updatedFillInBlank
                 } as UnionComponent;
             }
@@ -64,10 +64,10 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
         if (!selectedComponentId) return;
         setExam(prev => {
             const updatedExam = cloneDeep(prev);
-            const componentIndex = updatedExam.components.findIndex(component => component.id === selectedComponentId);
+            const componentIndex = updatedExam.examData.components.findIndex(component => component.id === selectedComponentId);
             if (componentIndex !== -1) {
-                updatedExam.components[componentIndex] = {
-                    ...updatedExam.components[componentIndex],
+                updatedExam.examData.components[componentIndex] = {
+                    ...updatedExam.examData.components[componentIndex],
                     ...updatedOpenQuestion
                 } as UnionComponent;
             }
@@ -79,12 +79,12 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
     // 根据 selectedComponentId 设置选中的组件
     useEffect(() => {
         if (selectedComponentId) {
-            const component = exam.components.find(component => component.id === selectedComponentId);
+            const component = exam.examData.components.find(component => component.id === selectedComponentId);
             setSelectedComponent(component as UnionComponent);
         } else {
             setSelectedComponent(null);
         }
-    }, [selectedComponentId, exam.components])
+    }, [selectedComponentId, exam.examData.components])
 
     return (
         <div className={cn("flex flex-col h-full", className)} >
