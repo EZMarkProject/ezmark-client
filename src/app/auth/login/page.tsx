@@ -22,7 +22,7 @@ export default function LoginPage() {
             description: "You have been successfully logged in.",
             duration: 1000
         });
-        router.push("/");
+        router.push("/dashboard");
     }
 
     const handleLogin = async (data: LoginFormData) => {
