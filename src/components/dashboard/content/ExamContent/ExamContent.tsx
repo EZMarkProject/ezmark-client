@@ -2,7 +2,7 @@ import { ExamResponse } from "@/types/exam";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/context/Auth";
-import { PlusCircle, Pencil, Trash2, Calendar, Clock, FileText, ArrowUpDown, Search, Info, MoreHorizontal } from "lucide-react";
+import { PlusCircle, } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
