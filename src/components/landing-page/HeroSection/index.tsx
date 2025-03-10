@@ -3,7 +3,6 @@
 import React from "react";
 import { ChevronRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 const HeroSection: React.FC = () => {
     return (
@@ -18,16 +17,16 @@ const HeroSection: React.FC = () => {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button asChild size="default" className="px-6 py-2 h-auto">
-                            <Link href="/dashboard" >
+                            <a href="/dashboard" >
                                 Get Started
                                 <ChevronRight className="ml-2 h-4 w-4" />
-                            </Link>
+                            </a>
                         </Button>
                         <Button asChild size="default" variant="outline" className="px-6 py-2 h-auto border-[#e5e7eb]">
-                            <Link href="#">
+                            <a href="#">
                                 <Play className="mr-2 h-4 w-4" />
                                 Play Video
-                            </Link>
+                            </a>
                         </Button>
                     </div>
                 </div>

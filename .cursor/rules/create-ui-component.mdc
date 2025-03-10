@@ -15,7 +15,7 @@ alwaysApply: false
 - 如果这个组件是属于某一个页面,请把组件的文件夹放到components/{页面名称}/{组件文件夹}内
 - 如果用户明确要求了组件创建的目录，请按照用户的意图创建
 - 如果需要用到图片，请使用unsplash中的免费图片
-- 当需要跳转时，使用Link组件，而不是Button
+- 当需要跳转时，使用<a>，而不是Button或Link
 - 业务组件中用到的所有组件都来源于 `shadcn/ui` 组件库 @https://ui.shadcn.com/docs/components/accordion
 - 组件必须遵循数据解耦原则：
   - 所有需要从服务端获取的数据必须通过 props 传入，禁止在组件内部直接发起请求

@@ -28,10 +28,10 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
                         className="flex-1"
                         asChild
                     >
-                        <Link href="/">
+                        <a href="/">
                             <Home className="mr-1 h-4 w-4" />
                             Home
-                        </Link>
+                        </a>
                     </Button>
                     <Button
                         variant="outline"

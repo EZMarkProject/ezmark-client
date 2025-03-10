@@ -3,7 +3,6 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 const CTASection: React.FC = () => {
     return (
@@ -24,10 +23,10 @@ const CTASection: React.FC = () => {
                             asChild
                             className="bg-background text-primary hover:bg-background/90"
                         >
-                            <Link href="/dashboard">
+                            <a href="/dashboard">
                                 Get Started Now
                                 <ArrowRight className="ml-2 h-4 w-4" />
-                            </Link>
+                            </a>
                         </Button>
                         <Button
                             size="lg"
@@ -35,9 +34,9 @@ const CTASection: React.FC = () => {
                             asChild
                             className="border-primary-foreground/20 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:border-primary-foreground/30 hover:text-primary-foreground transition-colors"
                         >
-                            <Link href="/dashboard">
+                            <a href="/dashboard">
                                 Request a Demo
-                            </Link>
+                            </a>
                         </Button>
                     </div>
                 </div>
