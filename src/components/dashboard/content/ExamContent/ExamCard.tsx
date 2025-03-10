@@ -28,7 +28,7 @@ export function ExamCard({ exam, onEdit, onDelete }: ExamCardProps) {
         <Card className="w-30 flex-grow overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-5">
                 <div className="flex justify-between items-center">
-                    <h3 className="text-lg font-semibold tracking-tight">
+                    <h3 className="text-base font-semibold tracking-tight">
                         {exam.projectName}
                     </h3>
 
