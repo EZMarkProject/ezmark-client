@@ -12,7 +12,7 @@ import { getExamByUserEmail, deleteExamById } from "@/lib/api";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 function ExamContent() {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false)
     const [initialData, setInitialData] = useState<ExamResponse[]>([]);
     const [refetch, setRefetch] = useState(false);
     const [examToDelete, setExamToDelete] = useState<string | null>(null);
@@ -23,6 +23,7 @@ function ExamContent() {
     useEffect(() => {
         if (email) {
             const fetchExams = async () => {
+                setIsLoading(true);
                 const response = await getExamByUserEmail(email);
                 setInitialData(response.data);
                 setIsLoading(false);
@@ -114,7 +115,7 @@ function ExamContent() {
                     </Button>
                 </div>
             ) : (
-                <div className="flex gap-4 justify-start">
+                <div className="flex gap-4 justify-center flex-wrap">
                     {initialData.map((exam) => (
                         <ExamCard
                             key={exam.documentId}

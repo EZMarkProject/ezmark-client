@@ -25,7 +25,7 @@ export function ExamCard({ exam, onEdit, onDelete }: ExamCardProps) {
     const formattedExamDate = examDate ? format(examDate, "d MMM yyyy") : "Not scheduled";
 
     return (
-        <Card className="w-30 overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow">
+        <Card className="w-30 flex-grow overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow">
             <CardContent className="p-5">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-semibold tracking-tight">
@@ -51,17 +51,16 @@ export function ExamCard({ exam, onEdit, onDelete }: ExamCardProps) {
                         <Clock className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm">{exam.examData.duration}</span>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm">{exam.examData.components.length} Questions</span>
+                    </div>
                 </div>
             </CardContent>
 
             <div className="px-6 py-3 border-t bg-muted/30">
                 <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                        <Bookmark className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">
-                            {exam.examData.components.length} Questions
-                        </span>
-                    </div>
                     <div className="flex items-center gap-2">
                         <CalendarPlus className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">
