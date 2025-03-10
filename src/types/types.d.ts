@@ -9,6 +9,7 @@ export interface LoginResponse {
         blocked: boolean;
         createdAt: string;
         updatedAt: string;
+        documentId: string;
     };
 }
 
@@ -23,6 +24,7 @@ export interface RegisterResponse {
         blocked: boolean;
         createdAt: string;
         updatedAt: string;
+        documentId: string;
     };
 }
 
@@ -42,9 +44,11 @@ export interface AuthContextObject {
     userName: string;
     email: string;
     jwt: string;
+    documentId: string;
     setAuthenticated: (authenticated: boolean) => void;
     setJwt: (jwt: string) => void;
     setUserName: (userName: string) => void;
     setEmail: (email: string) => void;
+    setDocumentId: (documentId: string) => void;
     logout: () => Promise<void>;
 }

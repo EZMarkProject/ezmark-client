@@ -14,12 +14,15 @@ export const AuthContext = createContext<AuthContextObject>({
     setEmail: () => { },
     setJwt: () => { },
     setAuthenticated: () => { },
-    logout: () => Promise.resolve()
+    logout: () => Promise.resolve(),
+    documentId: "",
+    setDocumentId: () => { }
 })
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
+    const [documentId, setDocumentId] = useState("");
     const [jwt, setJwt] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
     const pathname = usePathname();
@@ -30,11 +33,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         Cookies.remove("jwt");
         localStorage.removeItem("userName");
         localStorage.removeItem("email");
-
+        localStorage.removeItem("documentId");
         // Update auth context
         setAuthenticated(false);
         setUserName("");
         setEmail("");
+        setDocumentId("");
         setJwt("");
 
         // Redirect to home page
@@ -49,9 +53,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setJwt(jwt);
             const userName = localStorage.getItem("userName");
             const email = localStorage.getItem("email");
-            if (userName && email) {
+            const documentId = localStorage.getItem("documentId");
+            if (userName && email && documentId) {
                 setUserName(userName);
                 setEmail(email);
+                setDocumentId(documentId);
                 // 只有当用户名和邮箱都存在时，才认为用户已登录
                 setAuthenticated(true);
             } else {
@@ -59,6 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 Cookies.remove("jwt");
                 localStorage.removeItem("userName");
                 localStorage.removeItem("email");
+                localStorage.removeItem("documentId");
                 setAuthenticated(false);
             }
         } else {
@@ -83,7 +90,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setEmail,
             setJwt,
             setAuthenticated,
-            logout
+            logout,
+            documentId,
+            setDocumentId
         }}>
             {children}
         </AuthContext.Provider>

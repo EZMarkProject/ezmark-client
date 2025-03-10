@@ -25,7 +25,7 @@ export function ExamCard({ exam, onEdit, onDelete }: ExamCardProps) {
     const formattedExamDate = examDate ? format(examDate, "d MMM yyyy") : "Not scheduled";
 
     return (
-        <Card className="w-30 flex-grow overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow">
+        <Card className="w-30 flex-grow overflow-hidden border border-border shadow-none hover:shadow-sm transition-shadow">
             <CardContent className="p-5">
                 <div className="flex justify-between items-center">
                     <h3 className="text-base font-semibold tracking-tight">

@@ -1,8 +1,9 @@
 import { ExamResponse } from "@/types/exam";
 import { axiosInstance } from "./axios";
+import { defaultExamData } from "@/mock/default-exam-data";
 
-export async function getExamByUserEmail(email: string): Promise<{ data: ExamResponse[] }> {
-    const response = await axiosInstance.get(`/exams?populate=*&filters[user][email][$eq]=${email}`);
+export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
+    const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}`);
     return response.data;
 }
 
@@ -16,4 +17,13 @@ export async function deleteExamById(id: string) {
     return response.data;
 }
 
-
+export async function createExam(projectName: string, userDocumentId: string) {
+    const response = await axiosInstance.post('/exams', {
+        data: {
+            projectName,
+            user: userDocumentId,
+            examData: defaultExamData
+        }
+    });
+    return response.data;
+}

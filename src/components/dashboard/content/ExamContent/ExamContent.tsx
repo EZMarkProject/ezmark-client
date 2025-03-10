@@ -8,8 +8,19 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ExamCard } from "./ExamCard";
 import { Separator } from "@/components/ui/separator";
-import { getExamByUserEmail, deleteExamById } from "@/lib/api";
+import { getExamByUserId, deleteExamById, createExam } from "@/lib/api";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const formSchema = z.object({
+    projectName: z.string().min(1, "Project name is required"),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 function ExamContent() {
     const [isLoading, setIsLoading] = useState(false)
@@ -17,20 +28,30 @@ function ExamContent() {
     const [refetch, setRefetch] = useState(false);
     const [examToDelete, setExamToDelete] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const { email } = useAuth();
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
+    const { documentId } = useAuth();
     const router = useRouter();
 
+    const form = useForm<FormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            projectName: "",
+        },
+    });
+
     useEffect(() => {
-        if (email) {
+        if (documentId) {
             const fetchExams = async () => {
                 setIsLoading(true);
-                const response = await getExamByUserEmail(email);
+                const response = await getExamByUserId(documentId);
                 setInitialData(response.data);
                 setIsLoading(false);
             };
             fetchExams();
         }
-    }, [email, refetch]);
+    }, [documentId, refetch]);
 
     // Handle edit button click
     const handleEdit = (documentId: string) => {
@@ -46,8 +67,10 @@ function ExamContent() {
     // Handle confirm delete
     const handleConfirmDelete = async () => {
         if (examToDelete) {
+            setIsDeleting(true);
             await deleteExamById(examToDelete);
             setRefetch(!refetch);
+            setIsDeleting(false);
             setIsDeleteDialogOpen(false);
             setExamToDelete(null);
         }
@@ -55,7 +78,17 @@ function ExamContent() {
 
     // Handle create new exam
     const handleCreateNew = () => {
-        router.push('/create');
+        setIsCreateDialogOpen(true);
+    };
+
+    // Handle form submission
+    const onSubmit = async (data: FormValues) => {
+        setIsCreating(true);
+        await createExam(data.projectName, documentId);
+        form.reset();
+        setRefetch(!refetch);
+        setIsCreating(false);
+        setIsCreateDialogOpen(false);
     };
 
     return (
@@ -83,13 +116,68 @@ function ExamContent() {
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+                        <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)} disabled={isDeleting}>
                             Cancel
                         </Button>
-                        <Button variant="destructive" onClick={handleConfirmDelete}>
-                            Delete
+                        <Button variant="destructive" onClick={handleConfirmDelete} disabled={isDeleting}>
+                            {isDeleting ? (
+                                <>
+                                    <span className="mr-2 h-4 w-4 animate-spin">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-loader-2"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                                    </span>
+                                    Deleting...
+                                </>
+                            ) : (
+                                "Delete"
+                            )}
                         </Button>
                     </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Create New Exam Dialog */}
+            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Create New Exam</DialogTitle>
+                        <DialogDescription>
+                            Enter the details to create a new exam for AI-assisted grading.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="projectName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Project Name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Enter exam title or identifier" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <DialogFooter>
+                                <Button variant="outline" type="button" onClick={() => setIsCreateDialogOpen(false)} disabled={isCreating}>
+                                    Cancel
+                                </Button>
+                                <Button type="submit" disabled={isCreating}>
+                                    {isCreating ? (
+                                        <>
+                                            <span className="mr-2 h-4 w-4 animate-spin">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-loader-2"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                                            </span>
+                                            Creating...
+                                        </>
+                                    ) : (
+                                        "Create"
+                                    )}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </Form>
                 </DialogContent>
             </Dialog>
 

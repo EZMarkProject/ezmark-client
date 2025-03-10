@@ -8,19 +8,12 @@ import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserNav } from "../UserNav";
 import { useAuth } from "@/context/Auth";
-import Cookies from "js-cookie";
 
 const Navbar: React.FC = () => {
-    const { authenticated, userName, email, setAuthenticated, setUserName, setEmail, setJwt } = useAuth();
+    const { authenticated, userName, email, logout } = useAuth();
 
     const onLogoutClick = () => {
-        Cookies.remove("jwt");
-        localStorage.removeItem("userName");
-        localStorage.removeItem("email");
-        setAuthenticated(false);
-        setUserName("");
-        setEmail("");
-        setJwt("");
+        logout();
     }
 
     return (

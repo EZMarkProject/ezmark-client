@@ -16,6 +16,7 @@ export default function LoginPage() {
         Cookies.set("jwt", responseData.jwt);
         localStorage.setItem("userName", responseData.user.username);
         localStorage.setItem("email", responseData.user.email);
+        localStorage.setItem("documentId", responseData.user.documentId);
         toast({
             title: "Login Successful",
             description: "You have been successfully logged in.",
