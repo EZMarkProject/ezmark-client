@@ -1,20 +1,19 @@
 import { ExamResponse } from "@/types/exam";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/Auth";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Pencil, Trash2, Calendar, Clock, FileText, ArrowUpDown, Search, Info, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ExamCard } from "./ExamCard";
 import { Separator } from "@/components/ui/separator";
 import { getExamByUserId, deleteExamById, createExam } from "@/lib/api";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { ExamTable } from "./ExamTable";
 
 const formSchema = z.object({
     projectName: z.string().min(1, "Project name is required"),
@@ -31,6 +30,7 @@ function ExamContent() {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isCreating, setIsCreating] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
     const { documentId } = useAuth();
     const router = useRouter();
 
@@ -91,20 +91,27 @@ function ExamContent() {
         setIsCreateDialogOpen(false);
     };
 
+    // Filter exams based on search query
+    const filteredExams = initialData.filter(exam =>
+        exam.projectName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        exam.examData.university.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        exam.examData.course.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Exams</h2>
-                    <p className="text-muted-foreground mt-1">Manage and view your exam papers.</p>
+                    <p className="text-muted-foreground mt-1">Manage and view your exam papers for AI-assisted grading.</p>
                 </div>
-                <Button onClick={handleCreateNew}>
+                <Button onClick={handleCreateNew} className="rounded-md shadow-sm">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Create New Exam
                 </Button>
             </div>
 
-            <Separator />
+            <Separator className="my-2" />
 
             {/* Delete Confirmation Dialog */}
             <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -153,7 +160,7 @@ function ExamContent() {
                                     <FormItem>
                                         <FormLabel>Project Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter exam title or identifier" {...field} />
+                                            <Input placeholder="Enter exam title for AI-assisted marking" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -182,37 +189,33 @@ function ExamContent() {
             </Dialog>
 
             {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                        <div key={i} className="space-y-4">
-                            <Skeleton className="h-[250px] w-full rounded-lg" />
-                        </div>
-                    ))}
+                <div className="w-full space-y-4">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-14 w-full" />
+                    <Skeleton className="h-14 w-full" />
+                    <Skeleton className="h-14 w-full" />
                 </div>
             ) : initialData.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="text-center py-16 rounded-xl border-2 border-dashed">
                     <h3 className="text-xl font-medium text-muted-foreground mb-4">
                         No exams found
                     </h3>
                     <p className="text-muted-foreground mb-6">
                         Start creating exams to help with AI-assisted grading
                     </p>
-                    <Button onClick={handleCreateNew}>
+                    <Button onClick={handleCreateNew} className="rounded-full">
                         <PlusCircle className="mr-2 h-4 w-4" />
                         Create Your First Exam
                     </Button>
                 </div>
             ) : (
-                <div className="flex gap-4 justify-center flex-wrap">
-                    {initialData.map((exam) => (
-                        <ExamCard
-                            key={exam.documentId}
-                            exam={exam}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                        />
-                    ))}
-                </div>
+                <ExamTable
+                    exams={filteredExams}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                />
             )}
         </div>
     );
