@@ -205,7 +205,7 @@ export default function Editor({ documentId }: EditorProps) {
                 {renderSidePanel()}
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
-                        exam={exam.examData}
+                        exam={exam}
                         renderMode={renderMode}
                         onRenderModeChange={setRenderMode}
                         onMCQQuestionChange={onMCQQuestionChange}

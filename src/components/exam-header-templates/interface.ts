@@ -1,5 +1,5 @@
-import { Exam } from '@/types/exam';
+import { ExamResponse } from '@/types/exam';
 
 export interface DefaultHeaderProps {
-    exam: Exam;
+    exam: ExamResponse;
 } 

@@ -2,7 +2,7 @@
 
 import { type CanvasProps } from "./interface"
 import { useState, useCallback, useRef, useEffect } from "react"
-import { ZoomIn, ZoomOut, Eye, EyeOff, Pen, FileJson } from "lucide-react"
+import { ZoomIn, ZoomOut, Eye, Pen, FileJson } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { A4ExamPaper } from "@/components/editor/A4ExamPaper"
 import { useToast } from "@/hooks/use-toast"

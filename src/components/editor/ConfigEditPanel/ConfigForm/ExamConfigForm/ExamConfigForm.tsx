@@ -60,9 +60,18 @@ export default function ExamConfigForm({ exam, onExamConfigChange }: ExamConfigF
     })
 
     async function onSubmit(values: Partial<ExamResponse>) {
+        // 构造一个完整的 ExamResponse 对象
+        const updatedExam: ExamResponse = {
+            ...exam,
+            projectName: values.projectName || exam.projectName,
+            examData: {
+                ...exam.examData,
+                ...values
+            }
+        }
         setIsLoading(true)
         try {
-            await onExamConfigChange(values)
+            await onExamConfigChange(updatedExam)
             toast({
                 title: "Exam configuration saved",
                 description: "The exam configuration has been saved successfully",

@@ -27,3 +27,14 @@ export async function createExam(projectName: string, userDocumentId: string) {
     });
     return response.data;
 }
+
+export async function updateExam(documentId: string, examData: ExamResponse) {
+    const updatedExamData: Partial<ExamResponse> = {
+        projectName: examData.projectName,
+        examData: examData.examData
+    }
+    const response = await axiosInstance.put(`/exams/${documentId}`, {
+        data: updatedExamData
+    });
+    return response.data;
+}

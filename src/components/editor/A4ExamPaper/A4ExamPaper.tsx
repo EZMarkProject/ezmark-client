@@ -31,7 +31,7 @@ export function A4ExamPaper({
             }}
         >
             <div className="bg-background w-[210mm] min-h-[297mm] mx-auto p-8 shadow-lg">
-                {exam.components.map(item => {
+                {exam.examData.components.map(item => {
                     switch (item.type) {
                         case 'default-header':
                             return (

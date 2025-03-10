@@ -7,14 +7,16 @@ import { MCQConfigForm } from "./ConfigForm/MCQConfigForm"
 import { FillInBlankConfigForm } from "./ConfigForm/FillInBlankConfigForm"
 import { OpenQuestionConfigForm } from "./ConfigForm/OpenQuestionConfigForm"
 import { useEffect, useState } from "react";
-import { FillInBlankQuestionData, MultipleChoiceQuestionData, OpenQuestionData, UnionComponent } from "@/types/exam"
+import { ExamResponse, FillInBlankQuestionData, MultipleChoiceQuestionData, OpenQuestionData, UnionComponent } from "@/types/exam"
 import cloneDeep from 'lodash/cloneDeep'
+import { updateExam } from "@/lib/api"
 
 export function ConfigEditPanel({ className, setExam, selectedComponentId, exam }: ConfigEditPanelProps) {
     const [selectedComponent, setSelectedComponent] = useState<UnionComponent | null>(null);
 
     // 更新 exam 的配置
-    const handleExamConfigChange = async (updatedExam: Partial<typeof exam>) => {
+    const handleExamConfigChange = async (updatedExam: ExamResponse) => {
+        await updateExam(exam.documentId, updatedExam);
         setExam(prev => {
             const prevClone = cloneDeep(prev);
             return {
@@ -22,7 +24,6 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                 ...updatedExam
             }
         });
-        await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     // 更新 MCQ 组件的配置

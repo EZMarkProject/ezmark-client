@@ -1,7 +1,7 @@
-import { Exam } from "@/types/exam";
+import { ExamResponse } from "@/types/exam";
 
 export interface CanvasSharedProps {
-    exam: Exam
+    exam: ExamResponse
     renderMode: boolean
     onMCQQuestionChange: (questionId: string, content: string) => void
     onMCQOptionChange: (questionId: string, optionIndex: number, content: string) => void

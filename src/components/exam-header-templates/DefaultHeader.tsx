@@ -12,8 +12,8 @@ export function DefaultHeader({
             <div className="mb-8">
                 {/* Top Row - School Name and Date */}
                 <div className="flex justify-between mb-6">
-                    <div className="text-xl font-bold uppercase">{exam.university}</div>
-                    <div className="text-xl">{exam.examDate}</div>
+                    <div className="text-xl font-bold uppercase">{exam.examData.university}</div>
+                    <div className="text-xl">{exam.examData.examDate}</div>
                 </div>
 
                 {/* Student Information */}
@@ -32,23 +32,23 @@ export function DefaultHeader({
                     {/* Academic Information Box */}
                     <div className="flex-1 border-2 border-black dark:border-white flex flex-col items-center justify-center p-4">
                         <div className="text-xl">
-                            <span className="font-bold">Year:</span> {exam.year}
+                            <span className="font-bold">Year:</span> {exam.examData.year}
                         </div>
                         <div className="text-xl">
-                            <span className="font-bold">Semester:</span> {exam.semester}
+                            <span className="font-bold">Semester:</span> {exam.examData.semester}
                         </div>
                         <div className="text-xl">
-                            <span className="font-bold">Duration:</span> {exam.duration}
+                            <span className="font-bold">Duration:</span> {exam.examData.duration}
                         </div>
                     </div>
                 </div>
 
                 {/* Course Information */}
                 <div className="mb-4">
-                    <div className="text-lg">{exam.title}</div>
-                    <div className="flex items-center flex-wrap">
-                        <div className="text-5xl font-bold uppercase tracking-tight mr-4">{exam.course}</div>
-                        <div className="text-lg">{exam.description}</div>
+                    <div className="text-lg">{exam.examData.title}</div>
+                    <div className="flex items-start flex-col">
+                        <div className="text-5xl font-bold uppercase tracking-tight mr-4">{exam.examData.course}</div>
+                        <div className="text-lg">{exam.examData.description}</div>
                     </div>
                 </div>
 

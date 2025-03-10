@@ -3,8 +3,8 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { Check, MoveLeft, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { EditorNavbarProps } from "./interface"
+import { format } from "date-fns"
 
 export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
     return (
@@ -25,12 +25,12 @@ export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
                     {isSaved ? (
                         <>
                             <Check className="h-4 w-4 text-green-500" />
-                            <span>Last saved {exam.updatedAt}</span>
+                            <span>Last saved {format(new Date(exam.updatedAt), "d MMM HH:mm")}</span>
                         </>
                     ) : (
                         <>
                             <X className="h-4 w-4 text-red-500" />
-                            <span>Unsaved changes. Last saved {exam.updatedAt}</span>
+                            <span>Unsaved changes. Last saved {format(new Date(exam.updatedAt), "d MMM HH:mm")}</span>
                         </>
                     )}
                 </div>
