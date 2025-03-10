@@ -16,9 +16,9 @@ export function EditorNavbar({ exam, isSaved = true }: EditorNavbarProps) {
                     className="h-8 w-8"
                     asChild
                 >
-                    <Link href="/">
+                    <a href="/dashboard">
                         <MoveLeft className="h-4 w-4" />
-                    </Link>
+                    </a>
                 </Button>
                 <h1 >{exam.projectName}</h1>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">

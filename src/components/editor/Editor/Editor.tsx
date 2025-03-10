@@ -1,27 +1,44 @@
 'use client'
+import React, { useState, useEffect } from "react"
 import { EditorNavbar } from "@/components/editor/EditorNavbar"
 import { SectionSelection } from "@/components/editor/SectionSelection"
 import { QuestionSelectionPanel } from "@/components/editor/QuestionSelectionPanel"
 import { Canvas } from "@/components/editor/Canvas"
 import { ConfigEditPanel } from "@/components/editor/ConfigEditPanel"
-import { useState } from "react"
+import { Button } from "@/components/ui/button"
 import { MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestionData, UnionComponent, ExamResponse } from "@/types/exam"
-import { mockExamData } from "@/mock/exam-data"
 import { nanoid } from "nanoid"
 import cloneDeep from 'lodash/cloneDeep'
 import { TemplateSelectionPanel } from "@/components/editor/TemplateSelectionPanel"
 import { BankSelectionPanel } from "@/components/editor/BankSelectionPanel"
+import { EditorProps } from "./interface";
+import { getExamById } from "@/lib/api"
+import { Loader2, MoveLeft } from "lucide-react"
+import Link from "next/link"
 
-export default function Editor() {
-    const [exam, setExam] = useState<ExamResponse>(mockExamData);
+export default function Editor({ documentId }: EditorProps) {
+    const [exam, setExam] = useState<ExamResponse | null>(null);
     const [renderMode, setRenderMode] = useState(true);
     const [activeTab, setActiveTab] = useState("components");
     const [isSaved, setIsSaved] = useState(true);
     const [selectedComponentId, setSelectedComponentId] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchExam = async () => {
+            setIsLoading(true);
+            const response = await getExamById(documentId);
+            setExam(response.data);
+            setIsLoading(false);
+        }
+        fetchExam();
+    }, [documentId])
 
     const onMCQQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
+            if (!prev) return null;
             const updatedExam = cloneDeep(prev);
+            if (!updatedExam) return null;
             const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
                 (updatedExam.examData.components[questionIndex] as MultipleChoiceQuestionData).question = content
@@ -32,7 +49,9 @@ export default function Editor() {
 
     const onMCQOptionChange = (questionId: string, optionIndex: number, content: string) => {
         setExam(prev => {
+            if (!prev) return null;
             const updatedExam = cloneDeep(prev);
+            if (!updatedExam) return null;
             const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
                 (updatedExam.examData.components[questionIndex] as MultipleChoiceQuestionData).options[optionIndex].content = content
@@ -43,7 +62,9 @@ export default function Editor() {
 
     const onFillInBlankContentChange = (questionId: string, content: string) => {
         setExam(prev => {
+            if (!prev) return null;
             const updatedExam = cloneDeep(prev);
+            if (!updatedExam) return null;
             const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
                 (updatedExam.examData.components[questionIndex] as FillInBlankQuestionData).content = content
@@ -54,7 +75,9 @@ export default function Editor() {
 
     const onOpenQuestionChange = (questionId: string, content: string) => {
         setExam(prev => {
+            if (!prev) return null;
             const updatedExam = cloneDeep(prev);
+            if (!updatedExam) return null;
             const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === questionId)
             if (questionIndex !== -1) {
                 (updatedExam.examData.components[questionIndex] as OpenQuestionData).content = content
@@ -69,7 +92,9 @@ export default function Editor() {
 
     const handleAddComponent = (componentType: string) => {
         setExam(prev => {
+            if (!prev) return null;
             const updatedExam = cloneDeep(prev);
+            if (!updatedExam) return null;
             let newComponent: UnionComponent;
 
             // 根据组件类型创建不同的组件
@@ -156,9 +181,21 @@ export default function Editor() {
         }
     };
 
-    return (
-        <div className="min-h-screen bg-background">
-            <EditorNavbar exam={exam} isSaved={false} />
+    const renderLoading = () => {
+        return (
+            <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                    <p className="text-lg">Loading Exam...</p>
+                </div>
+            </div>
+        )
+    }
+
+    const renderContent = () => {
+        if (!exam) return null;
+
+        return (
             <div className="flex h-[calc(100vh-4rem)]">
                 <SectionSelection
                     className="w-33 border-r shrink-0"
@@ -178,8 +215,33 @@ export default function Editor() {
                         handleComponentClick={handleComponentClick}
                     />
                 </div>
-                <ConfigEditPanel setExam={setExam} selectedComponentId={selectedComponentId} exam={exam} className="w-80 border-l shrink-0" />
+                <ConfigEditPanel
+                    setExam={setExam as React.Dispatch<React.SetStateAction<ExamResponse>>}
+                    selectedComponentId={selectedComponentId}
+                    exam={exam}
+                    className="w-80 border-l shrink-0"
+                />
             </div>
+        )
+    }
+
+    return (
+        <div className="min-h-screen bg-background">
+            {exam ? (
+                <EditorNavbar exam={exam} isSaved={isSaved} />
+            ) : (
+                <nav className="flex h-[50px] items-center border-b px-4 justify-between">
+                    <div className="flex items-center gap-3">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+                            <Link href="/">
+                                <MoveLeft className="h-4 w-4" />
+                            </Link>
+                        </Button>
+                        <h1>Loading Exam...</h1>
+                    </div>
+                </nav>
+            )}
+            {isLoading ? renderLoading() : renderContent()}
         </div>
     )
 }   
