@@ -39,7 +39,7 @@ export interface BaseComponent {
 }
 
 export interface Position {
-    padgsIndex: number;
+    pageIndex: number;
     top: number;  // 单位是mm
     left: number;
     width: number;
