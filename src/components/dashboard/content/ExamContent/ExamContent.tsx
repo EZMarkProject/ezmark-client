@@ -99,7 +99,7 @@ function ExamContent() {
     );
 
     return (
-        <div className="space-y-6">
+        <div className="flex flex-col space-y-6 h-[100%]">
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Exams</h2>
@@ -111,7 +111,39 @@ function ExamContent() {
                 </Button>
             </div>
 
-            <Separator className="my-2" />
+            <div className="flex-1 overflow-y-auto">
+                {isLoading ? (
+                    <div className="w-full space-y-4">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-14 w-full" />
+                        <Skeleton className="h-14 w-full" />
+                        <Skeleton className="h-14 w-full" />
+                    </div>
+                ) : initialData.length === 0 ? (
+                    <div className="text-center py-16 rounded-xl border-2 border-dashed">
+                        <h3 className="text-xl font-medium text-muted-foreground mb-4">
+                            No exams found
+                        </h3>
+                        <p className="text-muted-foreground mb-6">
+                            Start creating exams to help with AI-assisted grading
+                        </p>
+                        <Button onClick={handleCreateNew} className="rounded-full">
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            Create Your First Exam
+                        </Button>
+                    </div>
+                ) : (
+                    <div className="overflow-y-auto">
+                        <ExamTable
+                            exams={filteredExams}
+                            searchQuery={searchQuery}
+                            onSearchChange={setSearchQuery}
+                            handleEdit={handleEdit}
+                            handleDelete={handleDelete}
+                        />
+                    </div>
+                )}
+            </div>
 
             {/* Delete Confirmation Dialog */}
             <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -187,36 +219,6 @@ function ExamContent() {
                     </Form>
                 </DialogContent>
             </Dialog>
-
-            {isLoading ? (
-                <div className="w-full space-y-4">
-                    <Skeleton className="h-10 w-full" />
-                    <Skeleton className="h-14 w-full" />
-                    <Skeleton className="h-14 w-full" />
-                    <Skeleton className="h-14 w-full" />
-                </div>
-            ) : initialData.length === 0 ? (
-                <div className="text-center py-16 rounded-xl border-2 border-dashed">
-                    <h3 className="text-xl font-medium text-muted-foreground mb-4">
-                        No exams found
-                    </h3>
-                    <p className="text-muted-foreground mb-6">
-                        Start creating exams to help with AI-assisted grading
-                    </p>
-                    <Button onClick={handleCreateNew} className="rounded-full">
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Create Your First Exam
-                    </Button>
-                </div>
-            ) : (
-                <ExamTable
-                    exams={filteredExams}
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    handleEdit={handleEdit}
-                    handleDelete={handleDelete}
-                />
-            )}
         </div>
     );
 }

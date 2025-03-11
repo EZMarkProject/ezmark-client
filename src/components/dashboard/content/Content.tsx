@@ -9,7 +9,7 @@ const Content = ({ activeTab }: ContentProps) => {
             <div className="h-full p-2">
                 <div className="bg-background rounded-2xl p-6 h-full shadow-sm">
                     {/* 在这里添加内容 */}
-                    <div className="grid gap-6">
+                    <div className="h-[100%]">
                         {activeTab === "exams" && <ExamContent />}
                         {activeTab === "analysis" && <AnalysisContent />}
                         {activeTab === "classes" && <ClassesContent />}
