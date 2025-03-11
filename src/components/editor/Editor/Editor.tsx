@@ -184,20 +184,6 @@ export default function Editor({ documentId }: EditorProps) {
         console.log("Export PDF");
     }
 
-    // 更新组件position对象
-    const handleComponentPositionChange = (componentId: string, position: Position) => {
-        setIsSaved(false);
-        setExam(prev => {
-            if (!prev) return null;
-            const updatedExam = cloneDeep(prev);
-            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === componentId)
-            if (questionIndex !== -1) {
-                (updatedExam.examData.components[questionIndex] as UnionComponent).position = position
-            }
-            return updatedExam
-        })
-    }
-
     const renderSidePanel = () => {
         switch (activeTab) {
             case "components":
@@ -236,6 +222,7 @@ export default function Editor({ documentId }: EditorProps) {
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
                         exam={exam}
+                        setExam={setExam}
                         renderMode={renderMode}
                         onRenderModeChange={setRenderMode}
                         onMCQQuestionChange={onMCQQuestionChange}
@@ -243,7 +230,6 @@ export default function Editor({ documentId }: EditorProps) {
                         onFillInBlankContentChange={onFillInBlankContentChange}
                         onOpenQuestionChange={onOpenQuestionChange}
                         handleComponentClick={handleComponentClick}
-                        handleComponentPositionChange={handleComponentPositionChange}
                     />
                 </div>
                 <ConfigEditPanel

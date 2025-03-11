@@ -9,9 +9,16 @@ import { nanoid } from "nanoid";
 import { OpenQuestion } from "@/components/questions-type/open-question";
 import { Divider } from "@/components/layout-components/Divider";
 import { ClickDragContainer } from "../ClickDragContainer";
+import { useEffect, useRef } from "react";
+import { ExamResponse, UnionComponent } from "@/types/exam";
+
+const A4_WIDTH_MM = 210
+const A4_HEIGHT_MM = 297
+const BOTTOM_MARGIN_MM = 10
 
 export function A4ExamPaper({
     exam,
+    setExam,
     renderMode,
     scale = 1,
     onMCQQuestionChange,
@@ -19,8 +26,78 @@ export function A4ExamPaper({
     onFillInBlankContentChange,
     onOpenQuestionChange,
     handleComponentClick,
-    handleComponentPositionChange
 }: A4ExamPaperProps) {
+    const containerRef = useRef<HTMLDivElement>(null) // 这个ref是A4纸的容器
+    const isUpdatingFromEffect = useRef(false); // 新增：用于标记是否是由effect本身引起的更新
+
+    // 计算每一个组件相对于A4纸的相对位置，并更新到组件的position属性中
+    useEffect(() => {
+        // 如果正在从effect更新，则跳过此次执行
+        if (isUpdatingFromEffect.current) {
+            isUpdatingFromEffect.current = false;
+            return;
+        }
+
+        if (containerRef.current) {
+            console.log('Calculate position')
+            const pages: string[][] = [[]] // 二维数组，每个子数组表示一页，用来计算分页
+            let currentPageIndex = 0;
+            let currentPageHeight = 0;
+            // A4纸的rect
+            const a4Rect = containerRef.current.getBoundingClientRect()
+            // 计算pixel到mm的转换比例
+            const pixelToMMRatio = A4_WIDTH_MM / (a4Rect.width / scale)
+            // 开始遍历所有components，计算position
+            const allComponentsWithPosition = [...exam.examData.components].map(component => {
+                // 获取组件的DOM元素
+                const element = document.querySelector(`[data-component-id="${component.id}"]`)
+                if (!element) return component;
+                // 获取组件rect
+                const rect = element.getBoundingClientRect()
+                // 计算相对位置，并转换到mm
+                const topMm = (rect.top - a4Rect.top) * pixelToMMRatio
+                const leftMm = (rect.left - a4Rect.left) * pixelToMMRatio
+                const widthMm = rect.width * pixelToMMRatio
+                const heightMm = rect.height * pixelToMMRatio
+                // 创建一个组件的副本，并更新position
+                const componentWithPosition = {
+                    ...component,
+                    position: {
+                        top: topMm,
+                        left: leftMm,
+                        width: widthMm,
+                        height: heightMm,
+                        pageIndex: currentPageIndex
+                    }
+                }
+                // 检查当前页面是否还能容纳这个组件
+                if (currentPageHeight + heightMm > A4_HEIGHT_MM - BOTTOM_MARGIN_MM) {
+                    // 新建一页, 并把当前组件加入到新页中
+                    currentPageIndex++;
+                    pages.push([component.id])
+                    currentPageHeight = heightMm;
+                    componentWithPosition.position.pageIndex = currentPageIndex;
+                } else {
+                    // 添加到当前页
+                    pages[currentPageIndex].push(component.id)
+                    currentPageHeight += heightMm;
+                }
+                return componentWithPosition;
+            })
+            // 更新状态前设置标记
+            isUpdatingFromEffect.current = true;
+            // 更新状态
+            const updatedExam: ExamResponse = {
+                ...exam,
+                examData: {
+                    ...exam.examData,
+                    components: allComponentsWithPosition as UnionComponent[]
+                }
+            }
+            setExam(updatedExam)
+        }
+    }, [exam, scale])
+
     return (
         <div
             style={{
@@ -31,7 +108,8 @@ export function A4ExamPaper({
                 paddingTop: '1rem'
             }}
         >
-            <div className="bg-background w-[210mm] min-h-[297mm] mx-auto p-8 shadow-lg">
+            {/* 下面这个div是A4纸的尺寸 */}
+            <div ref={containerRef} className={`bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto p-8 shadow-lg`}>
                 {exam.examData.components.map(item => {
                     switch (item.type) {
                         case 'default-header':
@@ -42,7 +120,6 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id);
                                     }}
-                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <DefaultHeader
                                         key={`header-${item.id}`}
@@ -58,7 +135,6 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id);
                                     }}
-                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <MultipleChoiceQuestion
                                         questionObj={item}
@@ -77,7 +153,6 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
-                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <FillInBlankQuestion
                                         key={`fill-${item.id}`}
@@ -96,7 +171,6 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
-                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <OpenQuestion
                                         key={`open-${item.id}`}
@@ -115,7 +189,6 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
-                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <Blank
                                         key={`blank-${item.id}`}
@@ -131,7 +204,6 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
-                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <Divider
                                         key={`divider-${item.id}`}

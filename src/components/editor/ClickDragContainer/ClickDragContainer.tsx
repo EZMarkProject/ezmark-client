@@ -18,6 +18,7 @@ export default function ClickDragContainer({
                 'cursor-pointer transition-colors duration-150 ease-in-out hover:bg-gray-100'
             }
             onClick={handleClick}
+            data-component-id={componentId}
         >
             {children}
         </div>

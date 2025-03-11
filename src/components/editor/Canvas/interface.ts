@@ -8,7 +8,7 @@ export interface CanvasSharedProps {
     onFillInBlankContentChange: (questionId: string, content: string) => void
     onOpenQuestionChange: (questionId: string, content: string) => void
     handleComponentClick: (componentId: string | null) => void
-    handleComponentPositionChange: (componentId: string, position: Position) => void
+    setExam: React.Dispatch<React.SetStateAction<ExamResponse | null>>
 }
 
 

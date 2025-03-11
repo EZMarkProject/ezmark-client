@@ -11,12 +11,12 @@ import { useToast } from "@/hooks/use-toast"
 const A4_WIDTH_MM = 210 // A4 width in mm
 
 export function Canvas({ exam, renderMode,
+    setExam,
     onOpenQuestionChange,
     onRenderModeChange,
     onMCQQuestionChange,
     onMCQOptionChange,
     handleComponentClick,
-    handleComponentPositionChange,
     onFillInBlankContentChange, ...props }: CanvasProps) {
     const [scale, setScale] = useState(1)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -190,6 +190,7 @@ export function Canvas({ exam, renderMode,
             >
                 <A4ExamPaper
                     exam={exam}
+                    setExam={setExam}
                     renderMode={renderMode}
                     scale={scale}
                     onMCQQuestionChange={onMCQQuestionChange}
@@ -197,7 +198,6 @@ export function Canvas({ exam, renderMode,
                     onFillInBlankContentChange={onFillInBlankContentChange}
                     onOpenQuestionChange={onOpenQuestionChange}
                     handleComponentClick={handleComponentClick}
-                    handleComponentPositionChange={handleComponentPositionChange}
                 />
             </div>
         </div>
