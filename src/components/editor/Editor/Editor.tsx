@@ -15,6 +15,7 @@ import { EditorProps } from "./interface";
 import { getExamById } from "@/lib/api"
 import { Loader2, MoveLeft } from "lucide-react"
 import Link from "next/link"
+import { axiosInstance } from "@/lib/axios";
 
 export default function Editor({ documentId }: EditorProps) {
     const [exam, setExam] = useState<ExamResponse | null>(null);
@@ -168,6 +169,21 @@ export default function Editor({ documentId }: EditorProps) {
         console.log("Selected bank:", bankId);
     };
 
+    const handleSave = async () => {
+        if (!exam) return;
+        // @ts-expect-error
+        const { id, documentId, updatedAt, createdAt, ...examData } = exam;
+        await axiosInstance.put(`/exams/${documentId}`, {
+            data: examData
+        });
+    }
+
+    // TODO: Implement export PDF
+    const handleExportPDF = async () => {
+        console.log("Export PDF");
+    }
+
+
     const renderSidePanel = () => {
         switch (activeTab) {
             case "components":
@@ -228,7 +244,7 @@ export default function Editor({ documentId }: EditorProps) {
     return (
         <div className="min-h-screen bg-background">
             {exam ? (
-                <EditorNavbar exam={exam} isSaved={isSaved} />
+                <EditorNavbar exam={exam} isSaved={isSaved} onSave={handleSave} onExportPDF={handleExportPDF} />
             ) : (
                 <nav className="flex h-[50px] items-center border-b px-4 justify-between">
                     <div className="flex items-center gap-3">
