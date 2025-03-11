@@ -7,17 +7,10 @@ import { MCQConfigForm } from "./ConfigForm/MCQConfigForm"
 import { FillInBlankConfigForm } from "./ConfigForm/FillInBlankConfigForm"
 import { OpenQuestionConfigForm } from "./ConfigForm/OpenQuestionConfigForm"
 import { useEffect, useState } from "react";
-import { ExamResponse, FillInBlankQuestionData, MultipleChoiceQuestionData, OpenQuestionData, UnionComponent } from "@/types/exam"
-import { updateExam } from "@/lib/api"
+import { UnionComponent } from "@/types/exam"
 
-export function ConfigEditPanel({ className, setExam, selectedComponentId, exam }: ConfigEditPanelProps) {
+export function ConfigEditPanel({ className, handleExamSave, selectedComponentId, exam }: ConfigEditPanelProps) {
     const [selectedComponent, setSelectedComponent] = useState<UnionComponent | null>(null);
-
-    // 传入一个完整的 exam 对象，更新 exam 的配置
-    const handleExamChange = async (updatedExam: ExamResponse) => {
-        await updateExam(exam.documentId, updatedExam);
-        setExam(updatedExam);
-    }
 
     // 根据 selectedComponentId 设置选中的组件
     useEffect(() => {
@@ -43,28 +36,28 @@ export function ConfigEditPanel({ className, setExam, selectedComponentId, exam 
                 {selectedComponentId === null || selectedComponent?.type.includes('header') ? (
                     <ExamConfigForm
                         exam={exam}
-                        onExamConfigChange={handleExamChange}
+                        onExamConfigChange={handleExamSave}
                     />
                 ) : selectedComponent?.type === 'multiple-choice' ? (
                     <MCQConfigForm
                         mcq={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
-                        onExamConfigChange={handleExamChange}
+                        onExamConfigChange={handleExamSave}
                     />
                 ) : selectedComponent?.type === 'fill-in-blank' ? (
                     <FillInBlankConfigForm
                         fillInBlank={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
-                        onExamConfigChange={handleExamChange}
+                        onExamConfigChange={handleExamSave}
                     />
                 ) : selectedComponent?.type === 'open' ? (
                     <OpenQuestionConfigForm
                         openQuestion={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
-                        onExamConfigChange={handleExamChange}
+                        onExamConfigChange={handleExamSave}
                     />
                 ) : null}
             </ScrollArea>

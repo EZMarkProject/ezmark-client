@@ -12,10 +12,9 @@ import cloneDeep from 'lodash/cloneDeep'
 import { TemplateSelectionPanel } from "@/components/editor/TemplateSelectionPanel"
 import { BankSelectionPanel } from "@/components/editor/BankSelectionPanel"
 import { EditorProps } from "./interface";
-import { getExamById } from "@/lib/api"
+import { getExamById, updateExam } from "@/lib/api"
 import { Loader2, MoveLeft } from "lucide-react"
 import Link from "next/link"
-import { axiosInstance } from "@/lib/axios";
 
 export default function Editor({ documentId }: EditorProps) {
     const [exam, setExam] = useState<ExamResponse | null>(null);
@@ -36,6 +35,7 @@ export default function Editor({ documentId }: EditorProps) {
     }, [documentId])
 
     const onMCQQuestionChange = (questionId: string, content: string) => {
+        setIsSaved(false);
         setExam(prev => {
             if (!prev) return null;
             const updatedExam = cloneDeep(prev);
@@ -49,6 +49,7 @@ export default function Editor({ documentId }: EditorProps) {
     }
 
     const onMCQOptionChange = (questionId: string, optionIndex: number, content: string) => {
+        setIsSaved(false);
         setExam(prev => {
             if (!prev) return null;
             const updatedExam = cloneDeep(prev);
@@ -62,6 +63,7 @@ export default function Editor({ documentId }: EditorProps) {
     }
 
     const onFillInBlankContentChange = (questionId: string, content: string) => {
+        setIsSaved(false);
         setExam(prev => {
             if (!prev) return null;
             const updatedExam = cloneDeep(prev);
@@ -75,6 +77,7 @@ export default function Editor({ documentId }: EditorProps) {
     }
 
     const onOpenQuestionChange = (questionId: string, content: string) => {
+        setIsSaved(false);
         setExam(prev => {
             if (!prev) return null;
             const updatedExam = cloneDeep(prev);
@@ -92,6 +95,7 @@ export default function Editor({ documentId }: EditorProps) {
     }
 
     const handleAddComponent = (componentType: string) => {
+        setIsSaved(false);
         setExam(prev => {
             if (!prev) return null;
             const updatedExam = cloneDeep(prev);
@@ -169,20 +173,16 @@ export default function Editor({ documentId }: EditorProps) {
         console.log("Selected bank:", bankId);
     };
 
-    const handleSave = async () => {
+    const handleExamSave = async (updatedExam: ExamResponse) => {
         if (!exam) return;
-        // @ts-expect-error
-        const { id, documentId, updatedAt, createdAt, ...examData } = exam;
-        await axiosInstance.put(`/exams/${documentId}`, {
-            data: examData
-        });
+        await updateExam(documentId, updatedExam);
+        setIsSaved(true);
     }
 
     // TODO: Implement export PDF
     const handleExportPDF = async () => {
         console.log("Export PDF");
     }
-
 
     const renderSidePanel = () => {
         switch (activeTab) {
@@ -232,7 +232,7 @@ export default function Editor({ documentId }: EditorProps) {
                     />
                 </div>
                 <ConfigEditPanel
-                    setExam={setExam as React.Dispatch<React.SetStateAction<ExamResponse>>}
+                    handleExamSave={handleExamSave}
                     selectedComponentId={selectedComponentId}
                     exam={exam}
                     className="w-80 border-l shrink-0"
@@ -244,7 +244,7 @@ export default function Editor({ documentId }: EditorProps) {
     return (
         <div className="min-h-screen bg-background">
             {exam ? (
-                <EditorNavbar exam={exam} isSaved={isSaved} onSave={handleSave} onExportPDF={handleExportPDF} />
+                <EditorNavbar exam={exam} isSaved={isSaved} onSave={() => handleExamSave(exam)} onExportPDF={handleExportPDF} />
             ) : (
                 <nav className="flex h-[50px] items-center border-b px-4 justify-between">
                     <div className="flex items-center gap-3">
