@@ -184,6 +184,21 @@ export default function Editor({ documentId }: EditorProps) {
         console.log("Export PDF");
     }
 
+    // 删除组件
+    const handleComponentDelete = (componentId: string) => {
+        setIsSaved(false);
+        setExam(prev => {
+            if (!prev) return null;
+            const updatedExam = cloneDeep(prev);
+            if (!updatedExam) return null;
+            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === componentId)
+            if (questionIndex !== -1) {
+                updatedExam.examData.components.splice(questionIndex, 1);
+            }
+            return updatedExam;
+        })
+    }
+
     const renderSidePanel = () => {
         switch (activeTab) {
             case "components":
@@ -230,6 +245,7 @@ export default function Editor({ documentId }: EditorProps) {
                         onFillInBlankContentChange={onFillInBlankContentChange}
                         onOpenQuestionChange={onOpenQuestionChange}
                         handleComponentClick={handleComponentClick}
+                        handleComponentDelete={handleComponentDelete}
                     />
                 </div>
                 <ConfigEditPanel

@@ -9,6 +9,7 @@ export interface CanvasSharedProps {
     onOpenQuestionChange: (questionId: string, content: string) => void
     handleComponentClick: (componentId: string | null) => void
     setExam: React.Dispatch<React.SetStateAction<ExamResponse | null>>
+    handleComponentDelete: (componentId: string) => void
 }
 
 

@@ -28,6 +28,7 @@ export function A4ExamPaper({
     onFillInBlankContentChange,
     onOpenQuestionChange,
     handleComponentClick,
+    handleComponentDelete,
 }: A4ExamPaperProps) {
     const containerRef = useRef<HTMLDivElement>(null) // 这个ref是A4纸的容器
     const isUpdatingFromEffect = useRef(false); // 新增：用于标记是否是由effect本身引起的更新
@@ -118,6 +119,7 @@ export function A4ExamPaper({
                     <ClickDragContainer
                         key={item.id}
                         componentId={item.id}
+                        onDelete={handleComponentDelete}
                         onClick={() => {
                             handleComponentClick(item.id);
                         }}
@@ -133,6 +135,7 @@ export function A4ExamPaper({
                     <ClickDragContainer
                         key={item.id}
                         componentId={item.id}
+                        onDelete={handleComponentDelete}
                         onClick={() => {
                             handleComponentClick(item.id);
                         }}
@@ -151,6 +154,7 @@ export function A4ExamPaper({
                     <ClickDragContainer
                         key={item.id}
                         componentId={item.id}
+                        onDelete={handleComponentDelete}
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
@@ -169,6 +173,7 @@ export function A4ExamPaper({
                     <ClickDragContainer
                         key={item.id}
                         componentId={item.id}
+                        onDelete={handleComponentDelete}
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
@@ -187,6 +192,7 @@ export function A4ExamPaper({
                     <ClickDragContainer
                         key={item.id}
                         componentId={item.id}
+                        onDelete={handleComponentDelete}
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
@@ -202,6 +208,7 @@ export function A4ExamPaper({
                     <ClickDragContainer
                         key={item.id}
                         componentId={item.id}
+                        onDelete={handleComponentDelete}
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
