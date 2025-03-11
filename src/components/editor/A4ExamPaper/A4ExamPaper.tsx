@@ -15,6 +15,8 @@ import { ExamResponse, UnionComponent } from "@/types/exam";
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
 const BOTTOM_MARGIN_MM = 10
+const MARGIN_TOP_MM = 8.5
+const GAP_MM = 9
 
 export function A4ExamPaper({
     exam,
@@ -46,7 +48,7 @@ export function A4ExamPaper({
             // A4纸的rect
             const a4Rect = containerRef.current.getBoundingClientRect()
             // 计算pixel到mm的转换比例
-            const pixelToMMRatio = A4_WIDTH_MM / (a4Rect.width / scale)
+            const pixelToMMRatio = A4_WIDTH_MM / a4Rect.width
             // 开始遍历所有components，计算position
             const allComponentsWithPosition = [...exam.examData.components].map(component => {
                 // 获取组件的DOM元素
@@ -71,16 +73,16 @@ export function A4ExamPaper({
                     }
                 }
                 // 检查当前页面是否还能容纳这个组件
-                if (currentPageHeight + heightMm > A4_HEIGHT_MM - BOTTOM_MARGIN_MM) {
+                if ((currentPageHeight + heightMm) > (A4_HEIGHT_MM - BOTTOM_MARGIN_MM)) {
                     // 新建一页, 并把当前组件加入到新页中
                     currentPageIndex++;
                     pages.push([component.id])
-                    currentPageHeight = heightMm;
+                    currentPageHeight = heightMm + MARGIN_TOP_MM;
                     componentWithPosition.position.pageIndex = currentPageIndex;
                 } else {
                     // 添加到当前页
                     pages[currentPageIndex].push(component.id)
-                    currentPageHeight += heightMm;
+                    currentPageHeight += heightMm + GAP_MM;
                 }
                 return componentWithPosition;
             })
@@ -96,7 +98,123 @@ export function A4ExamPaper({
             }
             setExam(updatedExam)
         }
-    }, [exam, scale])
+    }, [exam])
+
+    // 计算总页数
+    const totalPages = exam.examData.components.length > 0
+        ? Math.max(...exam.examData.components.map(comp => comp.position?.pageIndex || 0)) + 1
+        : 1;
+
+    // 将组件按页码分组
+    const pageComponents = Array.from({ length: totalPages }, (_, i) =>
+        exam.examData.components.filter(comp => (comp.position?.pageIndex || 0) === i)
+    );
+
+    // 渲染组件函数
+    const renderComponent = (item: UnionComponent) => {
+        switch (item.type) {
+            case 'default-header':
+                return (
+                    <ClickDragContainer
+                        key={item.id}
+                        componentId={item.id}
+                        onClick={() => {
+                            handleComponentClick(item.id);
+                        }}
+                    >
+                        <DefaultHeader
+                            key={`header-${item.id}`}
+                            exam={exam}
+                        />
+                    </ClickDragContainer>
+                );
+            case 'multiple-choice':
+                return (
+                    <ClickDragContainer
+                        key={item.id}
+                        componentId={item.id}
+                        onClick={() => {
+                            handleComponentClick(item.id);
+                        }}
+                    >
+                        <MultipleChoiceQuestion
+                            questionObj={item}
+                            onQuestionChange={onMCQQuestionChange}
+                            onOptionChange={onMCQOptionChange}
+                            renderMode={renderMode}
+                            questionNumber={item.questionNumber}
+                        />
+                    </ClickDragContainer>
+                );
+            case 'fill-in-blank':
+                return (
+                    <ClickDragContainer
+                        key={item.id}
+                        componentId={item.id}
+                        onClick={() => {
+                            handleComponentClick(item.id)
+                        }}
+                    >
+                        <FillInBlankQuestion
+                            key={`fill-${item.id}`}
+                            questionObj={item}
+                            onContentChange={onFillInBlankContentChange}
+                            renderMode={renderMode}
+                            questionNumber={item.questionNumber}
+                        />
+                    </ClickDragContainer>
+                );
+            case 'open':
+                return (
+                    <ClickDragContainer
+                        key={item.id}
+                        componentId={item.id}
+                        onClick={() => {
+                            handleComponentClick(item.id)
+                        }}
+                    >
+                        <OpenQuestion
+                            key={`open-${item.id}`}
+                            questionObj={item}
+                            onContentChange={onOpenQuestionChange}
+                            renderMode={renderMode}
+                            questionNumber={item.questionNumber}
+                        />
+                    </ClickDragContainer>
+                );
+            case 'blank':
+                return (
+                    <ClickDragContainer
+                        key={item.id}
+                        componentId={item.id}
+                        onClick={() => {
+                            handleComponentClick(item.id)
+                        }}
+                    >
+                        <Blank
+                            key={`blank-${item.id}`}
+                            lines={item.lines}
+                        />
+                    </ClickDragContainer>
+                );
+            case 'divider':
+                return (
+                    <ClickDragContainer
+                        key={item.id}
+                        componentId={item.id}
+                        onClick={() => {
+                            handleComponentClick(item.id)
+                        }}
+                    >
+                        <Divider
+                            key={`divider-${item.id}`}
+                        />
+                    </ClickDragContainer>
+                );
+            default:
+                return <div className="text-red-500" key={nanoid()}>Component Not Found</div>
+        }
+    }
 
     return (
         <div
@@ -108,113 +226,16 @@ export function A4ExamPaper({
                 paddingTop: '1rem'
             }}
         >
-            {/* 下面这个div是A4纸的尺寸 */}
-            <div ref={containerRef} className={`bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto p-8 shadow-lg`}>
-                {exam.examData.components.map(item => {
-                    switch (item.type) {
-                        case 'default-header':
-                            return (
-                                <ClickDragContainer
-                                    key={item.id}
-                                    componentId={item.id}
-                                    onClick={() => {
-                                        handleComponentClick(item.id);
-                                    }}
-                                >
-                                    <DefaultHeader
-                                        key={`header-${item.id}`}
-                                        exam={exam}
-                                    />
-                                </ClickDragContainer>
-                            );
-                        case 'multiple-choice':
-                            return (
-                                <ClickDragContainer
-                                    key={item.id}
-                                    componentId={item.id}
-                                    onClick={() => {
-                                        handleComponentClick(item.id);
-                                    }}
-                                >
-                                    <MultipleChoiceQuestion
-                                        questionObj={item}
-                                        onQuestionChange={onMCQQuestionChange}
-                                        onOptionChange={onMCQOptionChange}
-                                        renderMode={renderMode}
-                                        questionNumber={item.questionNumber}
-                                    />
-                                </ClickDragContainer>
-                            );
-                        case 'fill-in-blank':
-                            return (
-                                <ClickDragContainer
-                                    key={item.id}
-                                    componentId={item.id}
-                                    onClick={() => {
-                                        handleComponentClick(item.id)
-                                    }}
-                                >
-                                    <FillInBlankQuestion
-                                        key={`fill-${item.id}`}
-                                        questionObj={item}
-                                        onContentChange={onFillInBlankContentChange}
-                                        renderMode={renderMode}
-                                        questionNumber={item.questionNumber}
-                                    />
-                                </ClickDragContainer>
-                            );
-                        case 'open':
-                            return (
-                                <ClickDragContainer
-                                    key={item.id}
-                                    componentId={item.id}
-                                    onClick={() => {
-                                        handleComponentClick(item.id)
-                                    }}
-                                >
-                                    <OpenQuestion
-                                        key={`open-${item.id}`}
-                                        questionObj={item}
-                                        onContentChange={onOpenQuestionChange}
-                                        renderMode={renderMode}
-                                        questionNumber={item.questionNumber}
-                                    />
-                                </ClickDragContainer>
-                            );
-                        case 'blank':
-                            return (
-                                <ClickDragContainer
-                                    key={item.id}
-                                    componentId={item.id}
-                                    onClick={() => {
-                                        handleComponentClick(item.id)
-                                    }}
-                                >
-                                    <Blank
-                                        key={`blank-${item.id}`}
-                                        lines={item.lines}
-                                    />
-                                </ClickDragContainer>
-                            );
-                        case 'divider':
-                            return (
-                                <ClickDragContainer
-                                    key={item.id}
-                                    componentId={item.id}
-                                    onClick={() => {
-                                        handleComponentClick(item.id)
-                                    }}
-                                >
-                                    <Divider
-                                        key={`divider-${item.id}`}
-                                    />
-                                </ClickDragContainer>
-                            );
-                        default:
-                            return <div className="text-red-500" key={nanoid()}>Component Not Found</div>
-                    }
-                })}
-            </div>
+            {/* 渲染多个A4页面 */}
+            {pageComponents.map((components, pageIndex) => (
+                <div
+                    key={`page-${pageIndex}`}
+                    ref={pageIndex === 0 ? containerRef : undefined}
+                    className={`bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto p-8 shadow-lg mb-8`}
+                >
+                    {components.map(item => renderComponent(item))}
+                </div>
+            ))}
         </div>
     )
 } 
