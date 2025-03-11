@@ -47,7 +47,7 @@ export default function ClickDragContainer({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-full hover:bg-red-50 hover:text-red-500 transition-colors"
+                    className="h-8 w-8 rounded-md hover:bg-red-200 hover:text-primary transition-colors"
                     onClick={handleDeleteClick}
                 >
                     <Trash2 className="h-4 w-4" />
