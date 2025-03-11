@@ -175,6 +175,7 @@ export default function Editor({ documentId }: EditorProps) {
 
     const handleExamSave = async (updatedExam: ExamResponse) => {
         if (!exam) return;
+        setExam(updatedExam);
         await updateExam(documentId, updatedExam);
         setIsSaved(true);
     }
