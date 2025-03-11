@@ -18,7 +18,8 @@ export function A4ExamPaper({
     onMCQOptionChange,
     onFillInBlankContentChange,
     onOpenQuestionChange,
-    handleComponentClick
+    handleComponentClick,
+    handleComponentPositionChange
 }: A4ExamPaperProps) {
     return (
         <div
@@ -41,6 +42,7 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id);
                                     }}
+                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <DefaultHeader
                                         key={`header-${item.id}`}
@@ -56,6 +58,7 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id);
                                     }}
+                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <MultipleChoiceQuestion
                                         questionObj={item}
@@ -74,6 +77,7 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
+                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <FillInBlankQuestion
                                         key={`fill-${item.id}`}
@@ -92,6 +96,7 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
+                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <OpenQuestion
                                         key={`open-${item.id}`}
@@ -110,6 +115,7 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
+                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <Blank
                                         key={`blank-${item.id}`}
@@ -125,6 +131,7 @@ export function A4ExamPaper({
                                     onClick={() => {
                                         handleComponentClick(item.id)
                                     }}
+                                    handleComponentPositionChange={handleComponentPositionChange}
                                 >
                                     <Divider
                                         key={`divider-${item.id}`}

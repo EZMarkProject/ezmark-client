@@ -1,4 +1,4 @@
-import { ExamResponse } from "@/types/exam";
+import { ExamResponse, Position } from "@/types/exam";
 
 export interface CanvasSharedProps {
     exam: ExamResponse
@@ -8,6 +8,7 @@ export interface CanvasSharedProps {
     onFillInBlankContentChange: (questionId: string, content: string) => void
     onOpenQuestionChange: (questionId: string, content: string) => void
     handleComponentClick: (componentId: string | null) => void
+    handleComponentPositionChange: (componentId: string, position: Position) => void
 }
 
 

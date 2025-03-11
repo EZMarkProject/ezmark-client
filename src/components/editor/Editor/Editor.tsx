@@ -6,7 +6,7 @@ import { QuestionSelectionPanel } from "@/components/editor/QuestionSelectionPan
 import { Canvas } from "@/components/editor/Canvas"
 import { ConfigEditPanel } from "@/components/editor/ConfigEditPanel"
 import { Button } from "@/components/ui/button"
-import { MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestionData, UnionComponent, ExamResponse } from "@/types/exam"
+import { MultipleChoiceQuestionData, FillInBlankQuestionData, OpenQuestionData, UnionComponent, ExamResponse, Position } from "@/types/exam"
 import { nanoid } from "nanoid"
 import cloneDeep from 'lodash/cloneDeep'
 import { TemplateSelectionPanel } from "@/components/editor/TemplateSelectionPanel"
@@ -184,6 +184,20 @@ export default function Editor({ documentId }: EditorProps) {
         console.log("Export PDF");
     }
 
+    // 更新组件position对象
+    const handleComponentPositionChange = (componentId: string, position: Position) => {
+        setIsSaved(false);
+        setExam(prev => {
+            if (!prev) return null;
+            const updatedExam = cloneDeep(prev);
+            const questionIndex = updatedExam.examData.components.findIndex((component: UnionComponent) => component.id === componentId)
+            if (questionIndex !== -1) {
+                (updatedExam.examData.components[questionIndex] as UnionComponent).position = position
+            }
+            return updatedExam
+        })
+    }
+
     const renderSidePanel = () => {
         switch (activeTab) {
             case "components":
@@ -229,6 +243,7 @@ export default function Editor({ documentId }: EditorProps) {
                         onFillInBlankContentChange={onFillInBlankContentChange}
                         onOpenQuestionChange={onOpenQuestionChange}
                         handleComponentClick={handleComponentClick}
+                        handleComponentPositionChange={handleComponentPositionChange}
                     />
                 </div>
                 <ConfigEditPanel

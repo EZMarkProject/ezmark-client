@@ -34,6 +34,16 @@ export type UnionComponent =
 export interface BaseComponent {
     id: string; // use uuid
     type: string; // 组件类型
+    // 初次渲染模版的时候，不知道组件的位置，渲染之后计算
+    position?: Position
+}
+
+export interface Position {
+    padgsIndex: number;
+    top: number;  // 单位是mm
+    left: number;
+    width: number;
+    height: number;
 }
 
 // 定义基础题目接口
