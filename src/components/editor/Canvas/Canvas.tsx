@@ -191,6 +191,7 @@ export function Canvas({ exam, renderMode,
             >
                 <A4ExamPaper
                     exam={exam}
+                    pdfMode={false}
                     setExam={setExam}
                     renderMode={renderMode}
                     scale={scale}

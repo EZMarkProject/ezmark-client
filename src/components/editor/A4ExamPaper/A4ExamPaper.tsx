@@ -11,6 +11,7 @@ import { Divider } from "@/components/layout-components/Divider";
 import { ClickDragContainer } from "../ClickDragContainer";
 import { useEffect, useRef } from "react";
 import { ExamResponse, UnionComponent } from "@/types/exam";
+import { cn } from "@/lib/utils";
 
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
@@ -22,6 +23,7 @@ export function A4ExamPaper({
     exam,
     setExam,
     renderMode,
+    pdfMode,
     scale = 1,
     onMCQQuestionChange,
     onMCQOptionChange,
@@ -225,12 +227,12 @@ export function A4ExamPaper({
 
     return (
         <div
+            className={cn(
+                "transform-scale origin-top-center transition-transform duration-100 ease-out w-fit pt-4",
+                pdfMode && "mx-auto"
+            )}
             style={{
-                transform: `scale(${scale})`,
-                transformOrigin: 'top center',
-                transition: 'transform 0.1s ease-out',
-                width: 'fit-content',
-                paddingTop: '1rem'
+                transform: `scale(${scale})`
             }}
         >
             {/* 渲染多个A4页面 */}
@@ -238,7 +240,10 @@ export function A4ExamPaper({
                 <div
                     key={`page-${pageIndex}`}
                     ref={pageIndex === 0 ? containerRef : undefined}
-                    className={`bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto p-8 shadow-lg mb-8`}
+                    className={cn(
+                        `bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto`,
+                        !pdfMode && "p-8 shadow-lg mb-8"
+                    )}
                 >
                     {components.map(item => renderComponent(item))}
                 </div>

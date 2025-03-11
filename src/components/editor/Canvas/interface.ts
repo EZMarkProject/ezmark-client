@@ -2,7 +2,8 @@ import { ExamResponse, Position } from "@/types/exam";
 
 export interface CanvasSharedProps {
     exam: ExamResponse
-    renderMode: boolean
+    renderMode: boolean // 是否显示富文编辑器
+    pdfMode: boolean // pdf导出模式
     onMCQQuestionChange: (questionId: string, content: string) => void
     onMCQOptionChange: (questionId: string, optionIndex: number, content: string) => void
     onFillInBlankContentChange: (questionId: string, content: string) => void

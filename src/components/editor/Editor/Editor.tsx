@@ -240,6 +240,7 @@ export default function Editor({ documentId }: EditorProps) {
                         exam={exam}
                         setExam={setExam}
                         renderMode={renderMode}
+                        pdfMode={false}
                         onRenderModeChange={setRenderMode}
                         onMCQQuestionChange={onMCQQuestionChange}
                         onMCQOptionChange={onMCQOptionChange}
