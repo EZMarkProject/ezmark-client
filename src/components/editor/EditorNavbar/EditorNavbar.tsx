@@ -6,26 +6,39 @@ import { Button } from "@/components/ui/button"
 import { EditorNavbarProps } from "./interface"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
+import { useState } from "react"
 
 export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: EditorNavbarProps) {
     const { toast } = useToast();
+    const [isSaving, setIsSaving] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
 
     const handleSave = async () => {
-        await onSave();
-        toast({
-            title: "Saved",
-            description: "Your changes have been saved.",
-            duration: 1000
-        });
+        try {
+            setIsSaving(true);
+            await onSave();
+            toast({
+                title: "Saved",
+                description: "Your changes have been saved.",
+                duration: 1000
+            });
+        } finally {
+            setIsSaving(false);
+        }
     }
 
     const handleExportPDF = async () => {
-        await onExportPDF();
-        toast({
-            title: "Exported",
-            description: "Your exam have been exported.",
-            duration: 1000
-        });
+        try {
+            setIsExporting(true);
+            await onExportPDF();
+            toast({
+                title: "Exported",
+                description: "Your exam have been exported.",
+                duration: 1000
+            });
+        } finally {
+            setIsExporting(false);
+        }
     }
 
     return (
@@ -62,18 +75,28 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
                     size="sm"
                     className="gap-1"
                     onClick={handleSave}
+                    disabled={isSaving}
                 >
-                    <Save className="h-4 w-4" />
-                    Save
+                    {isSaving ? (
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    ) : (
+                        <Save className="h-4 w-4" />
+                    )}
+                    {isSaving ? "Saving..." : "Save"}
                 </Button>
                 <Button
                     variant="outline"
                     size="sm"
                     className="gap-1"
                     onClick={handleExportPDF}
+                    disabled={isExporting}
                 >
-                    <FileDown className="h-4 w-4" />
-                    Export PDF
+                    {isExporting ? (
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    ) : (
+                        <FileDown className="h-4 w-4" />
+                    )}
+                    {isExporting ? "Exporting..." : "Export PDF"}
                 </Button>
                 <ThemeToggle />
             </div>
