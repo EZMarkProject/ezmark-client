@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ChevronRight, Play } from "lucide-react";
+import { ChevronRight, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection: React.FC = () => {
@@ -23,9 +23,9 @@ const HeroSection: React.FC = () => {
                             </a>
                         </Button>
                         <Button asChild size="default" variant="outline" className="px-6 py-2 h-auto border-[#e5e7eb]">
-                            <a href="#">
-                                <Play className="mr-2 h-4 w-4" />
-                                Play Video
+                            <a href="/dashboard">
+                                <LayoutDashboard className="mr-2 h-4 w-4" />
+                                Dashboard
                             </a>
                         </Button>
                     </div>
