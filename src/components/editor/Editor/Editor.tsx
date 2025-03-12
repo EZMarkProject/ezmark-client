@@ -12,7 +12,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { TemplateSelectionPanel } from "@/components/editor/TemplateSelectionPanel"
 import { BankSelectionPanel } from "@/components/editor/BankSelectionPanel"
 import { EditorProps } from "./interface";
-import { getExamById, updateExam } from "@/lib/api"
+import { getExamById, getExportedPDFUrl, updateExam } from "@/lib/api"
 import { Loader2, MoveLeft } from "lucide-react"
 import Link from "next/link"
 
@@ -180,9 +180,9 @@ export default function Editor({ documentId }: EditorProps) {
         setIsSaved(true);
     }
 
-    // TODO: Implement export PDF
     const handleExportPDF = async () => {
-        console.log("Export PDF");
+        const response = await getExportedPDFUrl(documentId);
+        return response;
     }
 
     // 删除组件

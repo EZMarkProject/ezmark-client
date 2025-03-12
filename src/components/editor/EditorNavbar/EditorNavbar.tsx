@@ -7,11 +7,19 @@ import { EditorNavbarProps } from "./interface"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
 import { useState } from "react"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from "@/components/ui/dialog"
 
 export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: EditorNavbarProps) {
     const { toast } = useToast();
     const [isSaving, setIsSaving] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
+    const [showExportDialog, setShowExportDialog] = useState(false);
 
     const handleSave = async () => {
         try {
@@ -30,14 +38,25 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
     const handleExportPDF = async () => {
         try {
             setIsExporting(true);
-            await onExportPDF();
+            setShowExportDialog(true);
+            const url = await onExportPDF();
+
+            // Create a temporary link element and trigger download
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${exam.projectName}-${format(new Date(), "yyyy-MM-dd-HH-mm")}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
             toast({
                 title: "Exported",
-                description: "Your exam have been exported.",
+                description: "Your exam has been exported.",
                 duration: 1000
             });
         } finally {
             setIsExporting(false);
+            setShowExportDialog(false);
         }
     }
 
@@ -54,7 +73,7 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
                         <MoveLeft className="h-4 w-4" />
                     </a>
                 </Button>
-                <h1 >{exam.projectName}</h1>
+                <h1>{exam.projectName}</h1>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     {isSaved ? (
                         <>
@@ -100,6 +119,20 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
                 </Button>
                 <ThemeToggle />
             </div>
+
+            <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Exporting PDF</DialogTitle>
+                        <DialogDescription>
+                            Please wait while we generate your PDF file...
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex justify-center py-4">
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-current border-t-transparent" />
+                    </div>
+                </DialogContent>
+            </Dialog>
         </nav>
     )
 } 

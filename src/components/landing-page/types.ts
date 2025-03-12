@@ -43,3 +43,12 @@ export interface NavbarProps {
     onLoginClick?: () => void;
     onSignUpClick?: () => void;
 }
+
+/**
+ * PDF响应接口
+ */
+export interface PDFReponse {
+    data: {
+        url: string;
+    }
+}
