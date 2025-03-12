@@ -121,7 +121,7 @@ export function A4ExamPaper({
                 // 判断是否是题目组件, 如果是题目组件，则更新questionNumber
                 const isQuestion = isQuestionComponent(component)
                 if (isQuestion) {
-                    // @ts-expect-error
+                    // @ts-expect-error some reason
                     componentWithPosition.questionNumber = questionNumber++;
                 }
                 // 检查当前页面是否还能容纳这个组件
