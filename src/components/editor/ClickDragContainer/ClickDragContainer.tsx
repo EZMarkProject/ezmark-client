@@ -54,7 +54,7 @@ export default function ClickDragContainer({
     return (
         <div
             className={
-                'cursor-pointer relative group transition-colors duration-150 ease-in-out hover:bg-gray-100'
+                'cursor-pointer relative group transition-colors duration-150 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-900'
             }
             onClick={handleClick}
             data-component-id={componentId}
@@ -63,7 +63,7 @@ export default function ClickDragContainer({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-6 rounded-md hover:bg-blue-200 hover:text-primary transition-colors"
+                    className="h-6 w-6 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900 hover:text-primary transition-colors"
                     onClick={handleMoveUp}
                     title="Move Up"
                 >
@@ -73,7 +73,7 @@ export default function ClickDragContainer({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-6 rounded-md hover:bg-blue-200 hover:text-primary transition-colors"
+                    className="h-6 w-6 rounded-md hover:bg-blue-200 dark:hover:bg-blue-900 hover:text-primary transition-colors"
                     onClick={handleMoveDown}
                     title="Move Down"
                 >
@@ -83,7 +83,7 @@ export default function ClickDragContainer({
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-6 w-6 rounded-md hover:bg-red-200 hover:text-primary transition-colors"
+                    className="h-6 w-6 rounded-md hover:bg-red-200 dark:hover:bg-red-900 hover:text-primary transition-colors"
                     onClick={handleDeleteClick}
                 >
                     <Trash2 className="h-4 w-4" />
