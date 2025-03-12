@@ -1,12 +1,12 @@
 'use client'
 
 import { ThemeToggle } from "@/components/ui/theme-toggle"
-import { Check, MoveLeft, Save, FileDown, X } from "lucide-react"
+import { Check, MoveLeft, Save, FileDown, X, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { EditorNavbarProps } from "./interface"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
-import { useState } from "react"
+import { useState, useRef } from "react"
 import {
     Dialog,
     DialogContent,
@@ -20,6 +20,7 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
     const [isSaving, setIsSaving] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
     const [showExportDialog, setShowExportDialog] = useState(false);
+    const [exportedPdfUrl, setExportedPdfUrl] = useState<string | null>(null);
 
     const handleSave = async () => {
         try {
@@ -36,28 +37,25 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
     }
 
     const handleExportPDF = async () => {
-        try {
-            setIsExporting(true);
-            setShowExportDialog(true);
-            const url = await onExportPDF();
+        setIsExporting(true);
+        setShowExportDialog(true);
+        setExportedPdfUrl(null);
 
-            // Create a temporary link element and trigger download
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${exam.projectName}-${format(new Date(), "yyyy-MM-dd-HH-mm")}.pdf`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        await onSave()
+        const url = await onExportPDF();
+        setExportedPdfUrl(url);
+        setIsExporting(false);
+    }
 
-            toast({
-                title: "Exported",
-                description: "Your exam has been exported.",
-                duration: 1000
-            });
-        } finally {
-            setIsExporting(false);
-            setShowExportDialog(false);
+    const handlePreviewPDF = () => {
+        if (exportedPdfUrl) {
+            window.open(exportedPdfUrl, '_blank');
         }
+    }
+
+    const handleDialogChange = (open: boolean) => {
+        setShowExportDialog(open);
+        setIsExporting(open);
     }
 
     return (
@@ -120,16 +118,33 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
                 <ThemeToggle />
             </div>
 
-            <Dialog open={showExportDialog} onOpenChange={setShowExportDialog}>
+            <Dialog open={showExportDialog} onOpenChange={handleDialogChange}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Exporting PDF</DialogTitle>
+                        <DialogTitle>
+                            {isExporting ? "Exporting PDF" : "Export Complete"}
+                        </DialogTitle>
                         <DialogDescription>
-                            Please wait while we generate your PDF file...
+                            {isExporting
+                                ? "Please wait while we generate your PDF file..."
+                                : "Your PDF has been generated successfully!"}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex justify-center py-4">
-                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-current border-t-transparent" />
+                        {isExporting ? (
+                            <div className="h-8 w-8 animate-spin rounded-full border-4 border-current border-t-transparent" />
+                        ) : (
+                            <div className="flex flex-col items-center gap-4">
+                                <Check className="h-12 w-12 text-green-500" />
+                                <Button
+                                    onClick={handlePreviewPDF}
+                                    className="gap-2"
+                                >
+                                    <FileText className="h-4 w-4" />
+                                    Preview PDF
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>

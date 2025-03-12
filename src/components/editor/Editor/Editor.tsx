@@ -182,7 +182,7 @@ export default function Editor({ documentId }: EditorProps) {
 
     const handleExportPDF = async () => {
         const response = await getExportedPDFUrl(documentId);
-        return response;
+        return response
     }
 
     // 删除组件
