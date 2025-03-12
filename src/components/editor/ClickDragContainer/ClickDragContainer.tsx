@@ -2,7 +2,7 @@
 
 import { ClickDragContainerProps } from './interface';
 import { useState } from 'react';
-import { Trash2 } from 'lucide-react';
+import { Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -18,6 +18,8 @@ export default function ClickDragContainer({
     onClick,
     componentId,
     onDelete,
+    onMoveUp,
+    onMoveDown,
 }: ClickDragContainerProps) {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -35,6 +37,20 @@ export default function ClickDragContainer({
         setShowDeleteDialog(false);
     };
 
+    const handleMoveUp = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onMoveUp) {
+            onMoveUp(componentId);
+        }
+    };
+
+    const handleMoveDown = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (onMoveDown) {
+            onMoveDown(componentId);
+        }
+    };
+
     return (
         <div
             className={
@@ -43,11 +59,31 @@ export default function ClickDragContainer({
             onClick={handleClick}
             data-component-id={componentId}
         >
-            <div className="absolute opacity-0 group-hover:opacity-100 right-2 top-2 z-10 transition-all duration-200 transform scale-95 group-hover:scale-100">
+            <div className="absolute opacity-0 group-hover:opacity-100 right-2 top-2 z-10 transition-all duration-200 transform scale-95 group-hover:scale-100 flex gap-1">
                 <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-md hover:bg-red-200 hover:text-primary transition-colors"
+                    className="h-6 w-6 rounded-md hover:bg-blue-200 hover:text-primary transition-colors"
+                    onClick={handleMoveUp}
+                    title="Move Up"
+                >
+                    <ChevronUp className="h-4 w-4" />
+                </Button>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 rounded-md hover:bg-blue-200 hover:text-primary transition-colors"
+                    onClick={handleMoveDown}
+                    title="Move Down"
+                >
+                    <ChevronDown className="h-4 w-4" />
+                </Button>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 rounded-md hover:bg-red-200 hover:text-primary transition-colors"
                     onClick={handleDeleteClick}
                 >
                     <Trash2 className="h-4 w-4" />

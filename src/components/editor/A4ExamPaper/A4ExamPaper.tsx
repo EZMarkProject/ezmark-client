@@ -35,6 +35,48 @@ export function A4ExamPaper({
     const containerRef = useRef<HTMLDivElement>(null) // 这个ref是A4纸的容器
     const isUpdatingFromEffect = useRef(false); // 新增：用于标记是否是由effect本身引起的更新
 
+    // 处理组件向上移动
+    const handleMoveUp = (componentId: string) => {
+        const components = [...exam.examData.components];
+        const index = components.findIndex(comp => comp.id === componentId);
+        if (index > 0) {
+            // 交换当前组件和上一个组件的位置
+            const temp = components[index];
+            components[index] = components[index - 1];
+            components[index - 1] = temp;
+            // 更新状态
+            const updatedExam: ExamResponse = {
+                ...exam,
+                examData: {
+                    ...exam.examData,
+                    components: components
+                }
+            };
+            setExam(updatedExam);
+        }
+    };
+
+    // 处理组件向下移动
+    const handleMoveDown = (componentId: string) => {
+        const components = [...exam.examData.components];
+        const index = components.findIndex(comp => comp.id === componentId);
+        if (index !== -1 && index < components.length - 1) {
+            // 交换当前组件和下一个组件的位置
+            const temp = components[index];
+            components[index] = components[index + 1];
+            components[index + 1] = temp;
+            // 更新状态
+            const updatedExam: ExamResponse = {
+                ...exam,
+                examData: {
+                    ...exam.examData,
+                    components: components
+                }
+            };
+            setExam(updatedExam);
+        }
+    };
+
     // 计算每一个组件相对于A4纸的相对位置，并更新到组件的position属性中
     useEffect(() => {
         // 如果正在从effect更新，则跳过此次执行
@@ -132,6 +174,8 @@ export function A4ExamPaper({
                         onClick={() => {
                             handleComponentClick(item.id);
                         }}
+                        onMoveUp={handleMoveUp}
+                        onMoveDown={handleMoveDown}
                     >
                         <DefaultHeader
                             key={`header-${item.id}`}
@@ -148,6 +192,8 @@ export function A4ExamPaper({
                         onClick={() => {
                             handleComponentClick(item.id);
                         }}
+                        onMoveUp={handleMoveUp}
+                        onMoveDown={handleMoveDown}
                     >
                         <MultipleChoiceQuestion
                             questionObj={item}
@@ -167,6 +213,8 @@ export function A4ExamPaper({
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
+                        onMoveUp={handleMoveUp}
+                        onMoveDown={handleMoveDown}
                     >
                         <FillInBlankQuestion
                             key={`fill-${item.id}`}
@@ -186,6 +234,8 @@ export function A4ExamPaper({
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
+                        onMoveUp={handleMoveUp}
+                        onMoveDown={handleMoveDown}
                     >
                         <OpenQuestion
                             key={`open-${item.id}`}
@@ -205,6 +255,8 @@ export function A4ExamPaper({
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
+                        onMoveUp={handleMoveUp}
+                        onMoveDown={handleMoveDown}
                     >
                         <Blank
                             key={`blank-${item.id}`}
@@ -221,6 +273,8 @@ export function A4ExamPaper({
                         onClick={() => {
                             handleComponentClick(item.id)
                         }}
+                        onMoveUp={handleMoveUp}
+                        onMoveDown={handleMoveDown}
                     >
                         <Divider
                             key={`divider-${item.id}`}
