@@ -11,7 +11,7 @@ import { Divider } from "@/components/layout-components/Divider";
 import { ClickDragContainer } from "../ClickDragContainer";
 import { useEffect, useRef } from "react";
 import { ExamResponse, UnionComponent } from "@/types/exam";
-import { cn } from "@/lib/utils";
+import { cn, isQuestionComponent } from "@/lib/utils";
 
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
@@ -48,6 +48,7 @@ export function A4ExamPaper({
             const pages: string[][] = [[]] // 二维数组，每个子数组表示一页，用来计算分页
             let currentPageIndex = 0;
             let currentPageHeight = 0;
+            let questionNumber = 1;
             // A4纸的rect
             const a4Rect = containerRef.current.getBoundingClientRect()
             // 计算pixel到mm的转换比例
@@ -75,12 +76,18 @@ export function A4ExamPaper({
                         pageIndex: currentPageIndex
                     }
                 }
+                // 判断是否是题目组件, 如果是题目组件，则更新questionNumber
+                const isQuestion = isQuestionComponent(component)
+                if (isQuestion) {
+                    // @ts-expect-error
+                    componentWithPosition.questionNumber = questionNumber++;
+                }
                 // 检查当前页面是否还能容纳这个组件
                 if ((currentPageHeight + heightMm) > (A4_HEIGHT_MM - BOTTOM_MARGIN_MM)) {
                     // 新建一页, 并把当前组件加入到新页中
                     currentPageIndex++;
                     pages.push([component.id])
-                    currentPageHeight = heightMm + MARGIN_TOP_MM;
+                    currentPageHeight = MARGIN_TOP_MM + heightMm + GAP_MM;
                     componentWithPosition.position.pageIndex = currentPageIndex;
                 } else {
                     // 添加到当前页
