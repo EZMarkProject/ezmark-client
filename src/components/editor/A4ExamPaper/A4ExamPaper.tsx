@@ -16,7 +16,7 @@ import { cn, isQuestionComponent } from "@/lib/utils";
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
 const BOTTOM_MARGIN_MM = 10
-const MARGIN_TOP_MM = 8.5
+const MARGIN_TOP_MM = 8.47
 const GAP_MM = 9
 
 export function A4ExamPaper({
@@ -303,7 +303,7 @@ export function A4ExamPaper({
                     ref={pageIndex === 0 ? containerRef : undefined}
                     className={cn(
                         `bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto p-8 shadow-lg mb-8`,
-                        pdfMode && "shadow-none bg-white my-0 rounded-none p-0" // 在pdf模式下，去掉阴影，背景为白色，没有外边距，没有圆角
+                        pdfMode && `shadow-none bg-white my-0`,
                     )}
                 >
                     {components.map(item => renderComponent(item))}

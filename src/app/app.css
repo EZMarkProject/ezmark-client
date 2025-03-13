@@ -8,16 +8,3 @@
     border-radius: 10px;
     overflow: auto;
 }
-
-@media print {
-    .exame-paper-container {
-        width: 210mm;
-        height: 297mm;
-        margin: 0;
-        padding: 0;
-        background-color: white !important;
-        color: black !important;
-        box-shadow: none;
-        border-radius: 0;
-    }
-}
