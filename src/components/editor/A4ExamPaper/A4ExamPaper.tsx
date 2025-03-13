@@ -136,7 +136,7 @@ export function A4ExamPaper({
                 } else {
                     // 添加到当前页
                     pages[currentPageIndex].push(component.id)
-                    currentPageHeight += heightMm + GAP_MM;
+                    currentPageHeight += (heightMm + GAP_MM);
                 }
                 return componentWithPosition;
             })
