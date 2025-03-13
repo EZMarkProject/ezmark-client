@@ -25,6 +25,7 @@ export function RenderContainer({ documentId }: RenderContainerProps) {
                     renderMode={true}
                     pdfMode={true}
                     scale={1}
+                    forceUpdate={false}
                     onMCQQuestionChange={() => { }}
                     onMCQOptionChange={() => { }}
                     onFillInBlankContentChange={() => { }}
