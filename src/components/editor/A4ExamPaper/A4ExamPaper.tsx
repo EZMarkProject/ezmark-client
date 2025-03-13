@@ -289,7 +289,7 @@ export function A4ExamPaper({
     return (
         <div
             className={cn(
-                "transform-scale origin-top-center transition-transform duration-100 ease-out w-fit pt-4",
+                "transform-scale origin-top-center transition-transform duration-100 ease-out w-fit",
                 pdfMode && "mx-auto"
             )}
             style={{
