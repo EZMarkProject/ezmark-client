@@ -55,25 +55,9 @@ const Navbar: React.FC = () => {
                         </button>
                     </div>
 
-                    <div className="relative group">
-                        <button className="flex items-center gap-1 text-sm font-medium">
-                            Company
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="h-4 w-4"
-                            >
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </button>
-                    </div>
+                    <Link href="/company" className="flex items-center gap-1 text-sm font-medium">
+                        Company
+                    </Link>
 
                     <Link href="/pricing" className="text-sm font-medium">
                         Pricing
