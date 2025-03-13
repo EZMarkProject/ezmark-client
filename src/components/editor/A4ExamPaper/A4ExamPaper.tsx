@@ -98,13 +98,15 @@ export function A4ExamPaper({
             // 开始遍历所有components，计算position
             const allComponentsWithPosition = [...exam.examData.components].map(component => {
                 // 获取组件的DOM元素
-                const element = document.querySelector(`[data-component-id="${component.id}"]`)
+                const element = document.querySelector(`[data-component-id="${component.id}"]`) as HTMLElement | null
                 if (!element) return component;
+                // 获取组件的父容器
+                const parentContainer = element.parentElement as HTMLElement
                 // 获取组件rect
                 const rect = element.getBoundingClientRect()
                 // 计算相对位置，并转换到mm
-                const topMm = (rect.top - a4Rect.top) * pixelToMMRatio
-                const leftMm = (rect.left - a4Rect.left) * pixelToMMRatio
+                const topMm = (rect.top - parentContainer.getBoundingClientRect().top) * pixelToMMRatio
+                const leftMm = (rect.left - parentContainer.getBoundingClientRect().left) * pixelToMMRatio
                 const widthMm = rect.width * pixelToMMRatio
                 const heightMm = rect.height * pixelToMMRatio
                 // 创建一个组件的副本，并更新position
