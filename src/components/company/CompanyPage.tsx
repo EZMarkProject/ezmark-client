@@ -51,14 +51,14 @@ export function CompanyPage() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Navbar */}
       <Navbar />
-      
+
       {/* Hero Section */}
-      <ParallaxSection 
+      <ParallaxSection
         className="h-[80vh] bg-black/70 dark:bg-black/90 text-white"
         speed={0.2}
       >
         <div className="container px-4 mx-auto text-center">
-          <motion.h1 
+          <motion.h1
             className="text-4xl md:text-6xl font-bold mb-6"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -66,7 +66,7 @@ export function CompanyPage() {
           >
             Meet Our Team
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="text-xl md:text-2xl max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,7 +80,7 @@ export function CompanyPage() {
       {/* Our Mission */}
       <ParallaxSection className="py-24 bg-background" speed={0.3}>
         <div className="container px-4 mx-auto">
-          <motion.div 
+          <motion.div
             className="max-w-3xl mx-auto text-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -101,7 +101,7 @@ export function CompanyPage() {
       {/* Team Section */}
       <section className="py-24 bg-muted/30 dark:bg-muted/10">
         <div className="container px-4 mx-auto">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-5xl font-bold mb-16 text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -110,7 +110,7 @@ export function CompanyPage() {
           >
             The People Behind EZMark
           </motion.h2>
-          
+
           <div className="grid grid-cols-1 gap-12 max-w-5xl mx-auto">
             {teamMembers.map((member, index) => (
               <TeamMember
@@ -129,7 +129,7 @@ export function CompanyPage() {
       {/* Values Section */}
       <ParallaxSection className="py-24 bg-black text-white dark:bg-slate-900" speed={0.4}>
         <div className="container px-4 mx-auto">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-5xl font-bold mb-16 text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -138,14 +138,14 @@ export function CompanyPage() {
           >
             Our Values
           </motion.h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               { title: "Innovation", desc: "We constantly push the boundaries of what's possible in EdTech." },
               { title: "Integrity", desc: "We're committed to ethical practices and transparent relationships with our users." },
               { title: "Impact", desc: "We measure our success by the positive difference we make in educators' lives." }
             ].map((value, i) => (
-              <motion.div 
+              <motion.div
                 key={value.title}
                 className="p-8 rounded-xl bg-white/10 dark:bg-white/5 backdrop-blur-sm"
                 initial={{ opacity: 0, y: 30 }}
@@ -173,9 +173,9 @@ export function CompanyPage() {
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-8">Join Our Journey</h2>
             <p className="text-xl mb-8">
-              We're always looking for talented individuals who share our passion for education and innovation.
+              We&apos;re always looking for talented individuals who share our passion for education and innovation.
             </p>
-            <motion.button 
+            <motion.button
               className="px-8 py-3 rounded-md bg-white dark:bg-white text-primary font-medium hover:bg-white/90 dark:hover:bg-white/90 transition-colors"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
