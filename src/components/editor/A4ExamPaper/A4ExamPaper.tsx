@@ -302,8 +302,8 @@ export function A4ExamPaper({
                     key={`page-${pageIndex}`}
                     ref={pageIndex === 0 ? containerRef : undefined}
                     className={cn(
-                        `bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto`,
-                        !pdfMode && "p-8 shadow-lg mb-8"
+                        `bg-background w-[${A4_WIDTH_MM}mm] h-[${A4_HEIGHT_MM}mm] mx-auto p-8 shadow-lg mb-8`,
+                        pdfMode && "shadow-none bg-white my-0 rounded-none" // 在pdf模式下，去掉阴影，背景为白色，没有外边距，没有圆角
                     )}
                 >
                     {components.map(item => renderComponent(item))}
