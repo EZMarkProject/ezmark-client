@@ -21,7 +21,7 @@ const Navbar: React.FC = () => {
             <div className="container flex h-16 items-center px-4 md:px-6 justify-around">
                 <div className="flex items-center gap-2">
                     {/* Logo */}
-                    <a href="/" className="flex items-center gap-2">
+                    <Link href="/" className="flex items-center gap-2">
                         <Image
                             src="/logo.svg"
                             alt="EZMark Logo"
@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
                             className="h-8 w-8"
                         />
                         <span className="text-xl font-bold">EZMark</span>
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Navigation Links */}
