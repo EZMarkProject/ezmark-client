@@ -54,7 +54,8 @@ export function CompanyPage() {
 
       {/* Hero Section */}
       <ParallaxSection
-        className="h-[80vh] bg-black/70 dark:bg-black/90 text-white"
+        className="h-[80vh] text-white"
+        bgImage="/images/company/company_bg.png"
         speed={0.2}
       >
         <div className="container px-4 mx-auto text-center">
