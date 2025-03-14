@@ -9,40 +9,40 @@ import Navbar from '@/components/landing-page/Navbar';
 // 团队成员数据
 const teamMembers = [
   {
-    name: "Li Hongzhu",
-    role: "Founder & CEO",
-    bio: "With over 10 years of experience in EdTech, Hongzhu founded EZMark with a vision to revolutionize the grading process for educators worldwide.",
+    name: "Qiu Yang",
+    role: "Project Manager",
+    bio: "Experienced in project coordination and team management, ensuring smooth progress, effective communication, and timely delivery.",
+    imageSrc: "/images/company/qy.jpg"
+  },
+  {
+    name: "Li Hongze",
+    role: "FrontEnd Developer",
+    bio: "Specializes in building intuitive and responsive user interfaces for an enhanced user experience.",
     imageSrc: "/images/company/lhz.jpg"
   },
   {
-    name: "Tian Sirui",
-    role: "CTO",
-    bio: "A tech innovator with expertise in AI and machine learning, Sirui leads our development team in creating cutting-edge marking solutions.",
+    name: "Tang Shaorou",
+    role: "Backend Developer",
+    bio: "Focused on developing robust and scalable backend systems to support seamless functionality.",
     imageSrc: "/images/company/tsr.jpg"
   },
   {
-    name: "Liu Xinran",
-    role: "Head of Design",
-    bio: "Passionate about creating intuitive user experiences, Xinran ensures our platform is beautiful, accessible, and easy to use for educators.",
-    imageSrc: "/images/company/lxr.jpg"
-  },
-  {
-    name: "Deng Siqi",
-    role: "Product Manager",
-    bio: "With a background in education and technology, Siqi bridges the gap between educators' needs and our technical capabilities.",
-    imageSrc: "/images/company/dsq.png"
-  },
-  {
-    name: "Zhuang Yuqi",
-    role: "AI Research Lead",
-    bio: "Leading our AI research initiatives, Yuqi works on improving our marking algorithms to provide accurate and helpful feedback.",
+    name: "Zhang Yiqi",
+    role: "UI/UX Designer & Frontend Support",
+    bio: "Combines creative design with frontend development to deliver visually appealing and user-friendly interfaces.",
     imageSrc: "/images/company/zyq.jpg"
   },
   {
-    name: "Qian Yu",
-    role: "Customer Success Manager",
-    bio: "Dedicated to ensuring customer satisfaction, Yu helps educators make the most of our platform with training and support.",
-    imageSrc: "/images/company/qy.jpg"
+    name: "Dai Shuqi",
+    role: "Database Engineer & Backend Support",
+    bio: "Expert in database design and optimization, ensuring efficient data management and backend support.",
+    imageSrc: "/images/company/dsq.png"
+  },
+  {
+    name: "Liu Xinran",
+    role: "Testing Engineer",
+    bio: "Dedicated to ensuring software quality through rigorous testing and performance optimization.",
+    imageSrc: "/images/company/lxr.jpg"
   }
 ];
 

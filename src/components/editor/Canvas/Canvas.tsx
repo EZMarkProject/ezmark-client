@@ -20,6 +20,7 @@ export function Canvas({ exam, renderMode,
     handleComponentDelete,
     onFillInBlankContentChange, ...props }: CanvasProps) {
     const [scale, setScale] = useState(1)
+    const [forceUpdate, setForceUpdate] = useState(true)
     const containerRef = useRef<HTMLDivElement>(null)
     const MIN_SCALE = 0.1
     const MAX_SCALE = 2
@@ -101,6 +102,13 @@ export function Canvas({ exam, renderMode,
     // 点击空白区域，取消选中组件
     const handleClickCanvaOuterArea = () => {
         handleComponentClick(null)
+        setForceUpdate(!forceUpdate)
+    }
+
+    // 点击切换预览模式
+    const handleRenderModeClick = () => {
+        onRenderModeChange(!renderMode)
+        setForceUpdate(!forceUpdate)
     }
 
     // Add non-passive wheel event listener
@@ -130,7 +138,7 @@ export function Canvas({ exam, renderMode,
                     <Button
                         variant="outline"
                         className="flex items-center gap-2"
-                        onClick={() => onRenderModeChange(!renderMode)}
+                        onClick={handleRenderModeClick}
                     >
                         {renderMode ? (
                             <>
@@ -195,6 +203,7 @@ export function Canvas({ exam, renderMode,
                     setExam={setExam}
                     renderMode={renderMode}
                     scale={scale}
+                    forceUpdate={forceUpdate}
                     onMCQQuestionChange={onMCQQuestionChange}
                     onMCQOptionChange={onMCQOptionChange}
                     onFillInBlankContentChange={onFillInBlankContentChange}

@@ -25,6 +25,7 @@ export function A4ExamPaper({
     renderMode,
     pdfMode,
     scale = 1,
+    forceUpdate,
     onMCQQuestionChange,
     onMCQOptionChange,
     onFillInBlankContentChange,
@@ -152,7 +153,7 @@ export function A4ExamPaper({
             }
             setExam(updatedExam)
         }
-    }, [exam])
+    }, [exam, forceUpdate])
 
     // 计算总页数
     const totalPages = exam.examData.components.length > 0
