@@ -89,12 +89,21 @@ export async function createStudent(userDocumentId: string, student: { name: str
  * 不真实删除，只是从teacher中移除
  */
 export async function deleteStudentById(userDocumentId: string, studentDocumentId: string) {
-    const response = await axiosInstance.put(`/students/${studentDocumentId}`, {
-        data: {
-            teacher: {
-                disconnect: [userDocumentId]
+    // 1. 先检查这个学生有没有绑定的导师
+    const teacher = await axiosInstance.get(`/students/${studentDocumentId}?populate=teacher`);
+    // 2. 如果这个学生有绑定的导师,且大于一个，则删除当前老师
+    if (teacher.data.data.teacher.length > 1) {
+        const response = await axiosInstance.put(`/students/${studentDocumentId}`, {
+            data: {
+                teacher: {
+                    disconnect: [userDocumentId]
+                }
             }
-        }
-    });
-    return response.data;
+        });
+        return response.data;
+    } else {
+        // 3. 如果这个学生有绑定的导师,且只有一个，则删除当前学生
+        const response = await axiosInstance.delete(`/students/${studentDocumentId}`);
+        return response.data;
+    }
 }
