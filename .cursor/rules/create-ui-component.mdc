@@ -1,5 +1,5 @@
 ---
-description: 
+description: 当创建或修改UI组件时遵守这个规则
 globs: 
 alwaysApply: false
 ---
