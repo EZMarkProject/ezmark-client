@@ -22,14 +22,14 @@ const NAV_ITEMS = [
         icon: BookOpenText,
     },
     {
-        id: "analysis",
-        label: "Analysis",
-        icon: BarChartBig,
+        id: "students",
+        label: "Students",
+        icon: Users,
     },
     {
         id: "classes",
         label: "Classes",
-        icon: Users,
+        icon: Folder, // 更换为更能表示班级的图标
     },
     {
         id: "accounts",

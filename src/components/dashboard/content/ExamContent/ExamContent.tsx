@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { ExamTable } from "./ExamTable";
+import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 
 const formSchema = z.object({
     projectName: z.string().min(1, "Project name is required"),
@@ -100,16 +101,12 @@ function ExamContent() {
 
     return (
         <div className="flex flex-col space-y-6 h-[100%]">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h2 className="text-3xl font-bold tracking-tight">Exams</h2>
-                    <p className="text-muted-foreground mt-1">Manage and view your exam papers for AI-assisted grading.</p>
-                </div>
-                <Button onClick={handleCreateNew} className="rounded-md shadow-sm">
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Create New Exam
-                </Button>
-            </div>
+            <CommonHeader
+                title="Exams"
+                description="Manage and view your exam papers for AI-assisted grading."
+                buttonText="Create New Exam"
+                onButtonClick={handleCreateNew}
+            />
 
             <div className="flex-1 overflow-y-auto">
                 {isLoading ? (
