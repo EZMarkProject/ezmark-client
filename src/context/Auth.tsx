@@ -8,10 +8,12 @@ import { useRouter, usePathname } from "next/navigation";
 export const AuthContext = createContext<AuthContextObject>({
     userName: "",
     email: "",
+    id: "",
     jwt: "",
     authenticated: false,
     setUserName: () => { },
     setEmail: () => { },
+    setId: () => { },
     setJwt: () => { },
     setAuthenticated: () => { },
     logout: () => Promise.resolve(),
@@ -22,6 +24,7 @@ export const AuthContext = createContext<AuthContextObject>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
+    const [id, setId] = useState("");
     const [documentId, setDocumentId] = useState("");
     const [jwt, setJwt] = useState("");
     const [authenticated, setAuthenticated] = useState(false);
@@ -33,11 +36,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         Cookies.remove("jwt");
         localStorage.removeItem("userName");
         localStorage.removeItem("email");
+        localStorage.removeItem("id");
         localStorage.removeItem("documentId");
         // Update auth context
         setAuthenticated(false);
         setUserName("");
         setEmail("");
+        setId("");
         setDocumentId("");
         setJwt("");
 
@@ -53,11 +58,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setJwt(jwt);
             const userName = localStorage.getItem("userName");
             const email = localStorage.getItem("email");
+            const id = localStorage.getItem("id");
             const documentId = localStorage.getItem("documentId");
-            if (userName && email && documentId) {
+            if (userName && email && id && documentId) {
                 setUserName(userName);
                 setEmail(email);
-                setDocumentId(documentId);
+                setId(id);
+                setDocumentId(id);
                 // 只有当用户名和邮箱都存在时，才认为用户已登录
                 setAuthenticated(true);
             } else {
@@ -65,6 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 Cookies.remove("jwt");
                 localStorage.removeItem("userName");
                 localStorage.removeItem("email");
+                localStorage.removeItem("id");
                 localStorage.removeItem("documentId");
                 setAuthenticated(false);
             }
@@ -84,10 +92,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         <AuthContext.Provider value={{
             userName,
             email,
+            id,
             jwt,
             authenticated,
             setUserName,
             setEmail,
+            setId,
             setJwt,
             setAuthenticated,
             logout,
