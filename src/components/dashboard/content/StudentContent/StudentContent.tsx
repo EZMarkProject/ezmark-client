@@ -12,6 +12,7 @@ import { StudentTable } from "./StudentTable";
 import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { deleteStudentById, getStudentByUserId, createStudent } from "@/lib/api";
 import { useAuth } from "@/context/Auth";
+import { UserPlus } from "lucide-react";
 
 const formSchema = z.object({
     name: z.string().min(1, "Student name is required"),
@@ -114,6 +115,19 @@ function StudentContent() {
                         <Skeleton className="h-14 w-full" />
                         <Skeleton className="h-14 w-full" />
                         <Skeleton className="h-14 w-full" />
+                    </div>
+                ) : students.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full space-y-4 py-12">
+                        <div className="bg-muted/40 p-6 rounded-full">
+                            <UserPlus className="h-12 w-12 text-muted-foreground" />
+                        </div>
+                        <h3 className="text-xl font-medium text-center">No students yet</h3>
+                        <p className="text-muted-foreground text-center max-w-md">
+                            Add your first student to start managing your class for AI-assisted grading.
+                        </p>
+                        <Button onClick={handleCreateNew} className="mt-2">
+                            Add New Student
+                        </Button>
                     </div>
                 ) : (
                     <div className="overflow-y-auto">
