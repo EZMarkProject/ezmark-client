@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setUserName(userName);
                 setEmail(email);
                 setId(id);
-                setDocumentId(id);
+                setDocumentId(documentId);
                 // 只有当用户名和邮箱都存在时，才认为用户已登录
                 setAuthenticated(true);
             } else {
