@@ -44,11 +44,20 @@ export interface AuthContextObject {
     userName: string;
     email: string;
     jwt: string;
+    id: string;
     documentId: string;
     setAuthenticated: (authenticated: boolean) => void;
     setJwt: (jwt: string) => void;
     setUserName: (userName: string) => void;
     setEmail: (email: string) => void;
     setDocumentId: (documentId: string) => void;
+    setId: (id: string) => void;
     logout: () => Promise<void>;
+}
+
+export interface Student {
+    name: string;
+    studentId: string;
+    documentId: string;
+    publishedAt: string;
 }

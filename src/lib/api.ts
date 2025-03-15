@@ -2,6 +2,7 @@ import { ExamResponse } from "@/types/exam";
 import { axiosInstance } from "./axios";
 import { defaultExamData } from "@/mock/default-exam-data";
 import { PDFReponse } from "@/components/landing-page/types";
+import { Student } from "@/types/types";
 
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
     const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}`);
@@ -18,11 +19,11 @@ export async function deleteExamById(id: string) {
     return response.data;
 }
 
-export async function createExam(projectName: string, userDocumentId: string) {
+export async function createExam(projectName: string, userId: string) {
     const response = await axiosInstance.post('/exams', {
         data: {
             projectName,
-            user: userDocumentId,
+            user: userId,
             examData: defaultExamData
         }
     });
@@ -43,4 +44,57 @@ export async function updateExam(documentId: string, examData: ExamResponse) {
 export async function getExportedPDFUrl(documentId: string) {
     const response = await axiosInstance.get<PDFReponse>(`/pdfs/${documentId}`);
     return response.data.data.url;
+}
+
+/**
+ * 获取用户的学生列表
+ * Strapi的BUG，只能通过id查询用户，不能用documentId...
+ * @param userId 
+ * @returns 
+ */
+export async function getStudentByUserId(userId: string): Promise<Student[]> {
+    const response = await axiosInstance.get(`/users/${userId}?populate=students`);
+    return response.data.students;
+}
+
+export async function createStudent(userDocumentId: string, student: { name: string, studentId: string }) {
+    // 1. 先检查数据库中有没有userId相同的学生
+    const sameStudents = await axiosInstance.get(`/students?populate=*&filters[studentId][$eq]=${student.studentId}`);
+    // 如果存在，则给学生添加老师
+    if (sameStudents.data.data.length > 0) {
+        const response = await axiosInstance.put(`/students/${sameStudents.data.data[0].documentId}`, {
+            data: {
+                teacher: {
+                    connect: [userDocumentId]
+                }
+            }
+        });
+        return response.data;
+    } else {
+        // 2. 创建学生
+        const response = await axiosInstance.post(`/students`, {
+            data: {
+                name: student.name,
+                studentId: student.studentId,
+                teacher: {
+                    connect: [userDocumentId]
+                }
+            }
+        });
+        return response.data;
+    }
+}
+
+/**
+ * 不真实删除，只是从teacher中移除
+ */
+export async function deleteStudentById(userDocumentId: string, studentDocumentId: string) {
+    const response = await axiosInstance.put(`/students/${studentDocumentId}`, {
+        data: {
+            teacher: {
+                disconnect: [userDocumentId]
+            }
+        }
+    });
+    return response.data;
 }

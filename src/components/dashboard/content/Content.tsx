@@ -2,6 +2,7 @@
 
 import { ExamContent } from "./ExamContent";
 import { ContentProps } from "./interface";
+import { StudentContent } from "./StudentContent";
 
 const Content = ({ activeTab }: ContentProps) => {
     return (
@@ -11,7 +12,7 @@ const Content = ({ activeTab }: ContentProps) => {
                     {/* 在这里添加内容 */}
                     <div className="h-[100%]">
                         {activeTab === "exams" && <ExamContent />}
-                        {activeTab === "analysis" && <AnalysisContent />}
+                        {activeTab === "students" && <StudentContent />}
                         {activeTab === "classes" && <ClassesContent />}
                     </div>
                 </div>
