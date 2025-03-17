@@ -1,9 +1,8 @@
+import { ExamResponse } from "@/types/exam";
+
 export interface EditorNavbarProps {
-    exam: {
-        projectName: string;
-        updatedAt: string;
-    };
+    exam: ExamResponse;
     isSaved?: boolean;
-    onSave: () => Promise<void>;
+    onSave: (exam: ExamResponse) => Promise<void>;
     onExportPDF: () => Promise<string>;
 }

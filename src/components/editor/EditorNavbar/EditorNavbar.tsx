@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { EditorNavbarProps } from "./interface"
 import { format } from "date-fns"
 import { useToast } from "@/hooks/use-toast"
-import { useState, useRef } from "react"
+import { useState } from "react"
 import {
     Dialog,
     DialogContent,
@@ -25,7 +25,7 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
     const handleSave = async () => {
         try {
             setIsSaving(true);
-            await onSave();
+            await onSave(exam);
             toast({
                 title: "Saved",
                 description: "Your changes have been saved.",
@@ -41,7 +41,7 @@ export function EditorNavbar({ exam, isSaved = true, onSave, onExportPDF }: Edit
         setShowExportDialog(true);
         setExportedPdfUrl(null);
 
-        await onSave()
+        await onSave(exam)
         const url = await onExportPDF();
         setExportedPdfUrl(url);
         setIsExporting(false);

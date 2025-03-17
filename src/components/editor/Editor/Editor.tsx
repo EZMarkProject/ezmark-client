@@ -263,7 +263,7 @@ export default function Editor({ documentId }: EditorProps) {
     return (
         <div className="min-h-screen bg-background">
             {exam ? (
-                <EditorNavbar exam={exam} isSaved={isSaved} onSave={() => handleExamSave(exam)} onExportPDF={handleExportPDF} />
+                <EditorNavbar exam={exam} isSaved={isSaved} onSave={handleExamSave} onExportPDF={handleExportPDF} />
             ) : (
                 <nav className="flex h-[50px] items-center border-b px-4 justify-between">
                     <div className="flex items-center gap-3">
