@@ -156,16 +156,22 @@ export function A4ExamPaper({
         }
     }, [exam, forceUpdate, isLoaded])
 
-    // 完全加载后再更新一次position，确保准确
+    // 完全加载后1s再更新一次position，确保准确
     useEffect(() => {
         if (typeof window !== 'undefined') {
             // Check if document is already complete
             if (document.readyState === 'complete') {
-                setIsLoaded(true);
+                setTimeout(() => {
+                    console.log('Loaded')
+                    setIsLoaded(true);
+                }, 1000);
             } else {
                 // Wait for window load event
                 const handleLoad = () => {
-                    setIsLoaded(true);
+                    console.log('Loaded')
+                    setTimeout(() => {
+                        setIsLoaded(true);
+                    }, 1000);
                 };
                 window.addEventListener('load', handleLoad);
                 return () => {
