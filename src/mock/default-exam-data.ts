@@ -7,7 +7,7 @@ export const defaultExamData: Exam = {
     description: 'Final examination for the Cloud Computing module.',
     duration: '3 HOURS',
     university: 'University College Dublin',
-    course: 'COMP3030 Cloud Computing',
+    course: 'COMP3030 Algorithms',
     year: '2024-2025',
     semester: 'Spring',
     examDate: '2024-01-01', // 精确到日
