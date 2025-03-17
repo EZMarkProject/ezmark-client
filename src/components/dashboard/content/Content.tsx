@@ -4,6 +4,7 @@ import { ExamContent } from "./ExamPaperContent";
 import { ContentProps } from "./interface";
 import { StudentContent } from "./StudentContent";
 import { ClassContent } from "./ClassContent";
+import { ExamScheduleContent } from "./ExamScheduleContent";
 
 const Content = ({ activeTab }: ContentProps) => {
     return (
@@ -15,6 +16,7 @@ const Content = ({ activeTab }: ContentProps) => {
                         {activeTab === "exams" && <ExamContent />}
                         {activeTab === "students" && <StudentContent />}
                         {activeTab === "classes" && <ClassContent />}
+                        {activeTab === "schedule" && <ExamScheduleContent />}
                     </div>
                 </div>
             </div>
