@@ -3,6 +3,7 @@
 import { ExamContent } from "./ExamContent";
 import { ContentProps } from "./interface";
 import { StudentContent } from "./StudentContent";
+import { ClassContent } from "./ClassContent";
 
 const Content = ({ activeTab }: ContentProps) => {
     return (
@@ -13,26 +14,10 @@ const Content = ({ activeTab }: ContentProps) => {
                     <div className="h-[100%]">
                         {activeTab === "exams" && <ExamContent />}
                         {activeTab === "students" && <StudentContent />}
-                        {activeTab === "classes" && <ClassesContent />}
+                        {activeTab === "classes" && <ClassContent />}
                     </div>
                 </div>
             </div>
-        </div>
-    );
-};
-
-const AnalysisContent = () => {
-    return (
-        <div>
-            Analysis Component
-        </div>
-    );
-};
-
-const ClassesContent = () => {
-    return (
-        <div>
-            Classes Component
         </div>
     );
 };

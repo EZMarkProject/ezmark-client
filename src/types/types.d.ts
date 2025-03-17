@@ -61,3 +61,10 @@ export interface Student {
     documentId: string;
     publishedAt: string;
 }
+
+export interface Class {
+    name: string;
+    classId: string;
+    documentId: string;
+    publishedAt: string;
+}

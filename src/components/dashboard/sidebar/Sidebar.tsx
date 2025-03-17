@@ -7,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Home, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import Link from "next/link";
 
 const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
     const { theme, setTheme } = useTheme();

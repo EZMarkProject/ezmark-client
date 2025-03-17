@@ -2,14 +2,14 @@
 
 import {
     BookOpenText,
-    BarChartBig,
     Users,
     LayoutGrid,
     CreditCard,
     PlusCircle,
     Folder,
     Share,
-    UserCircle
+    UserCircle,
+    School
 } from "lucide-react";
 import { NavigationProps } from "./interface";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ const NAV_ITEMS = [
     {
         id: "classes",
         label: "Classes",
-        icon: Folder, // 更换为更能表示班级的图标
+        icon: School,
     },
     {
         id: "accounts",
