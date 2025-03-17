@@ -1,7 +1,7 @@
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash2, ArrowUpDown, ChevronDown, ChevronUp, CalendarDays, FileText, School } from "lucide-react";
+import { Trash2, ArrowUpDown, ChevronDown, ChevronUp, CalendarDays, FileText, School, FolderUp } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,24 +9,15 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState, useMemo } from "react";
+import { ExamSchedule } from "@/types/types";
+import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getClassById } from "@/lib/api";
 
 type SortField = "name" | "examPaper" | "class";
 type SortDirection = "asc" | "desc";
-
-// Define the ExamSchedule interface
-interface ExamSchedule {
-    documentId: string;
-    name: string;
-    examPaper: {
-        documentId: string;
-        projectName: string;
-    };
-    class: {
-        documentId: string;
-        name: string;
-    };
-    publishedAt: string;
-}
 
 interface ExamScheduleTableProps {
     examSchedules: ExamSchedule[];
@@ -44,6 +35,10 @@ export function ExamScheduleTable({
     // Internal sort state
     const [sortField, setSortField] = useState<SortField>("name");
     const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+    const [isClassDialogOpen, setIsClassDialogOpen] = useState(false);
+    const [selectedClass, setSelectedClass] = useState<ExamSchedule["class"] | null>(null);
+    const [isLoadingClassStudents, setIsLoadingClassStudents] = useState(false);
+    const router = useRouter();
 
     const handleSort = (field: SortField) => {
         if (field === sortField) {
@@ -63,6 +58,43 @@ export function ExamScheduleTable({
             <ChevronUp className="ml-2 h-4 w-4" />;
     };
 
+    // Navigate to exam paper
+    const handleExamPaperClick = (examId: string) => {
+        router.push(`/editor/${examId}`);
+    };
+
+    // Open class dialog
+    const handleClassClick = async (classData: ExamSchedule["class"]) => {
+        setSelectedClass(classData);
+        setIsClassDialogOpen(true);
+
+        try {
+            setIsLoadingClassStudents(true);
+            const classWithStudents = await getClassById(classData.documentId);
+            setSelectedClass(classWithStudents);
+        } catch (error) {
+            console.error("Failed to fetch class students:", error);
+        } finally {
+            setIsLoadingClassStudents(false);
+        }
+    };
+
+    // Handle submit button click
+    const handleSubmit = (scheduleId: string) => {
+        // Implement submit functionality here
+        console.log(`Submit exam schedule: ${scheduleId}`);
+    };
+
+    // Get initials from name
+    const getInitials = (name: string) => {
+        return name
+            .split(' ')
+            .map(part => part[0])
+            .join('')
+            .toUpperCase()
+            .substring(0, 2);
+    };
+
     // Sort exam schedules based on current sort settings
     const sortedSchedules = useMemo(() => {
         return [...examSchedules].sort((a, b) => {
@@ -76,8 +108,8 @@ export function ExamScheduleTable({
                 case "examPaper":
                     // Compare by exam paper name
                     return sortDirection === "desc"
-                        ? b.examPaper.projectName.localeCompare(a.examPaper.projectName)
-                        : a.examPaper.projectName.localeCompare(b.examPaper.projectName);
+                        ? b.exam.projectName.localeCompare(a.exam.projectName)
+                        : a.exam.projectName.localeCompare(b.exam.projectName);
                 case "class":
                     // Compare by class name
                     return sortDirection === "desc"
@@ -157,7 +189,7 @@ export function ExamScheduleTable({
                                         {getSortIcon("class")}
                                     </Button>
                                 </TableHead>
-                                <TableHead className="w-[100px]">Actions</TableHead>
+                                <TableHead className="w-[150px]">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -165,7 +197,7 @@ export function ExamScheduleTable({
                                 sortedSchedules.map((schedule) => (
                                     <TableRow
                                         key={schedule.documentId}
-                                        className="hover:bg-muted/40 cursor-pointer"
+                                        className="hover:bg-muted/40"
                                     >
                                         <TableCell>
                                             <div className="flex items-center gap-2">
@@ -174,23 +206,39 @@ export function ExamScheduleTable({
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="flex items-center gap-2">
+                                            <div
+                                                className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+                                                onClick={() => handleExamPaperClick(schedule.exam.documentId)}
+                                            >
                                                 <FileText className="h-4 w-4 text-muted-foreground" />
-                                                <span>{schedule.examPaper.projectName}</span>
+                                                <span>{schedule.exam.projectName}</span>
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="flex items-center gap-2">
+                                            <div
+                                                className="flex items-center gap-2 cursor-pointer hover:text-primary transition-colors"
+                                                onClick={() => handleClassClick(schedule.class)}
+                                            >
                                                 <School className="h-4 w-4 text-muted-foreground" />
                                                 <span>{schedule.class.name}</span>
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center space-x-2">
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="text-primary"
+                                                    title="Submit PDF"
+                                                    onClick={() => handleSubmit(schedule.documentId)}
+                                                >
+                                                    <FolderUp className="h-4 w-4 mr-1.5" />
+                                                    <span>Submit PDF</span>
+                                                </Button>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="text-red-500 hover:text-red-700 hover:bg-red-100"
+                                                    className="h-8 w-8 text-destructive"
                                                     title="Delete"
                                                     onClick={() => handleDelete(schedule.documentId)}
                                                 >
@@ -211,6 +259,54 @@ export function ExamScheduleTable({
                     </Table>
                 </div>
             </div>
+
+            {/* Class Students Dialog */}
+            <Dialog open={isClassDialogOpen} onOpenChange={setIsClassDialogOpen}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>{selectedClass?.name} Students</DialogTitle>
+                        <DialogDescription>
+                            Students enrolled in this class for AI-assisted marking
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <ScrollArea className="h-[300px] mt-4">
+                        {isLoadingClassStudents ? (
+                            <div className="space-y-3">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div key={i} className="flex items-center gap-3 p-2 rounded-md border animate-pulse">
+                                        <div className="h-8 w-8 rounded-full bg-muted"></div>
+                                        <div className="space-y-2">
+                                            <div className="h-4 w-32 bg-muted rounded"></div>
+                                            <div className="h-3 w-24 bg-muted rounded"></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : selectedClass?.students && selectedClass.students.length > 0 ? (
+                            <div className="space-y-3">
+                                {selectedClass.students.map(student => (
+                                    <div key={student.documentId} className="flex items-center gap-3 p-2 rounded-md border">
+                                        <Avatar className="h-8 w-8">
+                                            <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                                                {getInitials(student.name)}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="text-sm font-medium">{student.name}</p>
+                                            <p className="text-xs text-muted-foreground">{student.studentId}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8 text-muted-foreground">
+                                No students in this class
+                            </div>
+                        )}
+                    </ScrollArea>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 } 

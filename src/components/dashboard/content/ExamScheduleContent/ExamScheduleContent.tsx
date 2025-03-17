@@ -1,5 +1,5 @@
 import { ExamResponse } from "@/types/exam";
-import { Class } from "@/types/types";
+import { Class, ExamSchedule } from "@/types/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,31 +14,16 @@ import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { useAuth } from "@/context/Auth";
 import { CalendarDays } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getExamByUserId, getAllClassesByUserId } from "@/lib/api";
+import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById } from "@/lib/api";
 
 // Define the form schema for creating a new exam schedule
 const formSchema = z.object({
-    name: z.string().min(1, "Schedule name is required"),
+    name: z.string().min(1, "Exam name is required"),
     examPaperId: z.string().min(1, "Exam paper is required"),
     classId: z.string().min(1, "Class is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
-
-// Define the ExamSchedule interface
-interface ExamSchedule {
-    documentId: string;
-    name: string;
-    examPaper: {
-        documentId: string;
-        projectName: string;
-    };
-    class: {
-        documentId: string;
-        name: string;
-    };
-    publishedAt: string;
-}
 
 function ExamScheduleContent() {
     const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +39,7 @@ function ExamScheduleContent() {
     const [classes, setClasses] = useState<Class[]>([]);
     const [isLoadingExamPapers, setIsLoadingExamPapers] = useState(false);
     const [isLoadingClasses, setIsLoadingClasses] = useState(false);
-    const { documentId: userDocumentId, id: userId } = useAuth();
+    const { documentId: userDocumentId } = useAuth();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -69,12 +54,8 @@ function ExamScheduleContent() {
     const fetchExamSchedules = async () => {
         if (!userDocumentId) return;
         setIsLoading(true);
-        // This is a placeholder - you'll need to implement the actual API call
-        // const response = await getExamSchedulesByUserId(userDocumentId);
-        // setExamSchedules(response);
-
-        // For now, we'll use mock data
-        setExamSchedules([]);
+        const response = await getExamSchedulesByUserId(userDocumentId);
+        setExamSchedules(response);
         setIsLoading(false);
     };
 
@@ -82,28 +63,18 @@ function ExamScheduleContent() {
     const fetchExamPapers = async () => {
         if (!userDocumentId) return;
         setIsLoadingExamPapers(true);
-        try {
-            const response = await getExamByUserId(userDocumentId);
-            setExamPapers(response.data);
-        } catch (error) {
-            console.error("Failed to fetch exam papers:", error);
-        } finally {
-            setIsLoadingExamPapers(false);
-        }
+        const response = await getExamByUserId(userDocumentId);
+        setExamPapers(response.data);
+        setIsLoadingExamPapers(false);
     };
 
     // Fetch classes data
     const fetchClasses = async () => {
         if (!userDocumentId) return;
         setIsLoadingClasses(true);
-        try {
-            const response = await getAllClassesByUserId(userDocumentId);
-            setClasses(response);
-        } catch (error) {
-            console.error("Failed to fetch classes:", error);
-        } finally {
-            setIsLoadingClasses(false);
-        }
+        const response = await getAllClassesByUserId(userDocumentId);
+        setClasses(response);
+        setIsLoadingClasses(false);
     };
 
     useEffect(() => {
@@ -115,6 +86,7 @@ function ExamScheduleContent() {
     // Handle delete button click
     const handleDelete = async (documentId: string) => {
         setScheduleToDelete(documentId);
+        await deleteExamScheduleById(documentId);
         setIsDeleteDialogOpen(true);
     };
 
@@ -140,8 +112,13 @@ function ExamScheduleContent() {
     const onSubmit = async (data: FormValues) => {
         setIsCreating(true);
         try {
-            // This is a placeholder - you'll need to implement the actual API call
-            // await createExamSchedule(data.name, data.examPaperId, data.classId, userDocumentId as string);
+            const examSchedule = {
+                name: data.name,
+                exam: data.examPaperId,
+                class: data.classId,
+                teacher: userDocumentId
+            }
+            await createExamSchedule(examSchedule);
             form.reset();
             setForceUpdate(!forceUpdate);
             setIsCreating(false);
@@ -245,9 +222,9 @@ function ExamScheduleContent() {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Schedule Name</FormLabel>
+                                        <FormLabel>Exam Name</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter schedule name for AI-assisted grading" {...field} />
+                                            <Input placeholder="Enter exam name" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

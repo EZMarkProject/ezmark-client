@@ -2,7 +2,7 @@ import { ExamResponse } from "@/types/exam";
 import { axiosInstance } from "./axios";
 import { defaultExamData } from "@/mock/default-exam-data";
 import { PDFReponse } from "@/components/landing-page/types";
-import { Class, Student } from "@/types/types";
+import { Class, ExamSchedule, Student } from "@/types/types";
 
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
     const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}`);
@@ -124,6 +124,11 @@ export async function getAllClassesByUserId(userDocumentId: string): Promise<Cla
     return response.data.data;
 }
 
+export async function getClassById(classDocumentId: string): Promise<Class> {
+    const response = await axiosInstance.get(`/classes/${classDocumentId}?populate=*`);
+    return response.data.data;
+}
+
 /**
  * Update the students in a class
  * @param classDocumentId The document ID of the class to update
@@ -142,5 +147,28 @@ export async function updateClassStudents(classDocumentId: string, studentDocIds
 
 export async function deleteClassById(classDocumentId: string) {
     const response = await axiosInstance.delete(`/classes/${classDocumentId}`);
+    return response.data;
+}
+
+
+export async function getExamSchedulesByUserId(userDocumentId: string): Promise<ExamSchedule[]> {
+    const response = await axiosInstance.get(`/schedules?populate=*&filters[teacher][documentId][$eq]=${userDocumentId}`);
+    return response.data.data;
+}
+
+export async function createExamSchedule(examSchedule: {
+    name: string;
+    exam: string;
+    class: string;
+    teacher: string;
+}) {
+    const response = await axiosInstance.post(`/schedules`, {
+        data: examSchedule
+    });
+    return response.data;
+}
+
+export async function deleteExamScheduleById(examScheduleDocumentId: string) {
+    const response = await axiosInstance.delete(`/schedules/${examScheduleDocumentId}`);
     return response.data;
 }

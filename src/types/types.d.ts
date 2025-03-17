@@ -76,3 +76,12 @@ export interface Class {
     students: Student[];
     teacher: User;
 }
+
+
+export interface ExamSchedule {
+    documentId: string;
+    name: string;
+    exam: ExamResponse;
+    class: Class;
+    teacher: User;
+}
