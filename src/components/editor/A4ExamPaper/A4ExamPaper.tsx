@@ -37,25 +37,6 @@ export function A4ExamPaper({
     const isUpdatingFromEffect = useRef(false); // 新增：用于标记是否是由effect本身引起的更新
     const [isLoaded, setIsLoaded] = useState(false);
 
-    // 完全加载后1s再更新一次position，确保准确
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // Check if document is already complete
-            if (document.readyState === 'complete') {
-                setIsLoaded(true);
-            } else {
-                // Wait for window load event
-                const handleLoad = () => {
-                    setIsLoaded(true);
-                };
-                window.addEventListener('load', handleLoad);
-                return () => {
-                    window.removeEventListener('load', handleLoad);
-                };
-            }
-        }
-    }, []);
-
     // 处理组件向上移动
     const handleMoveUp = (componentId: string) => {
         const components = [...exam.examData.components];
@@ -174,6 +155,25 @@ export function A4ExamPaper({
             setExam(updatedExam)
         }
     }, [exam, forceUpdate, isLoaded])
+
+    // 完全加载后再更新一次position，确保准确
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // Check if document is already complete
+            if (document.readyState === 'complete') {
+                setIsLoaded(true);
+            } else {
+                // Wait for window load event
+                const handleLoad = () => {
+                    setIsLoaded(true);
+                };
+                window.addEventListener('load', handleLoad);
+                return () => {
+                    window.removeEventListener('load', handleLoad);
+                };
+            }
+        }
+    }, []);
 
     // 计算总页数
     const totalPages = exam.examData.components.length > 0
