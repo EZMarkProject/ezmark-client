@@ -40,6 +40,7 @@ export function ConfigEditPanel({ className, handleExamSave, selectedComponentId
                     />
                 ) : selectedComponent?.type === 'multiple-choice' ? (
                     <MCQConfigForm
+                        key={selectedComponentId}
                         mcq={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
@@ -47,6 +48,7 @@ export function ConfigEditPanel({ className, handleExamSave, selectedComponentId
                     />
                 ) : selectedComponent?.type === 'fill-in-blank' ? (
                     <FillInBlankConfigForm
+                        key={selectedComponentId}
                         fillInBlank={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
@@ -54,6 +56,7 @@ export function ConfigEditPanel({ className, handleExamSave, selectedComponentId
                     />
                 ) : selectedComponent?.type === 'open' ? (
                     <OpenQuestionConfigForm
+                        key={selectedComponentId}
                         openQuestion={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
