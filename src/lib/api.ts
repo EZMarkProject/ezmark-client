@@ -2,7 +2,7 @@ import { ExamResponse } from "@/types/exam";
 import { axiosInstance } from "./axios";
 import { defaultExamData } from "@/mock/default-exam-data";
 import { PDFReponse } from "@/components/landing-page/types";
-import { Student } from "@/types/types";
+import { Class, Student } from "@/types/types";
 
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
     const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}`);
@@ -106,4 +106,41 @@ export async function deleteStudentById(userDocumentId: string, studentDocumentI
         const response = await axiosInstance.delete(`/students/${studentDocumentId}`);
         return response.data;
     }
+}
+
+export async function createNewClass(className: string, studentsDocIds: string[], teacherDocId: string) {
+    const response = await axiosInstance.post(`/classes`, {
+        data: {
+            name: className,
+            students: studentsDocIds,
+            teacher: teacherDocId
+        }
+    });
+    return response.data;
+}
+
+export async function getAllClassesByUserId(userDocumentId: string): Promise<Class[]> {
+    const response = await axiosInstance.get(`/classes?populate=*&filters[teacher][documentId][$eq]=${userDocumentId}`);
+    return response.data.data;
+}
+
+/**
+ * Update the students in a class
+ * @param classDocumentId The document ID of the class to update
+ * @param studentDocIds Array of student document IDs to assign to the class
+ */
+export async function updateClassStudents(classDocumentId: string, studentDocIds: string[]) {
+    const response = await axiosInstance.put(`/classes/${classDocumentId}`, {
+        data: {
+            students: {
+                set: studentDocIds
+            }
+        }
+    });
+    return response.data;
+}
+
+export async function deleteClassById(classDocumentId: string) {
+    const response = await axiosInstance.delete(`/classes/${classDocumentId}`);
+    return response.data;
 }

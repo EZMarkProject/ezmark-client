@@ -1,4 +1,4 @@
-import { Class } from "@/types/types";
+import { Class, Student } from "@/types/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,12 @@ import { ClassTable } from "./ClassTable";
 import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { useAuth } from "@/context/Auth";
 import { School } from "lucide-react";
+import { MultipleSelector, Option } from "@/components/ui/multiple-selector";
+import { getStudentByUserId, createNewClass, getAllClassesByUserId, updateClassStudents, deleteClassById } from "@/lib/api";
 
 const formSchema = z.object({
     name: z.string().min(1, "Class name is required"),
-    classId: z.string().min(1, "Class ID is required"),
+    students: z.array(z.string()).min(1, "At least one student must be selected"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -30,29 +32,40 @@ function ClassContent() {
     const [isCreating, setIsCreating] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [forceUpdate, setForceUpdate] = useState(false);
-    const { id: userId } = useAuth();
+    const [students, setStudents] = useState<Student[]>([]);
+    const [isLoadingStudents, setIsLoadingStudents] = useState(false);
+    const { documentId: userDocumentId, id: userId } = useAuth();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            classId: "",
+            students: [],
         },
     });
 
     // Fetch classes data
     const fetchClasses = async () => {
-        if (!userId) return;
+        if (!userDocumentId) return;
         setIsLoading(true);
-        // TODO: API call to fetch classes
-        // const response = await getClassesByUserId(userId);
-        // setClasses(response);
+        const response = await getAllClassesByUserId(userDocumentId);
+        setClasses(response);
         setIsLoading(false);
+    };
+
+    // Fetch students data
+    const fetchStudents = async () => {
+        if (!userDocumentId) return;
+        setIsLoadingStudents(true);
+        const response = await getStudentByUserId(userId);
+        setStudents(response);
+        setIsLoadingStudents(false);
     };
 
     useEffect(() => {
         fetchClasses();
-    }, [forceUpdate]);
+        fetchStudents();
+    }, [forceUpdate, userDocumentId]);
 
     // Handle delete button click
     const handleDelete = async (documentId: string) => {
@@ -64,8 +77,7 @@ function ClassContent() {
     const handleConfirmDelete = async () => {
         if (classToDelete) {
             setIsDeleting(true);
-            // TODO: API call to delete class
-            // await deleteClassById(userId, classToDelete);
+            await deleteClassById(classToDelete);
             setIsDeleting(false);
             setIsDeleteDialogOpen(false);
             setClassToDelete(null);
@@ -78,12 +90,17 @@ function ClassContent() {
         setIsCreateDialogOpen(true);
     };
 
+    // Convert students to options for MultipleSelector
+    const studentOptions: Option[] = students.map((student) => ({
+        label: `${student.name} (${student.studentId})`,
+        value: student.documentId,
+    }));
+
     // Handle form submission
     const onSubmit = async (data: FormValues) => {
         setIsCreating(true);
         try {
-            // TODO: API call to create class
-            // await createClass(userId, { name: data.name, classId: data.classId });
+            await createNewClass(data.name, data.students, userDocumentId as string);
             form.reset();
             setForceUpdate(!forceUpdate);
             setIsCreating(false);
@@ -97,9 +114,20 @@ function ClassContent() {
 
     // Filter classes based on search query
     const filteredClasses = classes.filter(classItem =>
-        classItem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        classItem.classId.toLowerCase().includes(searchQuery.toLowerCase())
+        classItem.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // Handle update class students
+    const handleUpdateClassStudents = async (classId: string, studentIds: string[]) => {
+        try {
+            await updateClassStudents(classId, studentIds);
+            setForceUpdate(!forceUpdate);
+            return Promise.resolve();
+        } catch (error) {
+            console.error("Failed to update class students:", error);
+            return Promise.reject(error);
+        }
+    };
 
     return (
         <div className="flex flex-col space-y-6 h-[100%]">
@@ -138,6 +166,8 @@ function ClassContent() {
                             searchQuery={searchQuery}
                             onSearchChange={setSearchQuery}
                             handleDelete={handleDelete}
+                            allStudents={students}
+                            onUpdateClassStudents={handleUpdateClassStudents}
                         />
                     </div>
                 )}
@@ -198,12 +228,19 @@ function ClassContent() {
                             />
                             <FormField
                                 control={form.control}
-                                name="classId"
+                                name="students"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Class ID</FormLabel>
+                                        <FormLabel>Students</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter class ID for AI-assisted marking" {...field} />
+                                            <MultipleSelector
+                                                placeholder="Select students for AI-assisted marking"
+                                                options={studentOptions}
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                disabled={isLoadingStudents}
+                                                className="w-full"
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

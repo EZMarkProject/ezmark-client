@@ -62,9 +62,17 @@ export interface Student {
     publishedAt: string;
 }
 
+export interface User {
+    documentId: string;
+    id: string;
+    userName: string;
+    email: string;
+}
+
 export interface Class {
     name: string;
-    classId: string;
     documentId: string;
     publishedAt: string;
+    students: Student[];
+    teacher: User;
 }

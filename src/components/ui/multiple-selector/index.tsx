@@ -1,7 +1,8 @@
 import * as React from "react"
-import { X, ChevronDown } from "lucide-react"
+import { X, ChevronDown, Search } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
 
 export type Option = {
     label: string
@@ -27,7 +28,9 @@ export function MultipleSelector({
     className,
 }: MultipleSelectorProps) {
     const [open, setOpen] = React.useState(false)
+    const [searchQuery, setSearchQuery] = React.useState("")
     const containerRef = React.useRef<HTMLDivElement>(null)
+    const searchInputRef = React.useRef<HTMLInputElement>(null)
 
     // Handle outside click to close dropdown
     React.useEffect(() => {
@@ -43,9 +46,19 @@ export function MultipleSelector({
         }
     }, [])
 
+    // Focus search input when dropdown opens
+    React.useEffect(() => {
+        if (open && searchInputRef.current) {
+            searchInputRef.current.focus()
+        }
+    }, [open])
+
     const handleToggle = () => {
         if (!disabled) {
             setOpen(!open)
+            if (!open) {
+                setSearchQuery("")
+            }
         }
     }
 
@@ -62,12 +75,18 @@ export function MultipleSelector({
         onChange(value.filter(v => v !== optionValue))
     }
 
+    // Filter options based on search query
+    const filteredOptions = options.filter(option =>
+        option.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        option.value.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
     return (
         <div ref={containerRef} className={cn("relative", className)}>
             {/* Selected items display */}
             <div
                 className={cn(
-                    "flex h-10 w-full flex-wrap items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer",
+                    "flex min-h-10 w-full flex-wrap items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer",
                     disabled && "cursor-not-allowed opacity-50"
                 )}
                 onClick={handleToggle}
@@ -80,7 +99,7 @@ export function MultipleSelector({
                                 <Badge
                                     key={val}
                                     variant="secondary"
-                                    className="flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium"
+                                    className="flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium my-0.5"
                                 >
                                     {option.label}
                                     <button
@@ -99,7 +118,7 @@ export function MultipleSelector({
                 ) : (
                     <span className="text-muted-foreground">{placeholder}</span>
                 )}
-                <div className="ml-auto pl-2 flex items-center">
+                <div className="ml-auto pl-2 flex items-center self-start mt-1">
                     <ChevronDown className={cn("h-4 w-4 shrink-0 opacity-50 transition-transform", open && "rotate-180")} />
                 </div>
             </div>
@@ -107,21 +126,36 @@ export function MultipleSelector({
             {/* Dropdown menu */}
             {open && (
                 <div className="absolute z-10 w-full mt-1 rounded-md border border-input bg-popover shadow-md">
+                    {/* Search input */}
+                    <div className="p-2 border-b border-input">
+                        <div className="relative">
+                            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                ref={searchInputRef}
+                                placeholder="Search students by name or ID..."
+                                className="pl-8"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                        </div>
+                    </div>
                     <div className="max-h-[200px] overflow-auto p-1">
-                        {options.map((option) => (
-                            <div
-                                key={option.value}
-                                className={cn(
-                                    "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm outline-none",
-                                    value.includes(option.value) ? "bg-accent text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground",
-                                    option.disabled && "pointer-events-none opacity-50"
-                                )}
-                                onClick={() => !option.disabled && handleSelect(option.value)}
-                            >
-                                <span>{option.label}</span>
-                            </div>
-                        ))}
-                        {options.length === 0 && (
+                        {filteredOptions.length > 0 ? (
+                            filteredOptions.map((option) => (
+                                <div
+                                    key={option.value}
+                                    className={cn(
+                                        "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 px-2 text-sm outline-none",
+                                        value.includes(option.value) ? "bg-accent text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground",
+                                        option.disabled && "pointer-events-none opacity-50"
+                                    )}
+                                    onClick={() => !option.disabled && handleSelect(option.value)}
+                                >
+                                    <span>{option.label}</span>
+                                </div>
+                            ))
+                        ) : (
                             <div className="py-6 text-center text-sm text-muted-foreground">
                                 No options available
                             </div>
