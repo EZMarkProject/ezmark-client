@@ -175,7 +175,7 @@ export function ClassTable({
                                         {getSortIcon("students")}
                                     </Button>
                                 </TableHead>
-                                <TableHead className="w-[180px]">Action</TableHead>
+                                <TableHead className="w-[180px]">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -184,6 +184,7 @@ export function ClassTable({
                                     <TableRow
                                         key={classItem.documentId}
                                         className="hover:bg-muted/40 cursor-pointer"
+                                        onClick={(e) => { e.stopPropagation(); handleManageStudents(classItem); }}
                                     >
                                         <TableCell>
                                             <div className="flex items-center gap-2">
@@ -199,13 +200,12 @@ export function ClassTable({
                                         <TableCell>
                                             <div className="flex items-center gap-2">
                                                 <Button
-                                                    variant="outline"
+                                                    variant="ghost"
                                                     size="sm"
                                                     className="flex items-center gap-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                                                     onClick={(e) => { e.stopPropagation(); handleManageStudents(classItem); }}
                                                 >
                                                     <Users className="h-4 w-4" />
-                                                    <span>Manage</span>
                                                 </Button>
                                                 <Button
                                                     variant="ghost"
