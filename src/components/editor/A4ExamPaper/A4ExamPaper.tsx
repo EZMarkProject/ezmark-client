@@ -43,8 +43,9 @@ export function A4ExamPaper({
             // Check if document is already complete
             if (document.readyState === 'complete') {
                 setTimeout(() => {
+                    console.log('GO')
                     setIsLoaded(true);
-                }, 1000);
+                }, 3000);
             } else {
                 // Wait for window load event
                 const handleLoad = () => {
@@ -106,6 +107,7 @@ export function A4ExamPaper({
     useEffect(() => {
         // 如果正在从effect更新，则跳过此次执行
         if (isUpdatingFromEffect.current) {
+            console.log('Skip this effect')
             isUpdatingFromEffect.current = false;
             return;
         }
