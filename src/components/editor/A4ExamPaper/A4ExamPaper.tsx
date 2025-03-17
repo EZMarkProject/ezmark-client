@@ -42,16 +42,11 @@ export function A4ExamPaper({
         if (typeof window !== 'undefined') {
             // Check if document is already complete
             if (document.readyState === 'complete') {
-                setTimeout(() => {
-                    console.log('GO')
-                    setIsLoaded(true);
-                }, 3000);
+                setIsLoaded(true);
             } else {
                 // Wait for window load event
                 const handleLoad = () => {
-                    setTimeout(() => {
-                        setIsLoaded(true);
-                    }, 1000);
+                    setIsLoaded(true);
                 };
                 window.addEventListener('load', handleLoad);
                 return () => {
@@ -107,7 +102,6 @@ export function A4ExamPaper({
     useEffect(() => {
         // 如果正在从effect更新，则跳过此次执行
         if (isUpdatingFromEffect.current) {
-            console.log('Skip this effect')
             isUpdatingFromEffect.current = false;
             return;
         }
