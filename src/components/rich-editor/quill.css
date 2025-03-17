@@ -1002,6 +1002,10 @@
     color: hsl(var(--primary));
 }
 
+.ql-editing {
+    z-index: 1000;
+}
+
 .ql-snow .ql-tooltip.ql-editing a.ql-preview,
 .ql-snow .ql-tooltip.ql-editing a.ql-remove {
     display: none;
