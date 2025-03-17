@@ -102,7 +102,7 @@ function ExamContent() {
     return (
         <div className="flex flex-col space-y-6 h-[100%]">
             <CommonHeader
-                title="Exams"
+                title="Exam Papers"
                 description="Manage and view your exam papers for AI-assisted grading."
                 buttonText="Create New Exam"
                 onButtonClick={handleCreateNew}

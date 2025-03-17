@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
     {
         id: "exams",
-        label: "Exams",
+        label: "Exam Papers",
         icon: BookOpenText,
     },
     {

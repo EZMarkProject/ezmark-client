@@ -1,6 +1,6 @@
 "use client";
 
-import { ExamContent } from "./ExamContent";
+import { ExamContent } from "./ExamPaperContent";
 import { ContentProps } from "./interface";
 import { StudentContent } from "./StudentContent";
 import { ClassContent } from "./ClassContent";
