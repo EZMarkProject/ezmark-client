@@ -3,13 +3,13 @@
 import {
     BookOpenText,
     Users,
-    LayoutGrid,
     CreditCard,
     PlusCircle,
     Folder,
     Share,
     UserCircle,
-    School
+    School,
+    CalendarCheck
 } from "lucide-react";
 import { NavigationProps } from "./interface";
 import { Button } from "@/components/ui/button";
@@ -32,9 +32,9 @@ const NAV_ITEMS = [
         icon: School,
     },
     {
-        id: "accounts",
-        label: "Accounts",
-        icon: LayoutGrid,
+        id: "schedule",
+        label: "Exam Schedule",
+        icon: CalendarCheck,
     },
     {
         id: "cards",
