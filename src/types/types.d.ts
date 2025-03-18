@@ -84,4 +84,46 @@ export interface ExamSchedule {
     exam: ExamResponse;
     class: Class;
     teacher: User;
+    results: ExamScheduleResult;
+}
+
+type ExamScheduleProgress = 'CREATED' | 'UPLOADING' | 'UPLOADED'
+
+// 在试卷提交后的所有数据
+export interface ExamScheduleResult {
+    progress: ExamScheduleProgress;
+    pdfId: string; // 试卷PDF的id,对应服务器上的文件名
+    papers: Paper[]; // 在服务器切割完PDF后设置这个字段
+    studentPapers: StudentPaper[]; // 学生答卷,根据卷头信息匹配对应的paper
+}
+
+export interface Paper {
+    paperId: string; // 试卷id
+    startPage: number; // 开始页码
+    endPage: number; // 结束页码
+}
+
+export interface StudentPaper {
+    student: Student;
+    paperId: string; // 答卷id，未匹配为null,这个ID会在拆分PDF的时候生成
+    headerRecognition: {
+        name: string;
+        id: string
+    },
+    objectiveQuestions: ObjectiveQuestion[];
+    subjectiveQuestions: SubjectiveQuestion[];
+    totalScore: number; // 从0往上加
+}
+
+export interface ObjectiveQuestion {
+    questionNumber: number;
+    studentAnswer: string[];
+    score: number;
+}
+
+export interface SubjectiveQuestion {
+    questionNumber: number;
+    studentAnswer: string;
+    aiSuggestion: string;
+    score: number;
 }
