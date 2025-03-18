@@ -5,12 +5,12 @@ import { PDFReponse } from "@/components/landing-page/types";
 import { Class, ExamSchedule, Student } from "@/types/types";
 
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
-    const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}`);
+    const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}&pagination[limit]=10000`);
     return response.data;
 }
 
 export async function getExamById(id: string): Promise<{ data: ExamResponse }> {
-    const response = await axiosInstance.get(`/exams/${id}`);
+    const response = await axiosInstance.get(`/exams/${id}?pagination[limit]=10000`);
     return response.data;
 }
 
@@ -53,13 +53,13 @@ export async function getExportedPDFUrl(documentId: string) {
  * @returns 
  */
 export async function getStudentByUserId(userId: string): Promise<Student[]> {
-    const response = await axiosInstance.get(`/users/${userId}?populate=students`);
+    const response = await axiosInstance.get(`/users/${userId}?populate=students&pagination[limit]=10000`);
     return response.data.students;
 }
 
 export async function createStudent(userDocumentId: string, student: { name: string, studentId: string }) {
     // 1. 先检查数据库中有没有userId相同的学生
-    const sameStudents = await axiosInstance.get(`/students?populate=*&filters[studentId][$eq]=${student.studentId}`);
+    const sameStudents = await axiosInstance.get(`/students?populate=*&filters[studentId][$eq]=${student.studentId}&pagination[limit]=10000`);
     // 如果存在，则给学生添加老师
     if (sameStudents.data.data.length > 0) {
         const response = await axiosInstance.put(`/students/${sameStudents.data.data[0].documentId}`, {
@@ -90,7 +90,7 @@ export async function createStudent(userDocumentId: string, student: { name: str
  */
 export async function deleteStudentById(userDocumentId: string, studentDocumentId: string) {
     // 1. 先检查这个学生有没有绑定的导师
-    const teacher = await axiosInstance.get(`/students/${studentDocumentId}?populate=teacher`);
+    const teacher = await axiosInstance.get(`/students/${studentDocumentId}?populate=teacher&pagination[limit]=10000`);
     // 2. 如果这个学生有绑定的导师,且大于一个，则删除当前老师
     if (teacher.data.data.teacher.length > 1) {
         const response = await axiosInstance.put(`/students/${studentDocumentId}`, {
@@ -120,12 +120,12 @@ export async function createNewClass(className: string, studentsDocIds: string[]
 }
 
 export async function getAllClassesByUserId(userDocumentId: string): Promise<Class[]> {
-    const response = await axiosInstance.get(`/classes?populate=*&filters[teacher][documentId][$eq]=${userDocumentId}`);
+    const response = await axiosInstance.get(`/classes?populate=*&filters[teacher][documentId][$eq]=${userDocumentId}&pagination[limit]=10000`);
     return response.data.data;
 }
 
 export async function getClassById(classDocumentId: string): Promise<Class> {
-    const response = await axiosInstance.get(`/classes/${classDocumentId}?populate=*`);
+    const response = await axiosInstance.get(`/classes/${classDocumentId}?populate=*&pagination[limit]=10000`);
     return response.data.data;
 }
 
@@ -150,9 +150,8 @@ export async function deleteClassById(classDocumentId: string) {
     return response.data;
 }
 
-
 export async function getExamSchedulesByUserId(userDocumentId: string): Promise<ExamSchedule[]> {
-    const response = await axiosInstance.get(`/schedules?populate=*&filters[teacher][documentId][$eq]=${userDocumentId}`);
+    const response = await axiosInstance.get(`/schedules?populate=*&filters[teacher][documentId][$eq]=${userDocumentId}&pagination[limit]=10000`);
     return response.data.data;
 }
 
