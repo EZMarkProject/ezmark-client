@@ -12,9 +12,10 @@ import * as z from "zod";
 import { ExamScheduleTable } from "./ExamScheduleTable";
 import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { useAuth } from "@/context/Auth";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById } from "@/lib/api";
+import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF } from "@/lib/api";
+import { nanoid } from "nanoid";
 
 // Define the form schema for creating a new exam schedule
 const formSchema = z.object({
@@ -23,7 +24,16 @@ const formSchema = z.object({
     classId: z.string().min(1, "Class is required"),
 });
 
+// Define the PDF upload form schema
+const pdfUploadSchema = z.object({
+    pdfFile: z.instanceof(File)
+        .refine(file => file.type === 'application/pdf', {
+            message: "File must be a PDF",
+        })
+});
+
 type FormValues = z.infer<typeof formSchema>;
+type PDFUploadValues = z.infer<typeof pdfUploadSchema>;
 
 function ExamScheduleContent() {
     const [isLoading, setIsLoading] = useState(true);
@@ -31,14 +41,17 @@ function ExamScheduleContent() {
     const [scheduleToDelete, setScheduleToDelete] = useState<string | null>(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const [isPdfUploadDialogOpen, setIsPdfUploadDialogOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isCreating, setIsCreating] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [forceUpdate, setForceUpdate] = useState(false);
     const [examPapers, setExamPapers] = useState<ExamResponse[]>([]);
     const [classes, setClasses] = useState<Class[]>([]);
     const [isLoadingExamPapers, setIsLoadingExamPapers] = useState(false);
     const [isLoadingClasses, setIsLoadingClasses] = useState(false);
+    const [currentScheduleId, setCurrentScheduleId] = useState<string | null>(null);
     const { documentId: userDocumentId } = useAuth();
 
     const form = useForm<FormValues>({
@@ -48,6 +61,10 @@ function ExamScheduleContent() {
             examPaperId: "",
             classId: "",
         },
+    });
+
+    const pdfUploadForm = useForm<PDFUploadValues>({
+        resolver: zodResolver(pdfUploadSchema),
     });
 
     // Fetch exam schedules data
@@ -108,6 +125,34 @@ function ExamScheduleContent() {
         setIsCreateDialogOpen(true);
     };
 
+    // Handle PDF upload button click
+    const handleSubmitPDF = (scheduleId: string) => {
+        setCurrentScheduleId(scheduleId);
+        setIsPdfUploadDialogOpen(true);
+    };
+
+    // Handle PDF upload form submission
+    const onPdfUploadSubmit = async (data: PDFUploadValues) => {
+        if (!currentScheduleId) return;
+        setIsUploading(true);
+        try {
+            const formData = new FormData();
+            // 使用nanoid生成一个唯一的文件名
+            formData.append('files', data.pdfFile, `${nanoid()}.pdf`);
+            await uploadPDF(formData);
+            // TODO: 更新examSchedule的pdfId
+            setIsPdfUploadDialogOpen(false);
+            pdfUploadForm.reset();
+            // 强制更新表格数据
+            setIsUploading(false);
+            setForceUpdate(!forceUpdate);
+        } catch (error) {
+            console.log("Failed to upload PDF:", error);
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
     // Handle form submission
     const onSubmit = async (data: FormValues) => {
         setIsCreating(true);
@@ -128,6 +173,27 @@ function ExamScheduleContent() {
         } finally {
             setIsCreating(false);
         }
+    };
+
+    // 验证上传的文件是否是一个PDF
+    const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+
+        if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+            const file = event.dataTransfer.files[0];
+            if (file.type === 'application/pdf') {
+                pdfUploadForm.setValue('pdfFile', file);
+            } else {
+                pdfUploadForm.setError('pdfFile', {
+                    type: 'validate',
+                    message: 'File must be a PDF'
+                });
+            }
+        }
+    };
+
+    const onDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
     };
 
     // Filter exam schedules based on search query
@@ -172,6 +238,7 @@ function ExamScheduleContent() {
                             searchQuery={searchQuery}
                             onSearchChange={setSearchQuery}
                             handleDelete={handleDelete}
+                            handleSubmitPDF={handleSubmitPDF}
                         />
                     </div>
                 )}
@@ -300,6 +367,108 @@ function ExamScheduleContent() {
                                         </>
                                     ) : (
                                         "Create"
+                                    )}
+                                </Button>
+                            </DialogFooter>
+                        </form>
+                    </Form>
+                </DialogContent>
+            </Dialog>
+
+            {/* PDF Upload Dialog */}
+            <Dialog open={isPdfUploadDialogOpen} onOpenChange={setIsPdfUploadDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Upload Student Answer Sheets</DialogTitle>
+                        <DialogDescription>
+                            Upload a PDF file containing student answer sheets.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Form {...pdfUploadForm}>
+                        <form onSubmit={pdfUploadForm.handleSubmit(onPdfUploadSubmit)} className="space-y-4">
+                            <FormField
+                                control={pdfUploadForm.control}
+                                name="pdfFile"
+                                render={({ field: { value, onChange, ...field } }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            {isUploading ? (
+                                                <div className="flex flex-col items-center justify-center p-10">
+                                                    <div className="h-16 w-16 animate-spin mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-loader-2"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                                                    </div>
+                                                    <p className="text-sm font-medium text-center mb-2">Uploading your PDF...</p>
+                                                    <p className="text-xs text-muted-foreground text-center">
+                                                        This may take a moment depending on file size
+                                                    </p>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors"
+                                                    onDragOver={onDragOver}
+                                                    onDrop={onDrop}
+                                                >
+                                                    <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+                                                    <p className="text-sm text-muted-foreground text-center mb-2">
+                                                        Drag and drop a PDF file here, or click to select
+                                                    </p>
+                                                    <p className="text-xs text-muted-foreground text-center mb-4">
+                                                        The PDF should contain student answers for AI-assisted marking
+                                                    </p>
+                                                    <Input
+                                                        type="file"
+                                                        accept="application/pdf"
+                                                        id="pdfFile"
+                                                        {...field}
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (file) {
+                                                                onChange(file);
+                                                            }
+                                                        }}
+                                                        className="hidden"
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        variant="outline"
+                                                        onClick={() => document.getElementById('pdfFile')?.click()}
+                                                    >
+                                                        Select PDF
+                                                    </Button>
+                                                    {value && (
+                                                        <div className="mt-4 text-sm text-primary">
+                                                            Selected: {(value as File).name}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <DialogFooter>
+                                <Button
+                                    variant="outline"
+                                    type="button"
+                                    onClick={() => setIsPdfUploadDialogOpen(false)}
+                                    disabled={isUploading}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    disabled={isUploading || !pdfUploadForm.getValues().pdfFile}
+                                >
+                                    {isUploading ? (
+                                        <>
+                                            <span className="mr-2 h-4 w-4 animate-spin">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-loader-2"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
+                                            </span>
+                                            Uploading...
+                                        </>
+                                    ) : (
+                                        "Upload PDF"
                                     )}
                                 </Button>
                             </DialogFooter>

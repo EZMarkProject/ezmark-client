@@ -24,13 +24,15 @@ interface ExamScheduleTableProps {
     searchQuery: string;
     onSearchChange: (value: string) => void;
     handleDelete: (documentId: string) => void;
+    handleSubmitPDF?: (documentId: string) => void;
 }
 
 export function ExamScheduleTable({
     examSchedules,
     searchQuery,
     onSearchChange,
-    handleDelete
+    handleDelete,
+    handleSubmitPDF
 }: ExamScheduleTableProps) {
     // Internal sort state
     const [sortField, setSortField] = useState<SortField>("name");
@@ -81,8 +83,12 @@ export function ExamScheduleTable({
 
     // Handle submit button click
     const handleSubmit = (scheduleId: string) => {
-        // Implement submit functionality here
-        console.log(`Submit exam schedule: ${scheduleId}`);
+        if (handleSubmitPDF) {
+            handleSubmitPDF(scheduleId);
+        } else {
+            // Fallback behavior if handler is not provided
+            console.log(`Submit exam schedule: ${scheduleId}`);
+        }
     };
 
     // Get initials from name

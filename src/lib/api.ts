@@ -171,3 +171,8 @@ export async function deleteExamScheduleById(examScheduleDocumentId: string) {
     const response = await axiosInstance.delete(`/schedules/${examScheduleDocumentId}`);
     return response.data;
 }
+
+export async function uploadPDF(formData: FormData) {
+    const response = await axiosInstance.post('/upload', formData);
+    return response.data;
+}
