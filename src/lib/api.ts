@@ -3,7 +3,7 @@ import { axiosInstance } from "./axios";
 import { defaultExamData } from "@/mock/default-exam-data";
 import { PDFReponse } from "@/components/landing-page/types";
 import { Class, ExamSchedule, Student } from "@/types/types";
-
+import { defaultScheduleResult } from "@/mock/default-schedule-result";
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
     const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}&pagination[limit]=10000`);
     return response.data;
@@ -162,7 +162,10 @@ export async function createExamSchedule(examSchedule: {
     teacher: string;
 }) {
     const response = await axiosInstance.post(`/schedules`, {
-        data: examSchedule
+        data: {
+            ...examSchedule,
+            result: defaultScheduleResult
+        }
     });
     return response.data;
 }

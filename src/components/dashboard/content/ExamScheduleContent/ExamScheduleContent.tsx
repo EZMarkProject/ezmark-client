@@ -201,6 +201,24 @@ function ExamScheduleContent() {
         schedule.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // Handle start pipeline button click
+    const handleStartPipeline = (scheduleId: string) => {
+        // TODO: Implement start pipeline functionality
+        console.log(`Start pipeline for exam schedule: ${scheduleId}`);
+        // Example of how this might be implemented:
+        // startExamProcessing(scheduleId).then(() => {
+        //     setForceUpdate(!forceUpdate);
+        // });
+    };
+
+    // Handle view result button click
+    const handleViewResult = (scheduleId: string) => {
+        // TODO: Implement view result functionality
+        console.log(`View result for exam schedule: ${scheduleId}`);
+        // Example of how this might be implemented:
+        // router.push(`/results/${scheduleId}`);
+    };
+
     return (
         <div className="flex flex-col space-y-6 h-[100%]">
             <CommonHeader
@@ -239,6 +257,8 @@ function ExamScheduleContent() {
                             onSearchChange={setSearchQuery}
                             handleDelete={handleDelete}
                             handleSubmitPDF={handleSubmitPDF}
+                            handleStartPipeline={handleStartPipeline}
+                            handleViewResult={handleViewResult}
                         />
                     </div>
                 )}

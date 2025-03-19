@@ -84,10 +84,15 @@ export interface ExamSchedule {
     exam: ExamResponse;
     class: Class;
     teacher: User;
-    results: ExamScheduleResult;
+    result: ExamScheduleResult;
 }
 
-type ExamScheduleProgress = 'CREATED' | 'UPLOADING' | 'UPLOADED'
+/**
+ * CREATED: 已经创建Schedule,但还没有上传PDF
+ * UPLOADED: 已经上传PDF,但还没有开始流水线
+ * DONE: 流水线已经完成,可以去查看结果
+ */
+type ExamScheduleProgress = 'CREATED' | 'UPLOADED' | 'DONE'
 
 // 在试卷提交后的所有数据
 export interface ExamScheduleResult {

@@ -1,7 +1,7 @@
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Trash2, ArrowUpDown, ChevronDown, ChevronUp, CalendarDays, FileText, School, FolderUp } from "lucide-react";
+import { Trash2, ArrowUpDown, ChevronDown, ChevronUp, CalendarDays, FileText, School, FolderUp, Play, FileBarChart2, Loader2 } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -25,6 +25,8 @@ interface ExamScheduleTableProps {
     onSearchChange: (value: string) => void;
     handleDelete: (documentId: string) => void;
     handleSubmitPDF?: (documentId: string) => void;
+    handleStartPipeline?: (documentId: string) => void;
+    handleViewResult?: (documentId: string) => void;
 }
 
 export function ExamScheduleTable({
@@ -32,7 +34,9 @@ export function ExamScheduleTable({
     searchQuery,
     onSearchChange,
     handleDelete,
-    handleSubmitPDF
+    handleSubmitPDF,
+    handleStartPipeline,
+    handleViewResult
 }: ExamScheduleTableProps) {
     // Internal sort state
     const [sortField, setSortField] = useState<SortField>("name");
@@ -81,13 +85,33 @@ export function ExamScheduleTable({
         }
     };
 
-    // Handle submit button click
+    // Handle submit button click based on progress status
     const handleSubmit = (scheduleId: string) => {
         if (handleSubmitPDF) {
             handleSubmitPDF(scheduleId);
         } else {
             // Fallback behavior if handler is not provided
             console.log(`Submit exam schedule: ${scheduleId}`);
+        }
+    };
+
+    // Handle start pipeline button click
+    const handleStart = (scheduleId: string) => {
+        if (handleStartPipeline) {
+            handleStartPipeline(scheduleId);
+        } else {
+            // Fallback behavior if handler is not provided
+            console.log(`Start pipeline for exam schedule: ${scheduleId}`);
+        }
+    };
+
+    // Handle view result button click
+    const handleResult = (scheduleId: string) => {
+        if (handleViewResult) {
+            handleViewResult(scheduleId);
+        } else {
+            // Fallback behavior if handler is not provided
+            console.log(`View result for exam schedule: ${scheduleId}`);
         }
     };
 
@@ -126,6 +150,63 @@ export function ExamScheduleTable({
             }
         });
     }, [examSchedules, sortField, sortDirection]);
+
+    // 根据PROGRESS字段渲染不同的按钮
+    const renderActionButton = (schedule: ExamSchedule) => {
+        const progress = schedule.result?.progress || "CREATED";
+
+        switch (progress) {
+            case "CREATED":
+                return (
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-primary"
+                        title="Submit PDF"
+                        onClick={() => handleSubmit(schedule.documentId)}
+                    >
+                        <FolderUp className="h-4 w-4 mr-1.5" />
+                        <span>Submit PDF</span>
+                    </Button>
+                );
+            case "UPLOADED":
+                return (
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-green-600"
+                        title="Start Pipeline"
+                        onClick={() => handleStart(schedule.documentId)}
+                    >
+                        <Play className="h-4 w-4 mr-1.5" />
+                        <span>Start</span>
+                    </Button>
+                );
+            case "DONE":
+                return (
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-blue-600"
+                        title="View Results"
+                        onClick={() => handleResult(schedule.documentId)}
+                    >
+                        <FileBarChart2 className="h-4 w-4 mr-1.5" />
+                        <span>Results</span>
+                    </Button>
+                );
+            default:
+                return (
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-primary"
+                    >
+                        <span>View Process</span>
+                    </Button>
+                )
+        }
+    };
 
     return (
         <div className="rounded-sm border bg-background">
@@ -231,16 +312,7 @@ export function ExamScheduleTable({
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex items-center space-x-2">
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="text-primary"
-                                                    title="Submit PDF"
-                                                    onClick={() => handleSubmit(schedule.documentId)}
-                                                >
-                                                    <FolderUp className="h-4 w-4 mr-1.5" />
-                                                    <span>Submit PDF</span>
-                                                </Button>
+                                                {renderActionButton(schedule)}
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
