@@ -137,10 +137,8 @@ function ExamScheduleContent() {
         setIsUploading(true);
         try {
             const formData = new FormData();
-            // 使用nanoid生成一个唯一的文件名
-            const pdfID = nanoid();
-            formData.append('files', data.pdfFile, `${pdfID}.pdf`);
-            await uploadPDF(formData, currentScheduleId, pdfID);
+            formData.append('files', data.pdfFile);
+            await uploadPDF(formData, currentScheduleId);
             setIsPdfUploadDialogOpen(false);
             pdfUploadForm.reset();
             // 强制更新表格数据

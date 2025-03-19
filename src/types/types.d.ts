@@ -97,7 +97,7 @@ type ExamScheduleProgress = 'CREATED' | 'UPLOADED' | 'DONE'
 // 在试卷提交后的所有数据
 export interface ExamScheduleResult {
     progress: ExamScheduleProgress;
-    pdfId: string; // 试卷PDF的id,对应服务器上的文件名
+    pdfUrl: string; // 试卷PDF的url, '/uploads/exam_scan_732425fbd9.pdf
     papers: Paper[]; // 在服务器切割完PDF后设置这个字段
     studentPapers: StudentPaper[]; // 学生答卷,根据卷头信息匹配对应的paper
 }
