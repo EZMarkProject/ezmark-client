@@ -4,5 +4,13 @@ export const defaultScheduleResult: ExamScheduleResult = {
     progress: 'CREATED',
     papers: [],
     studentPapers: [],
-    pdfUrl: ''
+    pdfUrl: '',
+    matchResult: {
+        done: false,
+        matched: [],
+        unmatched: {
+            studentIds: [],
+            paperIds: []
+        }
+    }
 }
