@@ -15,7 +15,7 @@ import { useAuth } from "@/context/Auth";
 import { CalendarDays, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF, startPipeline } from "@/lib/api";
-import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
 
 // Define the form schema for creating a new exam schedule
 const formSchema = z.object({
@@ -53,6 +53,7 @@ function ExamScheduleContent() {
     const [isLoadingClasses, setIsLoadingClasses] = useState(false);
     const [currentScheduleId, setCurrentScheduleId] = useState<string | null>(null);
     const { documentId: userDocumentId } = useAuth();
+    const router = useRouter();
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -202,7 +203,7 @@ function ExamScheduleContent() {
     // Handle start pipeline button click
     const handleStartPipeline = async (scheduleId: string) => {
         await startPipeline(scheduleId);
-        // TODO: 跳转到pipeline界面
+        router.push(`/pipeline/${scheduleId}`);
     };
 
     // Handle view result button click

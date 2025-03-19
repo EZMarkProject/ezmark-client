@@ -202,7 +202,9 @@ export function ExamScheduleTable({
                         size="sm"
                         className="text-primary"
                     >
-                        <span>View Process</span>
+                        <a href={`/pipeline/${schedule.documentId}`}>
+                            <span>View Process</span>
+                        </a>
                     </Button>
                 )
         }

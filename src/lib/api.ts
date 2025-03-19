@@ -155,6 +155,11 @@ export async function getExamSchedulesByUserId(userDocumentId: string): Promise<
     return response.data.data;
 }
 
+export async function getExamScheduleById(examScheduleDocumentId: string): Promise<ExamSchedule> {
+    const response = await axiosInstance.get(`/schedules/${examScheduleDocumentId}?populate=*`);
+    return response.data.data;
+}
+
 export async function createExamSchedule(examSchedule: {
     name: string;
     exam: string;
@@ -193,5 +198,13 @@ export async function uploadPDF(formData: FormData, examScheduleDocumentId: stri
 
 export async function startPipeline(examScheduleDocumentId: string) {
     const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startPipeline`);
+    await axiosInstance.put(`/schedules/${examScheduleDocumentId}`, {
+        data: {
+            result: {
+                ...defaultScheduleResult,
+                progress: 'MATCH_START' // 开始匹配
+            }
+        }
+    });
     return response.data;
 }

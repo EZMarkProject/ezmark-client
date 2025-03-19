@@ -1,4 +1,3 @@
-import { ExamResponse } from "@/types/exam";
 import { ReactNode } from "react";
 
 /**
