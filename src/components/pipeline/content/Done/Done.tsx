@@ -60,7 +60,7 @@ const Done: React.FC<DoneProps> = ({
                 </div>
 
                 <div className="border rounded-lg p-6 bg-green-50">
-                    <h3 className="font-medium text-lg mb-3 text-green-800">What's Next?</h3>
+                    <h3 className="font-medium text-lg mb-3 text-green-800">Whats Next?</h3>
                     <ul className="space-y-3">
                         <li className="flex items-start gap-2">
                             <svg
