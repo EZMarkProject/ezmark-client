@@ -175,7 +175,24 @@ export async function deleteExamScheduleById(examScheduleDocumentId: string) {
     return response.data;
 }
 
-export async function uploadPDF(formData: FormData) {
-    const response = await axiosInstance.post('/upload', formData);
+export async function uploadPDF(formData: FormData, examScheduleDocumentId: string, pdfID: string) {
+    const response = await axiosInstance.post('/upload', formData); // 上传PDF
+    // 更新examSchedule的progress和pdfId
+    await axiosInstance.put(`/schedules/${examScheduleDocumentId}`, {
+        data: {
+            result: {
+                ...defaultScheduleResult,
+                progress: 'UPLOADED',
+                pdfId: pdfID
+            }
+        }
+    });
     return response.data;
 }
+
+export async function startPipeline(examScheduleDocumentId: string) {
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startPipeline`);
+    return response.data;
+}
+
+

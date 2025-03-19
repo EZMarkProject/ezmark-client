@@ -14,7 +14,7 @@ import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { useAuth } from "@/context/Auth";
 import { CalendarDays, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF } from "@/lib/api";
+import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF, startPipeline } from "@/lib/api";
 import { nanoid } from "nanoid";
 
 // Define the form schema for creating a new exam schedule
@@ -138,9 +138,9 @@ function ExamScheduleContent() {
         try {
             const formData = new FormData();
             // 使用nanoid生成一个唯一的文件名
-            formData.append('files', data.pdfFile, `${nanoid()}.pdf`);
-            await uploadPDF(formData);
-            // TODO: 更新examSchedule的pdfId
+            const pdfID = nanoid();
+            formData.append('files', data.pdfFile, `${pdfID}.pdf`);
+            await uploadPDF(formData, currentScheduleId, pdfID);
             setIsPdfUploadDialogOpen(false);
             pdfUploadForm.reset();
             // 强制更新表格数据
@@ -202,13 +202,9 @@ function ExamScheduleContent() {
     );
 
     // Handle start pipeline button click
-    const handleStartPipeline = (scheduleId: string) => {
-        // TODO: Implement start pipeline functionality
-        console.log(`Start pipeline for exam schedule: ${scheduleId}`);
-        // Example of how this might be implemented:
-        // startExamProcessing(scheduleId).then(() => {
-        //     setForceUpdate(!forceUpdate);
-        // });
+    const handleStartPipeline = async (scheduleId: string) => {
+        await startPipeline(scheduleId);
+        // TODO: 跳转到pipeline界面
     };
 
     // Handle view result button click
