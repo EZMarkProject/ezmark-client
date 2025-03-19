@@ -108,10 +108,14 @@ export interface MatchResult {
     matched: {
         studentId: string;
         paperId: string;
+        headerImgUrl: string;
     }[],
     unmatched: {
         studentIds: string[];
-        paperIds: string[];
+        paper: {
+            paperId: string;
+            headerImgUrl: string;
+        }[]
     }
     done: boolean;
 }

@@ -10,7 +10,7 @@ export const defaultScheduleResult: ExamScheduleResult = {
         matched: [],
         unmatched: {
             studentIds: [],
-            paperIds: []
+            paper: []
         }
     }
 }
