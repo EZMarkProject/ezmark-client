@@ -7,6 +7,8 @@ import { StudentNode } from '@/components/Flow/StudentNode';
 import { MatchDoneProps } from './interface';
 import { useTheme } from 'next-themes';
 import { generatePaperNodes, generateStudentNodes, generateEdges } from '@/lib/flow';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 const nodeWidth = 500;
 const nodeHeight = 300;
@@ -19,6 +21,12 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
     const nodeTypes = useMemo(() => ({ paper: PaperNode, student: StudentNode }), []);
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(true);
+
+    // 计算匹配结果
+    const matchedStudents = schedule.result.matchResult.matched.length;
+    const totalStudents = classData.students.length;
+    const unmatchedStudents = totalStudents - matchedStudents;
 
     const onConnect = useCallback((params: any) => {
         // 如果任何一个node以经连接过，则不连接
@@ -42,6 +50,7 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
             edges,
             'TB'
         );
+
         setNodes([...layoutedNodes] as typeof nodes);
         setEdges([...layoutedEdges] as typeof edges);
     }, []);
@@ -73,6 +82,28 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
                     </div>
                 </Panel>
             </ReactFlow>
+
+            {/* 匹配结果对话框 */}
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Match Results</DialogTitle>
+                        <DialogDescription>
+                            Drag cards and connect them to complete matching manually
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4 space-y-2">
+                        <ul className="list-disc pl-6 space-y-1">
+                            <li>Matched: {matchedStudents}</li>
+                            <li>Unmatched: {unmatchedStudents}</li>
+                        </ul>
+                    </div>
+                    <DialogFooter>
+                        <Button onClick={() => setDialogOpen(false)}>Confirm</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
         </div>
     )
 }
