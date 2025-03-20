@@ -9,14 +9,14 @@ import {
 export default function PaperNode({ data }: PaperNodeProps) {
     return (
         <>
-            <Card className="w-[250px] shadow-none rounded-md">
+            <Card className="shadow-none rounded-md">
                 <CardContent className="p-2">
                     <Image
                         className='w-full h-auto rounded-md'
                         src={data.imageUrl}
                         alt="paper"
-                        width={250}
-                        height={250}
+                        width={550}
+                        height={550}
                     />
                 </CardContent>
             </Card>
