@@ -42,6 +42,11 @@ export default function Pipeline({ documentId, }: PipelineProps) {
         setForceUpdate(!forceUpdate);
     }
 
+    const updateSchedule = async () => {
+        const schedule = await getExamScheduleById(documentId);
+        setSchedule(schedule);
+    }
+
     function renderContent() {
         switch (schedule?.result.progress) {
             case 'CREATED':
@@ -49,7 +54,7 @@ export default function Pipeline({ documentId, }: PipelineProps) {
             case 'UPLOADED':
                 return <Uploaded onStartPipeline={handleStartPipeline} />;
             case 'MATCH_START':
-                return <MatchStart />;
+                return <MatchStart updateSchedule={updateSchedule} />;
             case 'MATCH_DONE':
                 return classData ? <MatchDone schedule={schedule} classData={classData} /> : <div className="flex items-center justify-center h-full">Loading class data...</div>;
             // case 'DONE':

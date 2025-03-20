@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MatchStartProps } from "./interface";
 
 const loadingMessages = [
     "Identifying students' names and IDs",
@@ -15,7 +16,7 @@ const loadingMessages = [
     "Setting up AI-assisted marking"
 ];
 
-export default function MatchStart() {
+export default function MatchStart({ updateSchedule }: MatchStartProps) {
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
     useEffect(() => {
@@ -25,6 +26,14 @@ export default function MatchStart() {
             );
         }, 2000);
 
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // 轮询接口,等待状态更新
+            updateSchedule();
+        }, 500);
         return () => clearInterval(interval);
     }, []);
 
