@@ -42,9 +42,6 @@ export default function Pipeline({ documentId, }: PipelineProps) {
         setForceUpdate(!forceUpdate);
     }
 
-    console.log(schedule);
-    console.log(classData);
-
     function renderContent() {
         switch (schedule?.result.progress) {
             case 'CREATED':
@@ -54,7 +51,7 @@ export default function Pipeline({ documentId, }: PipelineProps) {
             case 'MATCH_START':
                 return <MatchStart />;
             case 'MATCH_DONE':
-                return <MatchDone />;
+                return classData ? <MatchDone schedule={schedule} classData={classData} /> : <div className="flex items-center justify-center h-full">Loading class data...</div>;
             // case 'DONE':
             //     return <Done />;
         }

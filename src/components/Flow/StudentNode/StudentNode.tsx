@@ -4,11 +4,12 @@ import {
     Card,
     CardContent,
 } from "@/components/ui/card";
+import { BIGGER_HANDLE_STYLE } from '@/lib/flow';
 
 export default function StudentNode({ data }: StudentNodeProps) {
     return (
         <>
-            <Handle type="target" position={Position.Top} />
+            <Handle style={BIGGER_HANDLE_STYLE} type="target" position={Position.Top} />
             <Card className="w-[250px] shadow-none rounded-md">
                 <CardContent className="p-2">
                     <div className="flex flex-col gap-2">

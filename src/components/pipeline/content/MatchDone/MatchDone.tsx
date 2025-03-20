@@ -1,33 +1,33 @@
-import { ReactFlow, Background, Controls, MiniMap, useEdgesState, useNodesState, Panel } from '@xyflow/react';
-import { useEffect, useMemo, useState } from 'react';
+import { ReactFlow, Background, Controls, MiniMap, useEdgesState, useNodesState, Panel, addEdge } from '@xyflow/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dagre from 'dagre';
 import { Edge, Node } from '@xyflow/react';
 import { PaperNode } from '@/components/Flow/PaperNode';
 import { StudentNode } from '@/components/Flow/StudentNode';
 import { MatchDoneProps } from './interface';
 import { useTheme } from 'next-themes';
-
-const initialNodes = [
-    { id: '5', type: 'paper', data: { imageUrl: 'http://localhost:1337/pipeline/xo8v5fs6s3hb3qs9zynttxbs/zCABiR8T1g2_dW_ppgR6U/questions/c9Je1z_MzxuUImrTB9PMR.png' }, position: { x: 400, y: 100 } },
-    { id: '6', type: 'student', data: { studentName: 'Kelvin Qiu', studentId: '21207231' }, position: { x: 400, y: 300 } },
-    { id: '7', type: 'paper', data: { imageUrl: 'http://localhost:1337/pipeline/xo8v5fs6s3hb3qs9zynttxbs/zCABiR8T1g2_dW_ppgR6U/questions/c9Je1z_MzxuUImrTB9PMR.png' }, position: { x: 400, y: 100 } },
-    { id: '8', type: 'student', data: { studentName: 'Kelvin Qiu', studentId: '21207231' }, position: { x: 400, y: 300 } },
-];
-
-const initialEdges = [
-    { id: '5-6', source: '5', target: '6' },
-    { id: '7-8', source: '7', target: '8' },
-];
+import { generatePaperNodes, generateStudentNodes, generateEdges } from '@/lib/flow';
 
 const nodeWidth = 500;
 const nodeHeight = 300;
 
 export default function MatchDone({ schedule, classData }: MatchDoneProps) {
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const allNodes = [...generatePaperNodes(schedule), ...generateStudentNodes(classData)];
+    const allEdges = generateEdges(schedule);
+    const [nodes, setNodes, onNodesChange] = useNodesState(allNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(allEdges);
     const nodeTypes = useMemo(() => ({ paper: PaperNode, student: StudentNode }), []);
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
+
+    const onConnect = useCallback((params: any) => {
+        // 如果任何一个node以经连接过，则不连接
+        if (edges.some((edge) => edge.source === params.source || edge.target === params.target)) {
+            return;
+        }
+        setEdges((eds) => addEdge({ ...params, animated: true }, eds));
+        // TODO: 连接成功后，调用接口，更新匹配结果
+    }, []);
 
     // 确保有权限访问主题后再渲染
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
         );
         setNodes([...layoutedNodes] as typeof nodes);
         setEdges([...layoutedEdges] as typeof edges);
-    }, []); // 仅在组件挂载时执行一次
+    }, []);
 
     return (
         <div className="w-full h-full">
@@ -54,6 +54,7 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
                 nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
                 colorMode={mounted && theme === 'dark' ? 'dark' : 'light'}
                 fitView // 启用自适应视图
                 fitViewOptions={{ padding: 0.5 }} // 增加边距使节点可见性更好
@@ -67,7 +68,7 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                             onClick={() => { }}
                         >
-                            Next Step
+                            TODO
                         </button>
                     </div>
                 </Panel>

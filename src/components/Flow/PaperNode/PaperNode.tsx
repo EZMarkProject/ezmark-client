@@ -5,6 +5,7 @@ import {
     Card,
     CardContent,
 } from "@/components/ui/card";
+import { BIGGER_HANDLE_STYLE } from '@/lib/flow';
 
 export default function PaperNode({ data }: PaperNodeProps) {
     return (
@@ -20,7 +21,7 @@ export default function PaperNode({ data }: PaperNodeProps) {
                     />
                 </CardContent>
             </Card>
-            <Handle type="source" position={Position.Bottom} />
+            <Handle style={BIGGER_HANDLE_STYLE} type="source" position={Position.Bottom} />
         </>
     )
 }
