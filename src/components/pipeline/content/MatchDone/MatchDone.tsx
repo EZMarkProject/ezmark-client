@@ -1,9 +1,11 @@
 import { ReactFlow, Background, Controls, MiniMap, useEdgesState, useNodesState, Panel } from '@xyflow/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import dagre from 'dagre';
 import { Edge, Node } from '@xyflow/react';
 import { PaperNode } from '@/components/Flow/PaperNode';
 import { StudentNode } from '@/components/Flow/StudentNode';
+import { MatchDoneProps } from './interface';
+import { useTheme } from 'next-themes';
 
 const initialNodes = [
     { id: '5', type: 'paper', data: { imageUrl: 'http://localhost:1337/pipeline/xo8v5fs6s3hb3qs9zynttxbs/zCABiR8T1g2_dW_ppgR6U/questions/c9Je1z_MzxuUImrTB9PMR.png' }, position: { x: 400, y: 100 } },
@@ -17,13 +19,20 @@ const initialEdges = [
     { id: '7-8', source: '7', target: '8' },
 ];
 
-const nodeWidth = 500; // 增加节点宽度
-const nodeHeight = 300; // 增加节点高度，确保有足够空间
+const nodeWidth = 500;
+const nodeHeight = 300;
 
-export default function MatchDone() {
+export default function MatchDone({ schedule, classData }: MatchDoneProps) {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const nodeTypes = useMemo(() => ({ paper: PaperNode, student: StudentNode }), []);
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    // 确保有权限访问主题后再渲染
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // 初始化时自动应用布局
     useEffect(() => {
@@ -45,6 +54,7 @@ export default function MatchDone() {
                 nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
+                colorMode={mounted && theme === 'dark' ? 'dark' : 'light'}
                 fitView // 启用自适应视图
                 fitViewOptions={{ padding: 0.5 }} // 增加边距使节点可见性更好
             >

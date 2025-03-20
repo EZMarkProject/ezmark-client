@@ -2,8 +2,8 @@
 import { PipelineProps } from './interface';
 import { PipelineNavBar } from '../PipelineNavBar';
 import { useEffect, useState } from 'react';
-import { ExamSchedule } from '@/types/types';
-import { getExamScheduleById, startPipeline } from '@/lib/api';
+import { Class, ExamSchedule } from '@/types/types';
+import { getClassById, getExamScheduleById, startPipeline } from '@/lib/api';
 import { getStepByProgressName } from '@/lib/utils';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Created } from '../content/Created';
@@ -14,6 +14,7 @@ import { Done } from '../content/Done';
 
 export default function Pipeline({ documentId, }: PipelineProps) {
     const [schedule, setSchedule] = useState<ExamSchedule | null>(null);
+    const [classData, setClassData] = useState<Class | null>(null);
     const [loading, setLoading] = useState(true);
     const [forceUpdate, setForceUpdate] = useState(false);
 
@@ -26,12 +27,23 @@ export default function Pipeline({ documentId, }: PipelineProps) {
         fetchSchedule();
     }, [documentId, forceUpdate]);
 
+    useEffect(() => {
+        if (schedule) {
+            const fetchClassData = async () => {
+                const classData = await getClassById(schedule.class.documentId);
+                setClassData(classData);
+            };
+            fetchClassData();
+        }
+    }, [schedule]);
+
     const handleStartPipeline = async () => {
         await startPipeline(documentId);
         setForceUpdate(!forceUpdate);
     }
 
     console.log(schedule);
+    console.log(classData);
 
     function renderContent() {
         switch (schedule?.result.progress) {
