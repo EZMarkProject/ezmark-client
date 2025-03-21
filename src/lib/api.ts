@@ -198,15 +198,16 @@ export async function uploadPDF(formData: FormData, examScheduleDocumentId: stri
 }
 
 export async function startMatching(examScheduleDocumentId: string) {
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startMatching`);
+    const result = await axiosInstance.get(`/schedules/${examScheduleDocumentId}`);
     await axiosInstance.put(`/schedules/${examScheduleDocumentId}`, {
         data: {
             result: {
-                ...defaultScheduleResult,
+                ...result.data.data.result,
                 progress: 'MATCH_START' // 开始匹配
             }
         }
     });
-    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startMatching`);
     return response.data;
 }
 
