@@ -231,6 +231,7 @@ function ExamScheduleContent() {
         <div className="flex flex-col space-y-6 h-[100%]">
             {/* Loading Dialog */}
             <Dialog open={loading} onOpenChange={(open) => !open && setLoading(false)}>
+                <DialogTitle>Loading</DialogTitle>
                 <DialogContent className="sm:max-w-md">
                     <div className="flex flex-col items-center justify-center p-6 space-y-4">
                         <Loader2 className="h-8 w-8 animate-spin text-primary" />
