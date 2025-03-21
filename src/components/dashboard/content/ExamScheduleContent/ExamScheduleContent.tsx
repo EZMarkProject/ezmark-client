@@ -209,8 +209,12 @@ function ExamScheduleContent() {
     // Handle start pipeline button click
     const handleStartPipeline = async (scheduleId: string) => {
         setLoading(true);
+        // 设置当前处理的scheduleId
+        setCurrentScheduleId(scheduleId);
         await startMatching(scheduleId);
         setLoading(false);
+        // 清除当前处理的scheduleId
+        setCurrentScheduleId(null);
         router.push(`/pipeline/${scheduleId}`);
     };
 
@@ -271,6 +275,7 @@ function ExamScheduleContent() {
                             handleSubmitPDF={handleSubmitPDF}
                             handleStartPipeline={handleStartPipeline}
                             handleViewResult={handleViewResult}
+                            processingScheduleId={currentScheduleId}
                         />
                     </div>
                 )}

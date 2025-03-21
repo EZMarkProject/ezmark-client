@@ -198,7 +198,6 @@ export async function uploadPDF(formData: FormData, examScheduleDocumentId: stri
 }
 
 export async function startMatching(examScheduleDocumentId: string) {
-    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startMatching`);
     await axiosInstance.put(`/schedules/${examScheduleDocumentId}`, {
         data: {
             result: {
@@ -207,6 +206,7 @@ export async function startMatching(examScheduleDocumentId: string) {
             }
         }
     });
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startMatching`);
     return response.data;
 }
 

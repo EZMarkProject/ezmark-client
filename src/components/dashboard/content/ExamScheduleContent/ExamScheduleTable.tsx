@@ -27,6 +27,7 @@ interface ExamScheduleTableProps {
     handleSubmitPDF?: (documentId: string) => void;
     handleStartPipeline?: (documentId: string) => void;
     handleViewResult?: (documentId: string) => void;
+    processingScheduleId?: string | null;
 }
 
 export function ExamScheduleTable({
@@ -36,7 +37,8 @@ export function ExamScheduleTable({
     handleDelete,
     handleSubmitPDF,
     handleStartPipeline,
-    handleViewResult
+    handleViewResult,
+    processingScheduleId
 }: ExamScheduleTableProps) {
     // Internal sort state
     const [sortField, setSortField] = useState<SortField>("name");
@@ -170,6 +172,7 @@ export function ExamScheduleTable({
                     </Button>
                 );
             case "UPLOADED":
+                const isProcessing = processingScheduleId === schedule.documentId;
                 return (
                     <Button
                         variant="outline"
@@ -177,9 +180,19 @@ export function ExamScheduleTable({
                         className="text-green-600"
                         title="Start Pipeline"
                         onClick={() => handleStart(schedule.documentId)}
+                        disabled={isProcessing}
                     >
-                        <Play className="h-4 w-4 mr-1.5" />
-                        <span>Start</span>
+                        {isProcessing ? (
+                            <>
+                                <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+                                <span>Processing...</span>
+                            </>
+                        ) : (
+                            <>
+                                <Play className="h-4 w-4 mr-1.5" />
+                                <span>Start</span>
+                            </>
+                        )}
                     </Button>
                 );
             case "DONE":
