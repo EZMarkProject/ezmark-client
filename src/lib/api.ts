@@ -196,8 +196,8 @@ export async function uploadPDF(formData: FormData, examScheduleDocumentId: stri
     return response.data;
 }
 
-export async function startPipeline(examScheduleDocumentId: string) {
-    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startPipeline`);
+export async function startMatching(examScheduleDocumentId: string) {
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startMatching`);
     await axiosInstance.put(`/schedules/${examScheduleDocumentId}`, {
         data: {
             result: {

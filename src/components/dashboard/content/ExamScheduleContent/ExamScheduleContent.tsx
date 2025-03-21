@@ -14,7 +14,7 @@ import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { useAuth } from "@/context/Auth";
 import { CalendarDays, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF, startPipeline } from "@/lib/api";
+import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF, startMatching } from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 // Define the form schema for creating a new exam schedule
@@ -202,7 +202,7 @@ function ExamScheduleContent() {
 
     // Handle start pipeline button click
     const handleStartPipeline = async (scheduleId: string) => {
-        await startPipeline(scheduleId);
+        await startMatching(scheduleId);
         router.push(`/pipeline/${scheduleId}`);
     };
 

@@ -3,7 +3,7 @@ import { PipelineProps } from './interface';
 import { PipelineNavBar } from '../PipelineNavBar';
 import { useEffect, useState } from 'react';
 import { Class, ExamSchedule } from '@/types/types';
-import { getClassById, getExamScheduleById, startPipeline } from '@/lib/api';
+import { getClassById, getExamScheduleById, startMatching } from '@/lib/api';
 import { getStepByProgressName } from '@/lib/utils';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Created } from '../content/Created';
@@ -38,7 +38,7 @@ export default function Pipeline({ documentId, }: PipelineProps) {
     }, [schedule]);
 
     const handleStartPipeline = async () => {
-        await startPipeline(documentId);
+        await startMatching(documentId);
         setForceUpdate(!forceUpdate);
     }
 
