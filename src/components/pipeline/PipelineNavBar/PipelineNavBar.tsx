@@ -7,27 +7,35 @@ import { ExamScheduleProgress } from "@/types/types";
 import { cn } from "@/lib/utils";
 
 const allSteps: {
-    progress: ExamScheduleProgress,
+    progress: ExamScheduleProgress[],
     displayName: string,
 }[] = [
         {
-            progress: 'CREATED',
+            progress: ['CREATED'],
             displayName: 'Start',
         },
         {
-            progress: 'UPLOADED',
+            progress: ['UPLOADED'],
             displayName: 'Upload',
         },
         {
-            progress: 'MATCH_START',
+            progress: ['MATCH_START'],
             displayName: 'Identify',
         },
         {
-            progress: 'MATCH_DONE',
+            progress: ['MATCH_DONE'],
             displayName: 'Match',
         },
         {
-            progress: 'DONE',
+            progress: ['OBJECTIVE_START', 'OBJECTIVE_DONE'],
+            displayName: 'Objective',
+        },
+        {
+            progress: ['SUBJECTIVE_START', 'SUBJECTIVE_DONE'],
+            displayName: 'Subjective',
+        },
+        {
+            progress: ['DONE'],
             displayName: 'Done',
         },
     ]
@@ -51,18 +59,29 @@ export default function PipelineNavBar({ examName, progress }: PipelineNavBarPro
                     <h2 className="text-lg font-medium">{examName}</h2>
                 </div>
 
-                <div className="flex-1 max-w-md mx-auto">
-                    <nav className="w-96 flex items-center justify-between">
+                <div>
+                    <nav className="w-full flex items-center justify-between gap-2">
                         {allSteps.map((step, index) => {
-                            // Determine the current progress index
-                            const currentStepIndex = allSteps.findIndex(s => s.progress === progress);
+                            // Find the index of the current step
+                            const currentStepIndex = allSteps.findIndex(s =>
+                                s.progress.includes(progress as ExamScheduleProgress)
+                            );
+
+                            // Find index of the current progress within all possible progress states
+                            const allProgressFlat = allSteps.flatMap(s => s.progress);
+                            const currentProgressIndex = allProgressFlat.findIndex(p => p === progress);
+
+                            // Calculate if this step is completed based on the flattened progress array
+                            const stepLastProgressIndex = allProgressFlat.findIndex(p =>
+                                p === step.progress[step.progress.length - 1]
+                            );
 
                             // Determine step status
-                            const isCompleted = index < currentStepIndex;
-                            const isCurrent = step.progress === progress;
+                            const isCompleted = stepLastProgressIndex < currentProgressIndex;
+                            const isCurrent = step.progress.includes(progress as ExamScheduleProgress);
 
                             return (
-                                <div key={step.progress} className="flex items-center">
+                                <div key={step.progress.join('-')} className="flex items-center">
                                     <span className={cn(
                                         "font-medium",
                                         isCompleted ? "text-foreground" :
@@ -83,7 +102,7 @@ export default function PipelineNavBar({ examName, progress }: PipelineNavBarPro
                     </nav>
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex justify-end min-w-[100px]">
                     <ThemeToggle />
                 </div>
             </div>

@@ -10,11 +10,13 @@ import { generatePaperNodes, generateStudentNodes, generateEdges } from '@/lib/f
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { startMarkingObjective, updateExamSchedule } from '@/lib/api';
+import { cloneDeep } from 'lodash';
 
 const nodeWidth = 500;
 const nodeHeight = 300;
 
-export default function MatchDone({ schedule, classData }: MatchDoneProps) {
+export default function MatchDone({ schedule, classData, setSchedule }: MatchDoneProps) {
     const allNodes = [...generatePaperNodes(schedule), ...generateStudentNodes(classData)];
     const allEdges = generateEdges(schedule);
     const [nodes, setNodes, onNodesChange] = useNodesState(allNodes);
@@ -86,6 +88,14 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
         });
     }, []);
 
+    const handleNextStep = async () => {
+        // 如果所有匹配都完成，则跳转到下一个步骤,更新schedule
+        schedule.result.progress = 'OBJECTIVE_START' // 开始客观题评分
+        await updateExamSchedule(schedule.documentId, { result: schedule.result }); // 更新schedule
+        await startMarkingObjective(schedule.documentId); // 开始客观题评分
+        setSchedule(cloneDeep(schedule)); // 更新状态，触发Pipeline组件的重新渲染
+    }
+
     // 确保有权限访问主题后再渲染
     useEffect(() => {
         setMounted(true);
@@ -127,7 +137,7 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
                             variant="default"
                             size="default"
                             disabled={!schedule.result.matchResult.done}
-                            onClick={() => { }}
+                            onClick={handleNextStep}
                         >
                             Next Step <ArrowRight className='w-4 h-4' />
                         </Button>

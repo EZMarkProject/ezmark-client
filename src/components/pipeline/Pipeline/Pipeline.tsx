@@ -4,13 +4,12 @@ import { PipelineNavBar } from '../PipelineNavBar';
 import { useEffect, useState } from 'react';
 import { Class, ExamSchedule } from '@/types/types';
 import { getClassById, getExamScheduleById, startMatching } from '@/lib/api';
-import { getStepByProgressName } from '@/lib/utils';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Created } from '../content/Created';
 import { Uploaded } from '../content/Uploaded';
 import { MatchStart } from '../content/MatchStart';
 import { MatchDone } from '../content/MatchDone';
-import { Done } from '../content/Done';
+import { ObjectiveStart } from '../content/ObjectiveStart';
 
 export default function Pipeline({ documentId, }: PipelineProps) {
     const [schedule, setSchedule] = useState<ExamSchedule | null>(null);
@@ -56,7 +55,9 @@ export default function Pipeline({ documentId, }: PipelineProps) {
             case 'MATCH_START':
                 return <MatchStart updateSchedule={updateSchedule} />;
             case 'MATCH_DONE':
-                return classData ? <MatchDone schedule={schedule} classData={classData} /> : <div className="flex items-center justify-center h-full">Loading class data...</div>;
+                return classData ? <MatchDone setSchedule={setSchedule} schedule={schedule} classData={classData} /> : <div className="flex items-center justify-center h-full">Loading class data...</div>;
+            case 'OBJECTIVE_START':
+                return <ObjectiveStart updateSchedule={updateSchedule} />;
             // case 'DONE':
             //     return <Done />;
         }

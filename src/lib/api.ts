@@ -4,6 +4,7 @@ import { defaultExamData } from "@/mock/default-exam-data";
 import { PDFReponse } from "@/components/landing-page/types";
 import { Class, ExamSchedule, Student } from "@/types/types";
 import { defaultScheduleResult } from "@/mock/default-schedule-result";
+
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
     const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}&pagination[limit]=10000`);
     return response.data;
@@ -206,5 +207,17 @@ export async function startMatching(examScheduleDocumentId: string) {
             }
         }
     });
+    return response.data;
+}
+
+export async function updateExamSchedule(examScheduleDocumentId: string, examSchedule: Partial<ExamSchedule>) {
+    const response = await axiosInstance.put(`/schedules/${examScheduleDocumentId}`, {
+        data: examSchedule
+    });
+    return response.data;
+}
+
+export async function startMarkingObjective(examScheduleDocumentId: string) {
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startObjective`);
     return response.data;
 }

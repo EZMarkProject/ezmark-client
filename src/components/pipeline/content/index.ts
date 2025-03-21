@@ -7,5 +7,7 @@ export { MatchStart } from './MatchStart';
 
 export { MatchDone } from './MatchDone';
 
+export { ObjectiveStart } from './ObjectiveStart';
+
 export { Done } from './Done';
 export type { DoneProps, PipelineStats } from './Done'; 
