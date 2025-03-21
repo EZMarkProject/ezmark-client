@@ -145,6 +145,7 @@ function ExamScheduleContent() {
             formData.append('files', data.pdfFile);
             await uploadPDF(formData, currentScheduleId);
             setIsPdfUploadDialogOpen(false);
+            setCurrentScheduleId(null);
             pdfUploadForm.reset();
             // 强制更新表格数据
             setIsUploading(false);
