@@ -12,7 +12,7 @@ import * as z from "zod";
 import { ExamScheduleTable } from "./ExamScheduleTable";
 import { CommonHeader } from "@/components/dashboard/content/CommonHeader";
 import { useAuth } from "@/context/Auth";
-import { CalendarDays, Upload } from "lucide-react";
+import { CalendarDays, Upload, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getExamByUserId, getAllClassesByUserId, createExamSchedule, getExamSchedulesByUserId, deleteExamScheduleById, uploadPDF, startMatching } from "@/lib/api";
 import { useRouter } from "next/navigation";
@@ -54,6 +54,7 @@ function ExamScheduleContent() {
     const [currentScheduleId, setCurrentScheduleId] = useState<string | null>(null);
     const { documentId: userDocumentId } = useAuth();
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -207,7 +208,9 @@ function ExamScheduleContent() {
 
     // Handle start pipeline button click
     const handleStartPipeline = async (scheduleId: string) => {
+        setLoading(true);
         await startMatching(scheduleId);
+        setLoading(false);
         router.push(`/pipeline/${scheduleId}`);
     };
 
@@ -221,6 +224,15 @@ function ExamScheduleContent() {
 
     return (
         <div className="flex flex-col space-y-6 h-[100%]">
+            {/* Loading Dialog */}
+            <Dialog open={loading} onOpenChange={(open) => !open && setLoading(false)}>
+                <DialogContent className="sm:max-w-md">
+                    <div className="flex flex-col items-center justify-center p-6 space-y-4">
+                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        <p className="text-center text-sm">Processing your exam papers...</p>
+                    </div>
+                </DialogContent>
+            </Dialog>
             <CommonHeader
                 title="Exam Schedules"
                 description="Manage your exam schedules for AI-assisted grading."
