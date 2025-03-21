@@ -1,4 +1,4 @@
-import { ReactFlow, Background, Controls, MiniMap, useEdgesState, useNodesState, Panel, addEdge } from '@xyflow/react';
+import { ReactFlow, Background, Controls, MiniMap, useEdgesState, useNodesState, Panel, addEdge, Connection } from '@xyflow/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import dagre from 'dagre';
 import { Edge, Node } from '@xyflow/react';
@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes';
 import { generatePaperNodes, generateStudentNodes, generateEdges } from '@/lib/flow';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 const nodeWidth = 500;
 const nodeHeight = 300;
@@ -28,13 +29,61 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
     const totalStudents = classData.students.length;
     const unmatchedStudents = totalStudents - matchedStudents;
 
-    const onConnect = useCallback((params: any) => {
+    const onConnect = useCallback((params: Connection) => {
         // 如果任何一个node以经连接过，则不连接
         if (edges.some((edge) => edge.source === params.source || edge.target === params.target)) {
             return;
         }
-        setEdges((eds) => addEdge({ ...params, animated: true }, eds));
-        // TODO: 连接成功后，调用接口，更新匹配结果
+        setEdges((eds) => {
+            const paperNodeId = params.source;
+            const studentNodeId = params.target;
+            // 如果学生节点和试卷节点在unmatched中，则清除unmatched中的两个node，添加到matched
+            if (schedule.result.matchResult.unmatched.papers.some((paper) => paper.paperId === paperNodeId)
+                && schedule.result.matchResult.unmatched.studentIds.includes(studentNodeId)) {
+                const headerImgUrl = schedule.result.matchResult.unmatched.papers.find((paper) => paper.paperId === paperNodeId)?.headerImgUrl ?? '404 Not Found';
+                schedule.result.matchResult.unmatched.papers = schedule.result.matchResult.unmatched.papers.filter((paper) => paper.paperId !== paperNodeId);
+                schedule.result.matchResult.unmatched.studentIds = schedule.result.matchResult.unmatched.studentIds.filter((id) => id !== studentNodeId);
+                schedule.result.matchResult.matched.push({
+                    studentId: studentNodeId,
+                    paperId: paperNodeId,
+                    headerImgUrl
+                });
+            }
+            // 检查是否所有unmatched的papers和studentIds都被匹配了
+            if (schedule.result.matchResult.unmatched.papers.length === 0 && schedule.result.matchResult.unmatched.studentIds.length === 0) {
+                schedule.result.matchResult.done = true;
+            }
+            return addEdge({ ...params, animated: true }, eds);
+        });
+    }, [edges]);
+
+    // Handle edge deletion
+    const onEdgesDelete = useCallback((deletedEdges: Edge[]) => {
+        // For each deleted edge, update the match result
+        deletedEdges.forEach((edge) => {
+            // Find the matching in the matched array
+            const matchIndex = schedule.result.matchResult.matched.findIndex(
+                (match) => match.paperId === edge.source && match.studentId === edge.target
+            );
+
+            if (matchIndex !== -1) {
+                // Get the match details before removing
+                const match = schedule.result.matchResult.matched[matchIndex];
+
+                // Remove from matched
+                schedule.result.matchResult.matched.splice(matchIndex, 1);
+
+                // Add back to unmatched
+                schedule.result.matchResult.unmatched.papers.push({
+                    paperId: match.paperId,
+                    headerImgUrl: match.headerImgUrl
+                });
+                schedule.result.matchResult.unmatched.studentIds.push(match.studentId);
+
+                // Set done to false since we now have unmatched items
+                schedule.result.matchResult.done = false;
+            }
+        });
     }, []);
 
     // 确保有权限访问主题后再渲染
@@ -64,6 +113,7 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                onEdgesDelete={onEdgesDelete}
                 colorMode={mounted && theme === 'dark' ? 'dark' : 'light'}
                 fitView // 启用自适应视图
                 fitViewOptions={{ padding: 0.5 }} // 增加边距使节点可见性更好
@@ -71,14 +121,16 @@ export default function MatchDone({ schedule, classData }: MatchDoneProps) {
                 <Background />
                 <Controls />
                 <MiniMap />
-                <Panel position="top-right">
+                <Panel position="bottom-center">
                     <div className="flex gap-2">
-                        <button
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        <Button
+                            variant="default"
+                            size="default"
+                            disabled={!schedule.result.matchResult.done}
                             onClick={() => { }}
                         >
-                            TODO
-                        </button>
+                            Next Step <ArrowRight className='w-4 h-4' />
+                        </Button>
                     </div>
                 </Panel>
             </ReactFlow>

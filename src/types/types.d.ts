@@ -114,7 +114,7 @@ export interface MatchResult {
     }[],
     unmatched: {
         studentIds: string[];
-        paper: {
+        papers: {
             paperId: string;
             headerImgUrl: string;
         }[]
