@@ -68,6 +68,9 @@ function ExamScheduleContent() {
         resolver: zodResolver(pdfUploadSchema),
     });
 
+    // 监听PDF文件选择状态
+    const pdfFile = pdfUploadForm.watch('pdfFile');
+
     // Fetch exam schedules data
     const fetchExamSchedules = async () => {
         if (!userDocumentId) return;
@@ -182,6 +185,8 @@ function ExamScheduleContent() {
             const file = event.dataTransfer.files[0];
             if (file.type === 'application/pdf') {
                 pdfUploadForm.setValue('pdfFile', file);
+                // 触发表单验证状态更新
+                pdfUploadForm.trigger('pdfFile');
             } else {
                 pdfUploadForm.setError('pdfFile', {
                     type: 'validate',
@@ -439,6 +444,8 @@ function ExamScheduleContent() {
                                                             const file = e.target.files?.[0];
                                                             if (file) {
                                                                 onChange(file);
+                                                                // 触发表单验证状态更新
+                                                                pdfUploadForm.trigger('pdfFile');
                                                             }
                                                         }}
                                                         className="hidden"
@@ -473,7 +480,7 @@ function ExamScheduleContent() {
                                 </Button>
                                 <Button
                                     type="submit"
-                                    disabled={isUploading || !pdfUploadForm.getValues().pdfFile}
+                                    disabled={isUploading || !pdfFile}
                                 >
                                     {isUploading ? (
                                         <>
