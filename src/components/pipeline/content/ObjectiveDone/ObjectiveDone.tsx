@@ -1,6 +1,7 @@
 import { ObjectiveDoneProps } from "./interface";
 import { useState, useRef, useEffect } from "react";
 import ResultDialog from "./ResultDialog";
+import LastOneDialog from "./LastOneDialog";
 import QuestionReview from "./QuestionReview";
 import { ExamSchedule } from "@/types/types";
 import { ExamResponse, MultipleChoiceQuestionData } from "@/types/exam";
@@ -16,6 +17,7 @@ function getQuestionByQuestionId(questionId: string, schedule: ExamSchedule) {
 export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
     const [openResultDialog, setOpenResultDialog] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [openLastOneDialog, setOpenLastOneDialog] = useState(false);
     const allQuestionNum = schedule.result.studentPapers.reduce((acc, paper) => acc + paper.objectiveQuestions.length, 0);
     const failedQuestionNumRef = useRef(0);
 
@@ -76,6 +78,10 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
         if (currentQuestionIndex < failedQuestionNumRef.current - 1) {
             handleNext();
         }
+        if (markedFailedQuestions.length + 1 === failedQuestions.length) {
+            console.log('all done')
+            handleLastOne()
+        }
     };
 
     // 标记为错误
@@ -106,13 +112,23 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
         if (currentQuestionIndex < failedQuestionNumRef.current - 1) {
             handleNext();
         }
+        if (markedFailedQuestions.length + 1 === failedQuestions.length) {
+            console.log('all done')
+            handleLastOne()
+        }
     };
 
     // Calculate progress
     const progress = (markedFailedQuestions.length / failedQuestionNumRef.current) * 100;
 
+    const handleLastOne = () => {
+        // 如果当前是最后一道题，则跳一个弹窗
+        setOpenLastOneDialog(true);
+    }
+
     const handleNextStep = () => {
-        // 处理下一步逻辑
+        // 进入下一个步骤（预览页面）
+        setOpenLastOneDialog(false);
     };
 
     return (
@@ -139,6 +155,11 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
                 allQuestionNum={allQuestionNum}
                 successQuestionNum={successQuestionNum}
                 failedQuestionNum={failedQuestionNumRef.current}
+            />
+            <LastOneDialog
+                open={openLastOneDialog}
+                onOpenChange={setOpenLastOneDialog}
+                onNextStep={handleNextStep}
             />
         </>
     );
