@@ -6,6 +6,7 @@ import { ExamSchedule } from "@/types/types";
 import { ExamResponse, MultipleChoiceQuestionData } from "@/types/exam";
 import { ExtendedObjectiveQuestion } from "./interface";
 import { updateExamSchedule } from "@/lib/api";
+import AllQuestionsFlow from "./AllQuestionsFlow";
 
 function getQuestionByQuestionId(questionId: string, schedule: ExamSchedule) {
     const exam = schedule.exam as ExamResponse;
@@ -109,16 +110,16 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
 
     // Calculate progress
     const progress = (markedFailedQuestions.length / failedQuestionNumRef.current) * 100;
-    console.log(markedFailedQuestions.length, failedQuestionNumRef.current)
+
+    const handleNextStep = () => {
+        // 处理下一步逻辑
+    };
 
     return (
         <>
-            <div className="w-full py-4">
+            <div className="w-full h-full">
                 {notingToDo ? (
-                    <div className="flex justify-center items-center h-full">
-                        <p className="text-muted-foreground">All Questions have been Marked Successfully</p>
-                        {/* // 展示所有题目组件 */}
-                    </div>
+                    <AllQuestionsFlow handleNextStep={handleNextStep} />
                 ) : (
                     <QuestionReview
                         question={failedQuestions[currentQuestionIndex]}

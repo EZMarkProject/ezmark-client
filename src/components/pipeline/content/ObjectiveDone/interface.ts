@@ -24,3 +24,7 @@ export interface ExtendedObjectiveQuestion {
     imageUrl: string;
     studentId: string; // 添加学生ID以便定位具体是哪个学生的题目
 }
+
+export interface AllQuestionsFlowProps {
+    handleNextStep: () => void;
+}
