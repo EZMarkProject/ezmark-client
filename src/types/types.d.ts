@@ -128,25 +128,23 @@ export interface Paper {
     endPage: number; // 结束页码
     name: string; // 学生姓名
     studentId: string; // 学生id
+    studentDocumentId: string; // 学生documentId
     headerImgUrl: string; // 试卷头图片url
 }
 
 export interface StudentPaper {
     student: Student;
     paperId: string; // 答卷id，未匹配为null,这个ID会在拆分PDF的时候生成
-    headerRecognition: {
-        name: string;
-        id: string
-    },
     objectiveQuestions: ObjectiveQuestion[];
     subjectiveQuestions: SubjectiveQuestion[];
     totalScore: number; // 从0往上加
 }
 
 export interface ObjectiveQuestion {
-    questionNumber: number;
+    questionId: string;
     studentAnswer: string[];
-    score: number;
+    llmUnknown: boolean; // 是否是LLM识别失败
+    score: number; // 这道题的得分
 }
 
 export interface SubjectiveQuestion {

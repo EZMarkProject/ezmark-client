@@ -91,6 +91,14 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
     const handleNextStep = async () => {
         // 如果所有匹配都完成，则跳转到下一个步骤,更新schedule
         schedule.result.progress = 'OBJECTIVE_START' // 开始客观题评分
+        // 根据matched更新papers
+        schedule.result.matchResult.matched.forEach((match) => {
+            const paper = schedule.result.papers.find((paper) => paper.paperId === match.paperId);
+            if (paper) {
+                paper.studentId = match.studentId;
+            }
+        });
+        // 更新schema
         await updateExamSchedule(schedule.documentId, { result: schedule.result }); // 更新schedule
         await startMarkingObjective(schedule.documentId); // 开始客观题评分
         setSchedule(cloneDeep(schedule)); // 更新状态，触发Pipeline组件的重新渲染
