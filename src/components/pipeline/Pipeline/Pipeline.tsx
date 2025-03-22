@@ -10,6 +10,7 @@ import { Uploaded } from '../content/Uploaded';
 import { MatchStart } from '../content/MatchStart';
 import { MatchDone } from '../content/MatchDone';
 import { ObjectiveStart } from '../content/ObjectiveStart';
+import ObjectiveDone from '../content/ObjectiveDone';
 
 export default function Pipeline({ documentId, }: PipelineProps) {
     const [schedule, setSchedule] = useState<ExamSchedule | null>(null);
@@ -58,6 +59,8 @@ export default function Pipeline({ documentId, }: PipelineProps) {
                 return classData ? <MatchDone setSchedule={setSchedule} schedule={schedule} classData={classData} /> : <div className="flex items-center justify-center h-full">Loading class data...</div>;
             case 'OBJECTIVE_START':
                 return <ObjectiveStart updateSchedule={updateSchedule} />;
+            case 'OBJECTIVE_DONE':
+                return <ObjectiveDone schedule={schedule} />;
             // case 'DONE':
             //     return <Done />;
         }
