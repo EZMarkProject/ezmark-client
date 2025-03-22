@@ -119,7 +119,7 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
         <>
             <div className="w-full h-full">
                 {notingToDo ? (
-                    <AllQuestionsFlow handleNextStep={handleNextStep} />
+                    <AllQuestionsFlow handleNextStep={handleNextStep} schedule={schedule} />
                 ) : (
                     <QuestionReview
                         question={failedQuestions[currentQuestionIndex]}

@@ -27,4 +27,5 @@ export interface ExtendedObjectiveQuestion {
 
 export interface AllQuestionsFlowProps {
     handleNextStep: () => void;
+    schedule: ExamSchedule;
 }
