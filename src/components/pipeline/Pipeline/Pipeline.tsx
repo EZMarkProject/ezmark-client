@@ -10,7 +10,7 @@ import { Uploaded } from '../content/Uploaded';
 import { MatchStart } from '../content/MatchStart';
 import { MatchDone } from '../content/MatchDone';
 import { ObjectiveStart } from '../content/ObjectiveStart';
-import ObjectiveDone from '../content/ObjectiveDone';
+import { ObjectiveDone } from '../content/ObjectiveDone';
 
 export default function Pipeline({ documentId, }: PipelineProps) {
     const [schedule, setSchedule] = useState<ExamSchedule | null>(null);
