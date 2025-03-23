@@ -8,6 +8,7 @@ import { FillInBlankConfigForm } from "./ConfigForm/FillInBlankConfigForm"
 import { OpenQuestionConfigForm } from "./ConfigForm/OpenQuestionConfigForm"
 import { useEffect, useState } from "react";
 import { UnionComponent } from "@/types/exam"
+import { nanoid } from "nanoid"
 
 export function ConfigEditPanel({ className, handleExamSave, selectedComponentId, exam }: ConfigEditPanelProps) {
     const [selectedComponent, setSelectedComponent] = useState<UnionComponent | null>(null);
@@ -33,14 +34,14 @@ export function ConfigEditPanel({ className, handleExamSave, selectedComponentId
             </div>
             <ScrollArea className="flex-1 p-4">
                 {/* 如果 selectedComponentId 为 null 或者 selectedComponent 的类型为 header，则渲染 ExamConfigForm */}
-                {selectedComponentId === null || selectedComponent?.type.includes('header') ? (
+                {selectedComponentId === null || selectedComponent === null || selectedComponent?.type.includes('header') ? (
                     <ExamConfigForm
                         exam={exam}
                         onExamConfigChange={handleExamSave}
                     />
                 ) : selectedComponent?.type === 'multiple-choice' ? (
                     <MCQConfigForm
-                        key={selectedComponentId}
+                        key={nanoid()}
                         mcq={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
@@ -48,7 +49,7 @@ export function ConfigEditPanel({ className, handleExamSave, selectedComponentId
                     />
                 ) : selectedComponent?.type === 'fill-in-blank' ? (
                     <FillInBlankConfigForm
-                        key={selectedComponentId}
+                        key={nanoid()}
                         fillInBlank={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
@@ -56,7 +57,7 @@ export function ConfigEditPanel({ className, handleExamSave, selectedComponentId
                     />
                 ) : selectedComponent?.type === 'open' ? (
                     <OpenQuestionConfigForm
-                        key={selectedComponentId}
+                        key={nanoid()}
                         openQuestion={selectedComponent}
                         exam={exam}
                         selectedComponentId={selectedComponentId}
