@@ -222,3 +222,9 @@ export async function startMarkingObjective(examScheduleDocumentId: string) {
     const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startObjective`);
     return response.data;
 }
+
+
+export async function startSubjective(examScheduleDocumentId: string) {
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startSubjective`);
+    return response.data;
+}

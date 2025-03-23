@@ -1,8 +1,11 @@
+import { Dispatch } from "react";
+import { SetStateAction } from "react";
 import { ExamSchedule, ObjectiveQuestion } from "../../../../types/types";
 import { MultipleChoiceQuestionData } from "@/types/exam";
 
 export interface ObjectiveDoneProps {
     schedule: ExamSchedule;
+    setSchedule: Dispatch<SetStateAction<ExamSchedule | null>>
 }
 
 export interface QuestionReviewProps {

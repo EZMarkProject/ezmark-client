@@ -1,6 +1,6 @@
 import { ReactFlow, useEdgesState, useNodesState, Controls, Background, MiniMap, Panel, Node, Edge } from "@xyflow/react";
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { AllQuestionsFlowProps } from "./interface";
 import { QuestionNode } from "@/components/Flow/QuestionNode";
 import { useMemo, useCallback, useEffect, useState, useRef } from "react";
@@ -15,6 +15,7 @@ export default function AllQuestionsFlow({ handleNextStep, schedule }: AllQuesti
     const [nodes, setNodes, onNodesChange] = useNodesState(getNodes(schedule));
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [nodeSize, setNodeSize] = useState({ width: 500, height: 150 });
+    const [isLoading, setIsLoading] = useState(false);
     const initialized = useRef(false);
     const reactFlowRef = useRef(null);
 
@@ -55,6 +56,16 @@ export default function AllQuestionsFlow({ handleNextStep, schedule }: AllQuesti
         }
     }, [nodes, edges, nodeSize]);
 
+    // 包装handleNextStep函数以添加加载状态
+    const handleNextStepWithLoading = async () => {
+        setIsLoading(true);
+        try {
+            await handleNextStep();
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     // 组件挂载后延迟应用布局
     useEffect(() => {
         // 等待DOM渲染完成
@@ -88,10 +99,19 @@ export default function AllQuestionsFlow({ handleNextStep, schedule }: AllQuesti
                         <Button
                             variant="default"
                             size="default"
-                            disabled={!schedule.result.matchResult.done}
-                            onClick={handleNextStep}
+                            disabled={!schedule.result.matchResult.done || isLoading}
+                            onClick={handleNextStepWithLoading}
                         >
-                            Next Step <ArrowRight className='w-4 h-4' />
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Loading
+                                </>
+                            ) : (
+                                <>
+                                    Next Step <ArrowRight className='w-4 h-4' />
+                                </>
+                            )}
                         </Button>
                     </div>
                 </Panel>

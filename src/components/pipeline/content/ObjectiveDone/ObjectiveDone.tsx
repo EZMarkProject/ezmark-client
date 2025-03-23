@@ -6,15 +6,16 @@ import QuestionReview from "./QuestionReview";
 import { ExamSchedule } from "@/types/types";
 import { ExamResponse, MultipleChoiceQuestionData } from "@/types/exam";
 import { ExtendedObjectiveQuestion } from "./interface";
-import { updateExamSchedule } from "@/lib/api";
+import { updateExamSchedule, startSubjective } from "@/lib/api";
 import AllQuestionsFlow from "./AllQuestionsFlow";
+import cloneDeep from "lodash/cloneDeep";
 
 function getQuestionByQuestionId(questionId: string, schedule: ExamSchedule) {
     const exam = schedule.exam as ExamResponse;
     return exam.examData.components.find((component) => component.id === questionId) as MultipleChoiceQuestionData;
 }
 
-export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
+export default function ObjectiveDone({ schedule, setSchedule }: ObjectiveDoneProps) {
     const [openResultDialog, setOpenResultDialog] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [openLastOneDialog, setOpenLastOneDialog] = useState(false);
@@ -126,9 +127,15 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
         setOpenLastOneDialog(true);
     }
 
-    const handleNextStep = () => {
-        // 进入下一个步骤（预览页面）
-        setOpenLastOneDialog(false);
+    // 进入 SUBJECTIVE_START 步骤
+    const handleNextStep = async () => {
+        schedule.result.progress = 'SUBJECTIVE_START';
+        // 更新schedule
+        await updateExamSchedule(schedule.documentId, { result: schedule.result });
+        // 刷新页面状态
+        setSchedule(cloneDeep(schedule));
+        // 开始主观题流水线
+        await startSubjective(schedule.documentId);
     };
 
     return (
@@ -159,7 +166,7 @@ export default function ObjectiveDone({ schedule }: ObjectiveDoneProps) {
             <LastOneDialog
                 open={openLastOneDialog}
                 onOpenChange={setOpenLastOneDialog}
-                onNextStep={handleNextStep}
+                onNextStep={() => setOpenLastOneDialog(false)}
             />
         </>
     );

@@ -11,6 +11,8 @@ import { MatchStart } from '../content/MatchStart';
 import { MatchDone } from '../content/MatchDone';
 import { ObjectiveStart } from '../content/ObjectiveStart';
 import { ObjectiveDone } from '../content/ObjectiveDone';
+import { SubjectiveDone } from '../content/SubjectiveDone';
+import { SubjectiveStart } from '../content/SubjectiveStart';
 
 export default function Pipeline({ documentId, }: PipelineProps) {
     const [schedule, setSchedule] = useState<ExamSchedule | null>(null);
@@ -60,7 +62,11 @@ export default function Pipeline({ documentId, }: PipelineProps) {
             case 'OBJECTIVE_START':
                 return <ObjectiveStart updateSchedule={updateSchedule} />;
             case 'OBJECTIVE_DONE':
-                return <ObjectiveDone schedule={schedule} />;
+                return <ObjectiveDone setSchedule={setSchedule} schedule={schedule} />;
+            case 'SUBJECTIVE_START':
+                return <SubjectiveStart updateSchedule={updateSchedule} />;
+            case 'SUBJECTIVE_DONE':
+                return <SubjectiveDone schedule={schedule} />;
             // case 'DONE':
             //     return <Done />;
         }
