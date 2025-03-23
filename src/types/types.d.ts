@@ -162,3 +162,10 @@ export interface SubjectiveLLMResponse {
     ocrResult: string;
     suggestion: string;
 }
+
+export interface LLMSubjectiveInput {
+    question: string;
+    answer: string; // 参考答案
+    score: number; // 这道题的总分
+    imageUrl: string; // 题目图片,不带域名
+}
