@@ -46,7 +46,7 @@ export default function QuestionNode({ data }: QuestionNodeProps) {
                 studentAnswers.push({
                     studentId: paper.student.studentId,
                     studentName: paper.student.name,
-                    answer: [question.studentAnswer],
+                    answer: [''], // placeholder，主观题不展示
                     answerImg: question.imageUrl,
                     score: question.score,
                 });
@@ -92,7 +92,7 @@ export default function QuestionNode({ data }: QuestionNodeProps) {
                                         />
                                     </div>
                                 )}
-                                {item.answer && (
+                                {item.answer && isMCQ && (
                                     <div className="w-full p-2 bg-muted rounded-md">
                                         <p className="text-sm whitespace-pre-wrap">
                                             Answer:  {item.answer.join(', ')}
