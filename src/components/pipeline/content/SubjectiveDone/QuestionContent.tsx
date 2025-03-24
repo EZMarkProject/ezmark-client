@@ -83,6 +83,7 @@ export default function QuestionContent({
                         <div className="w-full flex-1 flex items-center justify-center">
                             <span className="text-muted-foreground mr-4 font-medium">Score:</span>
                             <Input
+                                autoFocus
                                 type="number"
                                 name="score"
                                 min="0"
