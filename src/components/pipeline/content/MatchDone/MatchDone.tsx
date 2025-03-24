@@ -37,6 +37,7 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
         if (edges.some((edge) => edge.source === params.source || edge.target === params.target)) {
             return;
         }
+        console.log('DEBUG onConnect', params);
         setEdges((eds) => {
             const paperNodeId = params.source;
             const studentNodeId = params.target;
@@ -51,9 +52,15 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
                     paperId: paperNodeId,
                     headerImgUrl
                 });
+                console.log("DEBUG", {
+                    studentId: studentNodeId,
+                    paperId: paperNodeId,
+                    headerImgUrl
+                });
             }
             // 检查是否所有unmatched的papers和studentIds都被匹配了
             if (schedule.result.matchResult.unmatched.papers.length === 0 && schedule.result.matchResult.unmatched.studentIds.length === 0) {
+                console.log('DEBUG done');
                 schedule.result.matchResult.done = true;
             }
             return addEdge({ ...params, animated: true }, eds);
