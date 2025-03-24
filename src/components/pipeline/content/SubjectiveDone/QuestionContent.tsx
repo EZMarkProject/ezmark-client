@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { IMAGE_PREFIX } from "@/lib/host";
 import { ExtendedSubjectiveQuestion, Question } from "./interface";
 import { SubjectiveQuestion } from "@/types/types";
@@ -24,6 +24,7 @@ export interface QuestionContentProps {
     onPrevious: () => void;
     onNext: () => void;
     isSubmitting?: boolean;
+    handleContinue: () => void;
 }
 
 export default function QuestionContent({
@@ -35,7 +36,8 @@ export default function QuestionContent({
     onScoreSubmit,
     onPrevious,
     onNext,
-    isSubmitting = false
+    isSubmitting = false,
+    handleContinue
 }: QuestionContentProps) {
     const [showImagePreview, setShowImagePreview] = useState(false);
 
@@ -100,6 +102,10 @@ export default function QuestionContent({
                             <span className="text-muted-foreground mr-2">Progress:</span>
                             <span className="font-semibold">{`${finished}/${total}`}</span>
                         </div>
+                        <Button onClick={handleContinue} className="px-4" disabled={progress !== 100}>
+                            Done
+                            <ArrowRight />
+                        </Button>
                     </div>
 
                     {/* Score input and submit form */}

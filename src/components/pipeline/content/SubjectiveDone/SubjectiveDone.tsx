@@ -150,6 +150,10 @@ export default function SubjectiveDone({
         }
     };
 
+    const handleContinue = () => {
+        // TODO
+    }
+
     return (
         <>
             {currentQuestion && (
@@ -175,6 +179,7 @@ export default function SubjectiveDone({
                         onNext={handleNext}
                         questionDef={getQuestionDef(schedule, currentQuestion.questionId)}
                         isSubmitting={isSubmitting}
+                        handleContinue={handleContinue}
                     />
 
                     {/* Right sidebar for AI suggestions */}
