@@ -5,6 +5,8 @@ import QuestionContent from "./QuestionContent";
 import AiSuggestion from "./AiSuggestion";
 import { ExamSchedule, SubjectiveQuestion } from "@/types/types";
 import { ExamResponse } from "@/types/exam";
+import { updateExamSchedule } from "@/lib/api";
+import { cloneDeep } from "lodash";
 
 export default function SubjectiveDone({
     schedule,
@@ -15,6 +17,7 @@ export default function SubjectiveDone({
     const [currentQuestion, setCurrentQuestion] = useState<ExtendedSubjectiveQuestion | null>(null);
     const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // 计算进度
     const totalQuestions = subjectiveQuestions.length;
@@ -37,7 +40,8 @@ export default function SubjectiveDone({
         const sortedQuestions = questions.sort((a, b) => getQuestionDef(schedule, a.questionId).questionNumber - getQuestionDef(schedule, b.questionId).questionNumber);
 
         setSubjectiveQuestions(sortedQuestions);
-        setCurrentQuestion(sortedQuestions[0]); // 默认选择第一个问题
+        const firstUnfinishedQuestion = sortedQuestions.find(q => !q.done);
+        setCurrentQuestion(firstUnfinishedQuestion || sortedQuestions[0]); // 默认选择第一个问题
     }, [schedule]);
 
     // 获取AI建议
@@ -61,7 +65,29 @@ export default function SubjectiveDone({
 
     // 提交分数
     const handleScoreSubmit = async (score: number) => {
-        // TODO
+        if (!currentQuestion) return;
+        setIsSubmitting(true);
+        const sutdentId = currentQuestion.studentId;
+        const questionId = currentQuestion.questionId;
+        // 更新schedule
+        const updatedSchedule = schedule.result.studentPapers.map(paper => {
+            if (paper.student.studentId === sutdentId) {
+                return {
+                    ...paper,
+                    subjectiveQuestions: paper.subjectiveQuestions.map(q => q.questionId === questionId ? { ...q, score, done: true } : q)
+                }
+            }
+            return paper;
+        });
+        schedule.result.studentPapers = updatedSchedule;
+        await updateExamSchedule(schedule.documentId, { result: schedule.result });
+        setSchedule(cloneDeep(schedule));
+        setIsSubmitting(false);
+        // 跳转到下一个没有完成的题目
+        const allFinished = updatedSchedule.every(paper => paper.subjectiveQuestions.every(q => q.done));
+        if (allFinished) {
+            // TODO
+        }
     };
 
     // 前一个问题
@@ -80,7 +106,7 @@ export default function SubjectiveDone({
     }, [currentQuestion, subjectiveQuestions]);
 
     // 下一个问题
-    const handleNext = useCallback(() => {
+    const handleNext = () => {
         if (!currentQuestion) return;
 
         const currentIndex = subjectiveQuestions.findIndex(
@@ -91,7 +117,7 @@ export default function SubjectiveDone({
             const nextQ = subjectiveQuestions[currentIndex + 1];
             setCurrentQuestion(nextQ);
         }
-    }, [currentQuestion, subjectiveQuestions]);
+    };
 
     return (
         <>
@@ -116,6 +142,7 @@ export default function SubjectiveDone({
                         onPrevious={handlePrevious}
                         onNext={handleNext}
                         questionDef={getQuestionDef(schedule, currentQuestion.questionId)}
+                        isSubmitting={isSubmitting}
                     />
 
                     {/* Right sidebar for AI suggestions */}
@@ -131,9 +158,8 @@ export default function SubjectiveDone({
     );
 }
 
-function getQuestionDef(schedule: ExamSchedule, componentId: string): SubjectiveQuestion {
+export function getQuestionDef(schedule: ExamSchedule, componentId: string): SubjectiveQuestion {
     const exam = schedule.exam as ExamResponse;
     const questionDef = exam.examData.components.find((c) => c.id === componentId);
-    console.log(questionDef);
     return questionDef as unknown as SubjectiveQuestion;
 }

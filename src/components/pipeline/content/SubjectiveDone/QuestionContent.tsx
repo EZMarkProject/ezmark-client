@@ -2,10 +2,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { IMAGE_PREFIX } from "@/lib/host";
 import { ExtendedSubjectiveQuestion, Question } from "./interface";
 import { SubjectiveQuestion } from "@/types/types";
+import { getQuestionDef } from "./SubjectiveDone";
 
 export interface QuestionContentProps {
     currentQuestion: ExtendedSubjectiveQuestion | null;
@@ -16,6 +17,7 @@ export interface QuestionContentProps {
     onScoreSubmit: (score: number) => void;
     onPrevious: () => void;
     onNext: () => void;
+    isSubmitting?: boolean;
 }
 
 export default function QuestionContent({
@@ -26,7 +28,8 @@ export default function QuestionContent({
     questionDef,
     onScoreSubmit,
     onPrevious,
-    onNext
+    onNext,
+    isSubmitting = false
 }: QuestionContentProps) {
     const handleScoreSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -83,14 +86,19 @@ export default function QuestionContent({
                                 type="number"
                                 name="score"
                                 min="0"
-                                max={currentQuestion.score}
+                                max={questionDef.score}
                                 step="0.5"
                                 defaultValue={0}
                                 className="w-24 mr-4"
                                 placeholder="Enter score"
+                                disabled={isSubmitting}
                             />
-                            <Button type="submit" className="px-8">
-                                Submit
+                            <Button type="submit" className="w-24 px-8" disabled={isSubmitting}>
+                                {isSubmitting ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                ) : (
+                                    "Submit"
+                                )}
                             </Button>
                         </div>
                     </form>
@@ -101,6 +109,7 @@ export default function QuestionContent({
                             onClick={onPrevious}
                             variant="ghost"
                             className="flex items-center"
+                            disabled={isSubmitting}
                         >
                             <ChevronLeft className="h-5 w-5 mr-1" />
                             prev
@@ -109,6 +118,7 @@ export default function QuestionContent({
                             onClick={onNext}
                             variant="ghost"
                             className="flex items-center"
+                            disabled={isSubmitting}
                         >
                             next
                             <ChevronRight className="h-5 w-5 ml-1" />
