@@ -107,6 +107,7 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
                 }
             });
             // 更新schema
+            schedule.result.matchResult.done = true;
             await updateExamSchedule(schedule.documentId, { result: schedule.result }); // 更新schedule
             await startMarkingObjective(schedule.documentId); // 开始客观题评分
             setSchedule(cloneDeep(schedule)); // 更新状态，触发Pipeline组件的重新渲染
