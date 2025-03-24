@@ -98,11 +98,12 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
             // 如果所有匹配都完成，则跳转到下一个步骤,更新schedule
             schedule.result.progress = 'OBJECTIVE_START' // 开始客观题评分
             // 根据matched更新papers
-            schedule.result.matchResult.matched.forEach((match, index) => {
+            schedule.result.matchResult.matched.forEach((match) => {
                 const student = classData.students.find((student) => student.studentId === match.studentId);
-                if (student) {
-                    schedule.result.papers[index].studentId = student.studentId;
-                    schedule.result.papers[index].name = student.name;
+                const paperIndex = schedule.result.papers.findIndex((paper) => paper.paperId === match.paperId);
+                if (student && paperIndex !== -1) {
+                    schedule.result.papers[paperIndex].studentId = student.studentId;
+                    schedule.result.papers[paperIndex].name = student.name;
                 }
             });
             // 更新schema
