@@ -6,7 +6,13 @@ import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { IMAGE_PREFIX } from "@/lib/host";
 import { ExtendedSubjectiveQuestion, Question } from "./interface";
 import { SubjectiveQuestion } from "@/types/types";
-import { getQuestionDef } from "./SubjectiveDone";
+import { useState } from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogClose,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 export interface QuestionContentProps {
     currentQuestion: ExtendedSubjectiveQuestion | null;
@@ -31,6 +37,8 @@ export default function QuestionContent({
     onNext,
     isSubmitting = false
 }: QuestionContentProps) {
+    const [showImagePreview, setShowImagePreview] = useState(false);
+
     const handleScoreSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
@@ -56,7 +64,8 @@ export default function QuestionContent({
                                 <img
                                     src={`${IMAGE_PREFIX}/${currentQuestion.imageUrl}`}
                                     alt="Question"
-                                    className="max-w-full max-h-[300px] object-contain rounded-md"
+                                    className="max-w-full max-h-[300px] object-contain rounded-md cursor-pointer"
+                                    onClick={() => setShowImagePreview(true)}
                                 />
                             ) : (
                                 <div className="text-center text-muted-foreground">
@@ -66,10 +75,25 @@ export default function QuestionContent({
                         </CardContent>
                     </Card>
 
+                    {/* Image Preview Dialog */}
+                    <Dialog open={showImagePreview} onOpenChange={setShowImagePreview}>
+                        <DialogContent className="max-w-4xl p-0 flex items-center justify-center bg-transparent border-0 shadow-none">
+                            <DialogTitle className="sr-only">Question Image Preview</DialogTitle>
+                            <DialogClose className="absolute right-2 top-2 z-10 rounded-full bg-background p-1 text-foreground opacity-70 hover:opacity-100" />
+                            {currentQuestion.imageUrl && (
+                                <img
+                                    src={`${IMAGE_PREFIX}/${currentQuestion.imageUrl}`}
+                                    alt="Question Preview"
+                                    className="max-w-full max-h-[80vh] object-contain rounded-md"
+                                />
+                            )}
+                        </DialogContent>
+                    </Dialog>
+
                     {/* Score and progress section */}
                     <div className="w-full flex justify-between mb-8">
                         <div className="flex items-center">
-                            <span className="text-muted-foreground mr-2">Score:</span>
+                            <span className="text-muted-foreground mr-2">Mark:</span>
                             <span className="font-semibold">{questionDef.score}</span>
                         </div>
                         <div className="flex items-center">

@@ -1,9 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Bot, Loader2 } from "lucide-react";
+import { SubjectiveLLMResponse } from "@/types/types";
+import { Bot, Sparkles, Type } from "lucide-react";
 
 export interface AiSuggestionProps {
-    aiSuggestion: string | null;
+    aiSuggestion: SubjectiveLLMResponse | null;
     isAiLoading: boolean;
 }
 
@@ -12,36 +13,68 @@ export default function AiSuggestion({
     isAiLoading
 }: AiSuggestionProps) {
     return (
-        <div className="w-full pl-4 border-l">
-            <Card className="h-full overflow-hidden">
-                <CardContent className="p-4">
-                    <h3 className="text-lg font-medium mb-3 flex items-center">
-                        <Bot className="w-5 h-5 mr-2" />
+        <div className="w-full h-full pl-4">
+            <Card className="h-full overflow-hidden shadow-sm">
+                <CardHeader className="pb-2 pt-4 px-5">
+                    <CardTitle className="text-lg font-medium flex items-center gap-2">
+                        <Bot className="w-5 h-5 text-primary" />
                         AI Suggestions
-                    </h3>
-
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
                     {isAiLoading ? (
-                        <div className="flex flex-col items-center justify-center h-64 space-y-4">
+                        <div className="h-[calc(100vh-280px)] flex flex-col items-center justify-center space-y-4 px-4 mx-10">
                             <div className="relative w-16 h-16">
                                 <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
-                                <div className="absolute inset-2 rounded-full border-4 border-l-primary border-r-transparent border-t-transparent border-b-transparent spin 3s linear infinite"></div>
                                 <Bot className="absolute inset-0 m-auto w-8 h-8 text-primary" />
                             </div>
                             <p className="text-sm text-muted-foreground">AI is analyzing the answer...</p>
                         </div>
                     ) : (
-                        <ScrollArea className="h-[calc(100vh-280px)]">
+                        <ScrollArea className="">
                             {aiSuggestion ? (
-                                <div className="text-sm space-y-4">
-                                    {aiSuggestion.split('\n').map((paragraph, index) => (
-                                        <p key={index}>{paragraph}</p>
-                                    ))}
+                                <div className="px-5 py-2 space-y-4">
+                                    <div className="space-y-3 text-sm leading-relaxed">
+                                        {aiSuggestion.suggestion.split('\n').map((paragraph, index) => (
+                                            <p key={index} className="text-muted-foreground">{paragraph}</p>
+                                        ))}
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <div className="font-medium">Suggested Score:</div>
+                                        <div className="underline">
+                                            {aiSuggestion.score}
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-muted/40 rounded-lg p-4 space-y-3">
+                                        <div className="flex items-center gap-2">
+                                            <Sparkles className="w-4 h-4 text-primary" />
+                                            <h4 className="text-sm font-medium">Reasoning</h4>
+                                        </div>
+                                        <div className="text-sm text-muted-foreground leading-relaxed">
+                                            {aiSuggestion.reasoning}
+                                        </div>
+                                    </div>
+
+                                    <div className="rounded-lg border p-4 space-y-2">
+                                        <div className="flex items-center gap-2">
+                                            <Type className="w-4 h-4 text-primary" />
+                                            <h4 className="text-sm font-medium">OCR Result</h4>
+                                        </div>
+                                        <div className="font-mono text-sm bg-muted/50 p-2 rounded">
+                                            {aiSuggestion.ocrResult}
+                                        </div>
+                                    </div>
                                 </div>
                             ) : (
                                 <div className="flex items-center justify-center h-64">
-                                    <p className="text-sm text-muted-foreground">
-                                        Select a question to see AI suggestions
-                                    </p>
+                                    <div className="text-center space-y-2">
+                                        <Bot className="w-10 h-10 text-muted-foreground/40 mx-auto" />
+                                        <p className="text-sm text-muted-foreground">
+                                            Select a question to see AI suggestions
+                                        </p>
+                                    </div>
                                 </div>
                             )}
                         </ScrollArea>

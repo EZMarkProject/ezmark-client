@@ -1,11 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
-import { SubjectiveDoneProps, Question, StudentQuestion, ExtendedSubjectiveQuestion } from "./interface";
+import { SubjectiveDoneProps, ExtendedSubjectiveQuestion } from "./interface";
 import QuestionSidebar from "./QuestionSidebar";
 import QuestionContent from "./QuestionContent";
 import AiSuggestion from "./AiSuggestion";
-import { ExamSchedule, SubjectiveQuestion } from "@/types/types";
+import { ExamSchedule, SubjectiveQuestion, SubjectiveLLMResponse, LLMSubjectiveInput } from "@/types/types";
+import { OpenQuestionData } from "@/types/exam";
 import { ExamResponse } from "@/types/exam";
-import { updateExamSchedule } from "@/lib/api";
+import { updateExamSchedule, getSubjectiveLLMResponse } from "@/lib/api";
 import { cloneDeep } from "lodash";
 
 export default function SubjectiveDone({
@@ -15,7 +16,7 @@ export default function SubjectiveDone({
     // 内部状态管理
     const [subjectiveQuestions, setSubjectiveQuestions] = useState<ExtendedSubjectiveQuestion[]>([]);
     const [currentQuestion, setCurrentQuestion] = useState<ExtendedSubjectiveQuestion | null>(null);
-    const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
+    const [aiSuggestion, setAiSuggestion] = useState<SubjectiveLLMResponse | null>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,7 +55,17 @@ export default function SubjectiveDone({
 
     // 获取AI建议
     const fetchAiSuggestion = async (question: SubjectiveQuestion) => {
-        // TODO
+        setIsAiLoading(true);
+        const questionDef = getQuestionDef(schedule, question.questionId) as unknown as OpenQuestionData;
+        const requestBody: LLMSubjectiveInput = {
+            question: questionDef.content,
+            answer: questionDef.answer,
+            score: questionDef.score,
+            imageUrl: question.imageUrl
+        }
+        const response = await getSubjectiveLLMResponse(requestBody);
+        setAiSuggestion(response);
+        setIsAiLoading(false)
     };
 
     // 选择问题
@@ -146,7 +157,7 @@ export default function SubjectiveDone({
                     />
 
                     {/* Right sidebar for AI suggestions */}
-                    <div className="w-1/4">
+                    <div className="max-w-96">
                         <AiSuggestion
                             aiSuggestion={aiSuggestion}
                             isAiLoading={isAiLoading}
