@@ -26,6 +26,7 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
     const [mounted, setMounted] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [isDone, setIsDone] = useState(schedule.result.matchResult.done);
 
     // 计算匹配结果
     const matchedStudents = schedule.result.matchResult.matched.length;
@@ -37,7 +38,6 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
         if (edges.some((edge) => edge.source === params.source || edge.target === params.target)) {
             return;
         }
-        console.log('DEBUG onConnect', params);
         setEdges((eds) => {
             const paperNodeId = params.source;
             const studentNodeId = params.target;
@@ -52,16 +52,11 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
                     paperId: paperNodeId,
                     headerImgUrl
                 });
-                console.log("DEBUG", {
-                    studentId: studentNodeId,
-                    paperId: paperNodeId,
-                    headerImgUrl
-                });
             }
             // 检查是否所有unmatched的papers和studentIds都被匹配了
             if (schedule.result.matchResult.unmatched.papers.length === 0 && schedule.result.matchResult.unmatched.studentIds.length === 0) {
-                console.log('DEBUG done');
                 schedule.result.matchResult.done = true;
+                setIsDone(true);
             }
             return addEdge({ ...params, animated: true }, eds);
         });
@@ -92,6 +87,7 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
 
                 // Set done to false since we now have unmatched items
                 schedule.result.matchResult.done = false;
+                setIsDone(false);
             }
         });
     }, []);
@@ -157,7 +153,7 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
                         <Button
                             variant="default"
                             size="default"
-                            disabled={!schedule.result.matchResult.done || isLoading}
+                            disabled={!isDone || isLoading}
                             onClick={handleNextStep}
                         >
                             {isLoading ? (
