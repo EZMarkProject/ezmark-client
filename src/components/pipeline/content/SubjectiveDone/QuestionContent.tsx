@@ -13,6 +13,7 @@ import {
     DialogClose,
     DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 export interface QuestionContentProps {
     currentQuestion: ExtendedSubjectiveQuestion | null;
@@ -61,14 +62,17 @@ export default function QuestionContent({
                 <>
                     {/* Question image */}
                     <Card className="w-full mb-6">
-                        <CardContent className="p-6 flex items-center justify-center min-h-[300px] relative">
+                        <CardContent className="p-6">
                             {currentQuestion.imageUrl ? (
-                                <img
-                                    src={`${IMAGE_PREFIX}/${currentQuestion.imageUrl}`}
-                                    alt="Question"
-                                    className="max-w-full max-h-[300px] object-contain rounded-md cursor-pointer"
-                                    onClick={() => setShowImagePreview(true)}
-                                />
+                                <div className="relative w-full h-[300px]">
+                                    <Image
+                                        src={`${IMAGE_PREFIX}/${currentQuestion.imageUrl}`}
+                                        alt="Question"
+                                        fill
+                                        className="object-contain hover:cursor-pointer"
+                                        onClick={() => setShowImagePreview(true)}
+                                    />
+                                </div>
                             ) : (
                                 <div className="text-center text-muted-foreground">
                                     Question Image

@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ChevronLeft, ChevronRight, Check, X, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, X, Loader2, ZoomIn } from "lucide-react";
 import { IMAGE_PREFIX } from "@/lib/host";
 import { QuestionReviewProps } from "./interface";
+import Image from "next/image";
+import { useState } from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle
+} from "@/components/ui/dialog";
 
 export default function QuestionReview({
     question,
@@ -17,6 +24,8 @@ export default function QuestionReview({
     total,
     finished
 }: QuestionReviewProps) {
+    const [previewOpen, setPreviewOpen] = useState(false);
+
     return (
         <div className="w-full flex flex-col items-center max-w-3xl mx-auto">
             {/* Progress bar */}
@@ -24,18 +33,26 @@ export default function QuestionReview({
 
             {/* Question image */}
             <Card className="w-full mb-6">
-                <CardContent className="p-6 flex items-center justify-center min-h-[300px] relative">
+                <CardContent className="p-6">
                     {isLoading && (
                         <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-10">
                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
                         </div>
                     )}
                     {question.imageUrl ? (
-                        <img
-                            src={`${IMAGE_PREFIX}/${question.imageUrl}`}
-                            alt="Question"
-                            className="max-w-full max-h-[300px] object-contain rounded-md"
-                        />
+                        <div className="relative w-full h-[300px] group">
+                            <div
+                                className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                                onClick={() => setPreviewOpen(true)}
+                            >
+                                <Image
+                                    src={`${IMAGE_PREFIX}/${question.imageUrl}`}
+                                    alt="Question"
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+                        </div>
                     ) : (
                         <div className="text-center text-muted-foreground">
                             Question Image
@@ -43,6 +60,23 @@ export default function QuestionReview({
                     )}
                 </CardContent>
             </Card>
+
+            {/* Image Preview Dialog */}
+            <Dialog open={previewOpen} onOpenChange={setPreviewOpen} >
+                <DialogContent className="max-w-5xl p-0 overflow-hidden bg-transparent border-none" onClick={(e) => e.stopPropagation()}>
+                    <DialogTitle className="sr-only">Question Image Preview</DialogTitle>
+                    {question.imageUrl && (
+                        <div className="relative w-full h-[80vh]">
+                            <Image
+                                src={`${IMAGE_PREFIX}/${question.imageUrl}`}
+                                alt="Question Preview"
+                                fill
+                                className="object-contain"
+                            />
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
 
             {/* Answer and score section */}
             <div className="w-full flex justify-between mb-8">
