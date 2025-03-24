@@ -1,16 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SubjectiveLLMResponse } from "@/types/types";
+import { SubjectiveLLMResponse, SubjectiveQuestion } from "@/types/types";
 import { Bot, Sparkles, Type } from "lucide-react";
 
 export interface AiSuggestionProps {
     aiSuggestion: SubjectiveLLMResponse | null;
     isAiLoading: boolean;
+    questionDef: SubjectiveQuestion;
 }
 
 export default function AiSuggestion({
     aiSuggestion,
-    isAiLoading
+    isAiLoading,
+    questionDef
 }: AiSuggestionProps) {
     return (
         <div className="w-full h-full pl-4">
@@ -43,7 +45,7 @@ export default function AiSuggestion({
                                     <div className="flex items-center gap-2">
                                         <div className="font-medium">Suggested Score:</div>
                                         <div className="underline">
-                                            {aiSuggestion.score}
+                                            {aiSuggestion.score}/{questionDef.score}
                                         </div>
                                     </div>
 

@@ -185,6 +185,7 @@ export default function SubjectiveDone({
                     {/* Right sidebar for AI suggestions */}
                     <div className="max-w-96">
                         <AiSuggestion
+                            questionDef={getQuestionDef(schedule, currentQuestion.questionId)}
                             aiSuggestion={aiSuggestion}
                             isAiLoading={isAiLoading}
                         />
