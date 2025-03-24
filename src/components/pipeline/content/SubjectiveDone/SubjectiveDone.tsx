@@ -140,6 +140,7 @@ export default function SubjectiveDone({
                             questions={subjectiveQuestions} // 所有问题的序号, id
                             currentQuestion={currentQuestion}
                             onQuestionSelect={handleQuestionSelect}
+                            schedule={schedule}
                         />
                     </div>
 
