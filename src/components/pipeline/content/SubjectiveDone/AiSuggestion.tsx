@@ -23,7 +23,7 @@ export default function AiSuggestion({
                 </CardHeader>
                 <CardContent className="p-0">
                     {isAiLoading ? (
-                        <div className="h-[calc(100vh-280px)] flex flex-col items-center justify-center space-y-4 px-4 mx-10">
+                        <div className="h-[calc(100vh-280px)] flex flex-col items-center justify-center space-y-4 px-4 w-96">
                             <div className="relative w-16 h-16">
                                 <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin"></div>
                                 <Bot className="absolute inset-0 m-auto w-8 h-8 text-primary" />
