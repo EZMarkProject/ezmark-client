@@ -7,7 +7,4 @@ export type {
     SubjectiveDoneProps,
     Question,
     StudentQuestion,
-    QuestionSidebarProps,
-    QuestionContentProps,
-    AiSuggestionProps
 } from './interface';
