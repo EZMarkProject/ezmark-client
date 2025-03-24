@@ -154,6 +154,7 @@ export interface SubjectiveQuestion {
     imageUrl: string;
     aiSuggestion: SubjectiveLLMResponse;
     done: boolean; // 是否已经完成
+    questionNumber: number; // 问题序号
 }
 
 export interface SubjectiveLLMResponse {

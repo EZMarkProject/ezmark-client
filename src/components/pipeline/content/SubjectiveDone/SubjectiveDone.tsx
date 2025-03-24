@@ -32,8 +32,12 @@ export default function SubjectiveDone({
                 studentId: paper.student.studentId
             }));
         });
-        setSubjectiveQuestions(questions);
-        setCurrentQuestion(questions[0]); // 默认选择第一个问题
+
+        // 按照问题的顺序,而不是学生的顺序
+        const sortedQuestions = questions.sort((a, b) => getQuestionDef(schedule, a.questionId).questionNumber - getQuestionDef(schedule, b.questionId).questionNumber);
+
+        setSubjectiveQuestions(sortedQuestions);
+        setCurrentQuestion(sortedQuestions[0]); // 默认选择第一个问题
     }, [schedule]);
 
     // 获取AI建议
@@ -52,10 +56,6 @@ export default function SubjectiveDone({
     // 选择问题
     const handleQuestionSelect = useCallback((questionId: string, studentId: string) => {
         const question = subjectiveQuestions.find(q => q.questionId === questionId && q.studentId === studentId) || null;
-        const studentQuestion = subjectiveQuestions.find(
-            q => q.questionId === questionId && q.studentId === studentId
-        ) || null;
-
         setCurrentQuestion(question);
     }, [subjectiveQuestions]);
 
@@ -75,9 +75,7 @@ export default function SubjectiveDone({
 
         if (currentIndex > 0) {
             const prevSQ = subjectiveQuestions[currentIndex - 1];
-            const prevQ = subjectiveQuestions.find(q => q.questionId === prevSQ.questionId) || null;
-
-            setCurrentQuestion(prevQ);
+            setCurrentQuestion(prevSQ);
         }
     }, [currentQuestion, subjectiveQuestions]);
 
@@ -86,12 +84,11 @@ export default function SubjectiveDone({
         if (!currentQuestion) return;
 
         const currentIndex = subjectiveQuestions.findIndex(
-            q => q.questionId === currentQuestion.questionId
+            q => q.questionId === currentQuestion.questionId && q.studentId === currentQuestion.studentId
         );
 
         if (currentIndex < subjectiveQuestions.length - 1) {
             const nextQ = subjectiveQuestions[currentIndex + 1];
-
             setCurrentQuestion(nextQ);
         }
     }, [currentQuestion, subjectiveQuestions]);
@@ -137,5 +134,6 @@ export default function SubjectiveDone({
 function getQuestionDef(schedule: ExamSchedule, componentId: string): SubjectiveQuestion {
     const exam = schedule.exam as ExamResponse;
     const questionDef = exam.examData.components.find((c) => c.id === componentId);
+    console.log(questionDef);
     return questionDef as unknown as SubjectiveQuestion;
 }

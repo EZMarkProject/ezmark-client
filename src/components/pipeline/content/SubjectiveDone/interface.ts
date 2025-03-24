@@ -20,6 +20,7 @@ export interface ExtendedSubjectiveQuestion {
     aiSuggestion: SubjectiveLLMResponse;
     done: boolean; // 是否已经完成
     studentId: string; // 添加学生ID以便定位具体是哪个学生的题目
+    questionNumber: number; // 问题序号
 }
 
 export interface SubjectiveDoneProps {
