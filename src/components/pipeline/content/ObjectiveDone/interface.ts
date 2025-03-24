@@ -9,13 +9,16 @@ export interface ObjectiveDoneProps {
 }
 
 export interface QuestionReviewProps {
-    question: ObjectiveQuestion; // 学生答卷
-    definedQuestion: MultipleChoiceQuestionData; // 定义的题目
+    question: ExtendedObjectiveQuestion;
+    definedQuestion: MultipleChoiceQuestionData;
     onMarkCorrect: () => void;
     onMarkIncorrect: () => void;
     onPrevious: () => void;
     onNext: () => void;
     progress: number;
+    isLoading?: boolean;
+    total: number;
+    finished: number;
 }
 
 // 扩展ObjectiveQuestion接口，添加studentId属性用于标识题目所属学生

@@ -153,6 +153,8 @@ export default function ObjectiveDone({ schedule, setSchedule }: ObjectiveDonePr
                         onNext={handleNext}
                         progress={progress}
                         isLoading={isLoading}
+                        total={failedQuestionNumRef.current}
+                        finished={markedFailedQuestions.length}
                     />
                 )}
             </div>

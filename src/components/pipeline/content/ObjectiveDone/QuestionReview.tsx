@@ -2,21 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ChevronLeft, ChevronRight, Check, X, Loader2 } from "lucide-react";
-import { QuestionReviewProps } from "./interface";
 import { IMAGE_PREFIX } from "@/lib/host";
-import { ExtendedObjectiveQuestion } from "./interface";
-import { MultipleChoiceQuestionData } from "@/types/exam";
-
-interface UpdatedQuestionReviewProps {
-    question: ExtendedObjectiveQuestion;
-    definedQuestion: MultipleChoiceQuestionData;
-    onMarkCorrect: () => void;
-    onMarkIncorrect: () => void;
-    onPrevious: () => void;
-    onNext: () => void;
-    progress: number;
-    isLoading?: boolean;
-}
+import { QuestionReviewProps } from "./interface";
 
 export default function QuestionReview({
     question,
@@ -26,8 +13,10 @@ export default function QuestionReview({
     onPrevious,
     onNext,
     progress,
-    isLoading = false
-}: UpdatedQuestionReviewProps) {
+    isLoading = false,
+    total,
+    finished
+}: QuestionReviewProps) {
     return (
         <div className="w-full flex flex-col items-center max-w-3xl mx-auto">
             {/* Progress bar */}
@@ -64,6 +53,10 @@ export default function QuestionReview({
                 <div className="flex items-center">
                     <span className="text-muted-foreground mr-2">Score:</span>
                     <span className="font-semibold">{definedQuestion.score}</span>
+                </div>
+                <div className="flex items-center">
+                    <span className="text-muted-foreground mr-2">Progress:</span>
+                    <span className="font-semibold">{`${finished}/${total}`}</span>
                 </div>
             </div>
 
