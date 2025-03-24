@@ -15,8 +15,8 @@ export default function AiSuggestion({
     questionDef
 }: AiSuggestionProps) {
     return (
-        <div className="w-full h-full pl-4">
-            <Card className="h-full overflow-hidden shadow-sm">
+        <div className="w-full h-[calc(100vh-100px)] pl-4">
+            <Card className="h-full overflow-y-scroll shadow-sm">
                 <CardHeader className="pb-2 pt-4 px-5">
                     <CardTitle className="text-lg font-medium flex items-center gap-2">
                         <Bot className="w-5 h-5 text-primary" />
