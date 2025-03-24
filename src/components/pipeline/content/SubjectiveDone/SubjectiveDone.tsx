@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
-import { SubjectiveDoneProps, ExtendedSubjectiveQuestion } from "./interface";
+import { useState, useCallback, useEffect, cache } from "react";
+import { SubjectiveDoneProps, ExtendedSubjectiveQuestion, AiCache } from "./interface";
 import QuestionSidebar from "./QuestionSidebar";
 import QuestionContent from "./QuestionContent";
 import AiSuggestion from "./AiSuggestion";
@@ -19,6 +19,7 @@ export default function SubjectiveDone({
     const [aiSuggestion, setAiSuggestion] = useState<SubjectiveLLMResponse | null>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [aiCache, setAiCache] = useState<AiCache[]>([]);
 
     // 计算进度
     const totalQuestions = subjectiveQuestions.length;
@@ -48,13 +49,22 @@ export default function SubjectiveDone({
     // 获取AI建议
     useEffect(() => {
         if (!currentQuestion) return;
-
-        // TODO做缓存优化
+        // 如果当前问题有缓存,则直接使用缓存
+        const remoteCache = currentQuestion.aiSuggestion
+        const localCache = aiCache.find(c => c.questionId === currentQuestion.questionId && c.studentId === currentQuestion.studentId);
+        // 优先使用远程缓存
+        if (remoteCache.score !== -1) {
+            setAiSuggestion(remoteCache);
+            return;
+        } else if (localCache) {
+            setAiSuggestion(localCache.aiSuggestion);
+            return;
+        }
         fetchAiSuggestion(currentQuestion);
     }, [currentQuestion])
 
     // 获取AI建议
-    const fetchAiSuggestion = async (question: SubjectiveQuestion) => {
+    const fetchAiSuggestion = async (question: ExtendedSubjectiveQuestion) => {
         setIsAiLoading(true);
         const questionDef = getQuestionDef(schedule, question.questionId) as unknown as OpenQuestionData;
         const requestBody: LLMSubjectiveInput = {
@@ -66,6 +76,16 @@ export default function SubjectiveDone({
         const response = await getSubjectiveLLMResponse(requestBody);
         setAiSuggestion(response);
         setIsAiLoading(false)
+        // 上传缓存
+        schedule.result.studentPapers.forEach((paper, pIndex) => {
+            paper.subjectiveQuestions.forEach((q, qIndex) => {
+                if (q.questionId === question.questionId && paper.student.studentId === question.studentId) {
+                    schedule.result.studentPapers[pIndex].subjectiveQuestions[qIndex].aiSuggestion = response;
+                }
+            });
+        });
+        await updateExamSchedule(schedule.documentId, { result: schedule.result });
+        setAiCache([...aiCache, { questionId: question.questionId, studentId: question.studentId, aiSuggestion: response }]);
     };
 
     // 选择问题
@@ -94,7 +114,7 @@ export default function SubjectiveDone({
         await updateExamSchedule(schedule.documentId, { result: schedule.result });
         setSchedule(cloneDeep(schedule));
         setIsSubmitting(false);
-        // 跳转到下一个没有完成的题目
+        // 全部完成后
         const allFinished = updatedSchedule.every(paper => paper.subjectiveQuestions.every(q => q.done));
         if (allFinished) {
             // TODO

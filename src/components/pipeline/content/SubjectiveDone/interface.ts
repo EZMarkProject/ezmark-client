@@ -27,3 +27,9 @@ export interface SubjectiveDoneProps {
     schedule: ExamSchedule;
     setSchedule: Dispatch<SetStateAction<ExamSchedule | null>>;
 }
+
+export interface AiCache {
+    questionId: string;
+    studentId: string;
+    aiSuggestion: SubjectiveLLMResponse;
+}
