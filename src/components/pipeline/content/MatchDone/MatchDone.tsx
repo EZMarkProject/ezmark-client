@@ -9,7 +9,7 @@ import { useTheme } from 'next-themes';
 import { generatePaperNodes, generateStudentNodes, generateEdges } from '@/lib/flow';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2, CheckCircle2, AlertTriangle, Info } from 'lucide-react';
 import { startMarkingObjective, updateExamSchedule } from '@/lib/api';
 import { cloneDeep } from 'lodash';
 
@@ -170,21 +170,34 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
 
             {/* 匹配结果对话框 */}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Match Results</DialogTitle>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader className="space-y-2">
+                        <div className="flex items-center gap-2">
+                            <DialogTitle>Match Results</DialogTitle>
+                        </div>
                         <DialogDescription>
-                            Drag cards and connect them to complete matching manually
+                            Drag cards and connect them to complete matching
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="py-4 space-y-2">
-                        <ul className="list-disc pl-6 space-y-1">
-                            <li>Matched: {matchedStudents}</li>
-                            <li>Unmatched: {unmatchedStudents}</li>
-                        </ul>
+                    <div className="py-4 space-y-4">
+                        <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 className="h-5 w-5 text-green-500" />
+                                <span className="font-medium">Matched: {matchedStudents}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle className="h-5 w-5 text-amber-500" />
+                                <span className="font-medium">Unmatched: {unmatchedStudents}</span>
+                            </div>
+                        </div>
                     </div>
                     <DialogFooter>
-                        <Button onClick={() => setDialogOpen(false)}>Confirm</Button>
+                        <Button
+                            onClick={() => setDialogOpen(false)}
+                            className="gap-2"
+                        >
+                            Continue <ArrowRight className='w-4 h-4' />
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
