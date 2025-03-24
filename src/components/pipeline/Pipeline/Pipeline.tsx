@@ -66,7 +66,7 @@ export default function Pipeline({ documentId, }: PipelineProps) {
             case 'SUBJECTIVE_START':
                 return <SubjectiveStart updateSchedule={updateSchedule} />;
             case 'SUBJECTIVE_DONE':
-                return <SubjectiveDone schedule={schedule} />;
+                return <SubjectiveDone schedule={schedule} setSchedule={setSchedule} />;
             // case 'DONE':
             //     return <Done />;
         }

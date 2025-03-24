@@ -223,8 +223,39 @@ export async function startMarkingObjective(examScheduleDocumentId: string) {
     return response.data;
 }
 
-
 export async function startSubjective(examScheduleDocumentId: string) {
     const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/startSubjective`);
+    return response.data;
+}
+
+/**
+ * 获取主观题AI分析结果
+ * @param imageUrl 题目图片URL
+ * @returns AI分析结果
+ */
+export async function getAISubjectiveAnalysis(imageUrl: string) {
+    const response = await axiosInstance.post('/ai/subjective-analysis', {
+        imageUrl
+    });
+    return response.data;
+}
+
+/**
+ * 更新主观题分数
+ * @param scheduleId 考试计划ID
+ * @param studentId 学生ID
+ * @param questionId 问题ID
+ * @param score 分数
+ * @returns 更新后的问题对象
+ */
+export async function updateSubjectiveQuestionScore(
+    scheduleId: string,
+    studentId: string,
+    questionId: string,
+    score: number
+) {
+    const response = await axiosInstance.put(`/schedules/${scheduleId}/student/${studentId}/subjective/${questionId}`, {
+        score
+    });
     return response.data;
 }
