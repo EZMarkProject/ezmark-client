@@ -94,26 +94,23 @@ export default function MatchDone({ schedule, classData, setSchedule }: MatchDon
 
     const handleNextStep = async () => {
         setIsLoading(true);
-        try {
-            // 如果所有匹配都完成，则跳转到下一个步骤,更新schedule
-            schedule.result.progress = 'OBJECTIVE_START' // 开始客观题评分
-            // 根据matched更新papers
-            schedule.result.matchResult.matched.forEach((match) => {
-                const student = classData.students.find((student) => student.studentId === match.studentId);
-                const paperIndex = schedule.result.papers.findIndex((paper) => paper.paperId === match.paperId);
-                if (student && paperIndex !== -1) {
-                    schedule.result.papers[paperIndex].studentId = student.studentId;
-                    schedule.result.papers[paperIndex].name = student.name;
-                }
-            });
-            // 更新schema
-            schedule.result.matchResult.done = true;
-            await updateExamSchedule(schedule.documentId, { result: schedule.result }); // 更新schedule
-            await startMarkingObjective(schedule.documentId); // 开始客观题评分
-            setSchedule(cloneDeep(schedule)); // 更新状态，触发Pipeline组件的重新渲染
-        } finally {
-            setIsLoading(false);
-        }
+        // 如果所有匹配都完成，则跳转到下一个步骤,更新schedule
+        schedule.result.progress = 'OBJECTIVE_START' // 开始客观题评分
+        // 根据matched更新papers
+        schedule.result.matchResult.matched.forEach((match) => {
+            const student = classData.students.find((student) => student.studentId === match.studentId);
+            const paperIndex = schedule.result.papers.findIndex((paper) => paper.paperId === match.paperId);
+            if (student && paperIndex !== -1) {
+                schedule.result.papers[paperIndex].studentId = student.studentId;
+                schedule.result.papers[paperIndex].name = student.name;
+            }
+        });
+        // 更新schema
+        schedule.result.matchResult.done = true;
+        await updateExamSchedule(schedule.documentId, { result: schedule.result }); // 更新schedule
+        await startMarkingObjective(schedule.documentId); // 开始客观题评分
+        setSchedule(cloneDeep(schedule)); // 更新状态，触发Pipeline组件的重新渲染
+        setIsLoading(false);
     }
 
     // 确保有权限访问主题后再渲染
