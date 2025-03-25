@@ -237,3 +237,9 @@ export async function getSubjectiveLLMResponse(requestBody: LLMSubjectiveInput):
     });
     return response.data;
 }
+
+// 开始计算结果的数据
+export async function startResult(examScheduleDocumentId: string) {
+    const response = await axiosInstance.post(`/schedules/${examScheduleDocumentId}/calcResult`);
+    return response.data;
+}

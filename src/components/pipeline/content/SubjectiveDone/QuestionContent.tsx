@@ -26,6 +26,7 @@ export interface QuestionContentProps {
     onNext: () => void;
     isSubmitting?: boolean;
     handleContinue: () => void;
+    isLoadingContinue: boolean;
 }
 
 export default function QuestionContent({
@@ -38,7 +39,8 @@ export default function QuestionContent({
     onPrevious,
     onNext,
     isSubmitting = false,
-    handleContinue
+    handleContinue,
+    isLoadingContinue
 }: QuestionContentProps) {
     const [showImagePreview, setShowImagePreview] = useState(false);
 
@@ -106,9 +108,15 @@ export default function QuestionContent({
                             <span className="text-muted-foreground mr-2">Progress:</span>
                             <span className="font-semibold">{`${finished}/${total}`}</span>
                         </div>
-                        <Button onClick={handleContinue} className="px-4" disabled={progress !== 100}>
-                            Done
-                            <ArrowRight />
+                        <Button
+                            onClick={handleContinue}
+                            disabled={isLoadingContinue}
+                            className="px-4 w-24"
+                        >
+                            {isLoadingContinue ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <>
+                                Done
+                                <ArrowRight />
+                            </>}
                         </Button>
                     </div>
 

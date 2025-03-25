@@ -6,7 +6,7 @@ import AiSuggestion from "./AiSuggestion";
 import { ExamSchedule, SubjectiveQuestion, SubjectiveLLMResponse, LLMSubjectiveInput } from "@/types/types";
 import { OpenQuestionData } from "@/types/exam";
 import { ExamResponse } from "@/types/exam";
-import { updateExamSchedule, getSubjectiveLLMResponse } from "@/lib/api";
+import { updateExamSchedule, getSubjectiveLLMResponse, startResult } from "@/lib/api";
 import { cloneDeep } from "lodash";
 
 export default function SubjectiveDone({
@@ -20,6 +20,7 @@ export default function SubjectiveDone({
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [aiCache, setAiCache] = useState<AiCache[]>([]);
+    const [isLoadingContinue, setIsLoadingContinue] = useState(false);
 
     // 计算进度
     const totalQuestions = subjectiveQuestions.length;
@@ -150,8 +151,13 @@ export default function SubjectiveDone({
         }
     };
 
-    const handleContinue = () => {
-        // TODO
+    const handleContinue = async () => {
+        setIsLoadingContinue(true);
+        schedule.result.progress = 'RESULT_START'; // 开始结果计算
+        await updateExamSchedule(schedule.documentId, { result: schedule.result });
+        await startResult(schedule.documentId);
+        setSchedule(cloneDeep(schedule));
+        setIsLoadingContinue(false);
     }
 
     return (
@@ -180,6 +186,7 @@ export default function SubjectiveDone({
                         questionDef={getQuestionDef(schedule, currentQuestion.questionId)}
                         isSubmitting={isSubmitting}
                         handleContinue={handleContinue}
+                        isLoadingContinue={isLoadingContinue}
                     />
 
                     {/* Right sidebar for AI suggestions */}

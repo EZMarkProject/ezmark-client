@@ -9,5 +9,7 @@ export { MatchDone } from './MatchDone';
 
 export { ObjectiveStart } from './ObjectiveStart';
 
+export { ResultStart } from './ResultStart';
+
 export { Done } from './Done';
 export type { DoneProps, PipelineStats } from './Done'; 
