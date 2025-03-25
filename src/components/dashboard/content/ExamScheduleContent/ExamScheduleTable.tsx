@@ -195,7 +195,7 @@ export function ExamScheduleTable({
                         )}
                     </Button>
                 );
-            case "DONE":
+            case "RESULT_DONE":
                 return (
                     <Button
                         variant="outline"

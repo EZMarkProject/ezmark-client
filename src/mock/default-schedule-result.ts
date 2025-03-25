@@ -12,5 +12,13 @@ export const defaultScheduleResult: ExamScheduleResult = {
             studentIds: [],
             papers: []
         }
+    },
+    statistics: {
+        average: -1,
+        highest: -1,
+        lowest: -1,
+        median: -1,
+        standardDeviation: -1,
+        questions: []
     }
 }

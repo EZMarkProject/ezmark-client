@@ -35,8 +35,8 @@ const allSteps: {
             displayName: 'Subjective',
         },
         {
-            progress: ['DONE'],
-            displayName: 'Done',
+            progress: ['RESULT_START', 'RESULT_DONE'],
+            displayName: 'Result',
         },
     ]
 
