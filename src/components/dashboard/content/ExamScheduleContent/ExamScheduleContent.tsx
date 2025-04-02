@@ -221,10 +221,7 @@ function ExamScheduleContent() {
 
     // Handle view result button click
     const handleViewResult = (scheduleId: string) => {
-        // TODO: Implement view result functionality
-        console.log(`View result for exam schedule: ${scheduleId}`);
-        // Example of how this might be implemented:
-        // router.push(`/results/${scheduleId}`);
+        router.push(`/pipeline/${scheduleId}`);
     };
 
     return (

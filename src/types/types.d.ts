@@ -105,8 +105,8 @@ export interface ExamQuestionStatistics {
     lowest: number; // 最低分
     median: number; // 中位数
     standardDeviation: number; // 标准差
-    correct: number; // 正确人数 (客观题)
-    incorrect: number; // 错误人数 (客观题)
+    correct: number; // 正确人数 (客观题才有)
+    incorrect: number; // 错误人数 (客观题才有)
 }
 
 /**
