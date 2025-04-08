@@ -85,40 +85,42 @@ export function ScoreDistribution({ schedule }: ScoreDistributionProps) {
     const rankings = calculateRankings();
 
     return (
-        <div className="space-y-8">
-            <Card>
-                <CardContent className="pt-6">
-                    <h3 className="text-lg font-medium mb-4">Score Distribution</h3>
-                    <div className="h-[300px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={scoreRanges}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="range" />
-                                <YAxis />
-                                <Tooltip />
-                                <Bar dataKey="count" fill="#8884d8" name="Number of Students" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                </CardContent>
-            </Card>
+        <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+                <Card>
+                    <CardContent className="pt-6">
+                        <h3 className="text-lg font-medium mb-4">Score Distribution</h3>
+                        <div className="h-[300px]">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={scoreRanges}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="range" />
+                                    <YAxis />
+                                    <Tooltip />
+                                    <Bar dataKey="count" fill="#8884d8" name="Number of Students" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </CardContent>
+                </Card>
 
-            <Card>
-                <CardContent className="pt-6">
-                    <h3 className="text-lg font-medium mb-4">Score Quartile</h3>
-                    <div className="h-[200px]">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={quartileData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis domain={[0, 100]} />
-                                <Tooltip />
-                                <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </div>
-                </CardContent>
-            </Card>
+                <Card>
+                    <CardContent className="pt-6">
+                        <h3 className="text-lg font-medium mb-4">Score Quartile</h3>
+                        <div className="h-[300px]">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={quartileData}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" />
+                                    <YAxis domain={[0, 100]} />
+                                    <Tooltip />
+                                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
 
             <Card>
                 <CardContent className="pt-6">
