@@ -97,7 +97,7 @@ export function ScoreDistribution({ schedule }: ScoreDistributionProps) {
                                     <XAxis dataKey="range" />
                                     <YAxis />
                                     <Tooltip />
-                                    <Bar dataKey="count" fill="#8884d8" name="Number of Students" />
+                                    <Bar dataKey="count" fill="hsl(var(--chart-1))" name="Number of Students" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -114,7 +114,7 @@ export function ScoreDistribution({ schedule }: ScoreDistributionProps) {
                                     <XAxis dataKey="name" />
                                     <YAxis domain={[0, 100]} />
                                     <Tooltip />
-                                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                                    <Line type="monotone" dataKey="value" stroke="hsl(var(--chart-2))" />
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
