@@ -110,7 +110,7 @@ export default function QuestionContent({
                         </div>
                         <Button
                             onClick={handleContinue}
-                            disabled={isLoadingContinue}
+                            disabled={isLoadingContinue || finished < total}
                             className="px-4 w-24"
                         >
                             {isLoadingContinue ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <>
