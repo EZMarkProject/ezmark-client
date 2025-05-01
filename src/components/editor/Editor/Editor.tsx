@@ -229,11 +229,11 @@ export default function Editor({ documentId }: EditorProps) {
 
         return (
             <div className="flex h-[calc(100vh-4rem)]">
-                <SectionSelection
+                {/* <SectionSelection
                     className="w-33 border-r shrink-0"
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
-                />
+                /> */}
                 {renderSidePanel()}
                 <div className="flex-1 min-w-0 overflow-auto">
                     <Canvas
