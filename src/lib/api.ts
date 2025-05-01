@@ -5,6 +5,10 @@ import { PDFReponse } from "@/components/landing-page/types";
 import { Class, ExamSchedule, LLMSubjectiveInput, Student, SubjectiveLLMResponse } from "@/types/types";
 import { defaultScheduleResult } from "@/mock/default-schedule-result";
 
+const TEST_EXAM_ID = 'be82n8i3il88737l6hpw378q'
+const TEST_STUDENTS_IDs = ['e3qrlbh166g0n3awbmfw6elo', 'ti9estvbsu5me28i7vu14u3m', 'hayxqtevvesmosqnudz2014u']
+const TEST_CLASS_ID = 'q4p834olws2mr7mp9isy08z3'
+
 export async function getExamByUserId(userDocumentId: string): Promise<{ data: ExamResponse[] }> {
     const response = await axiosInstance.get(`/exams?populate=*&filters[user][documentId][$eq]=${userDocumentId}&pagination[limit]=10000`);
     return response.data;
@@ -16,6 +20,10 @@ export async function getExamById(id: string): Promise<{ data: ExamResponse }> {
 }
 
 export async function deleteExamById(id: string) {
+    if (id === TEST_EXAM_ID) {
+        alert('TEST_ONLY exam cannot be deleted')
+        return
+    }
     const response = await axiosInstance.delete(`/exams/${id}`);
     return response.data;
 }
@@ -32,6 +40,10 @@ export async function createExam(projectName: string, userId: string) {
 }
 
 export async function updateExam(documentId: string, examData: ExamResponse) {
+    if (documentId === TEST_EXAM_ID) {
+        alert('TEST_ONLY exam cannot be modified')
+        throw new Error('TEST_ONLY exam cannot be modified')
+    }
     const updatedExamData: Partial<ExamResponse> = {
         projectName: examData.projectName,
         examData: examData.examData
@@ -90,6 +102,10 @@ export async function createStudent(userDocumentId: string, student: { name: str
  * 不真实删除，只是从teacher中移除
  */
 export async function deleteStudentById(userDocumentId: string, studentDocumentId: string) {
+    if (TEST_STUDENTS_IDs.includes(studentDocumentId)) {
+        alert('TEST_ONLY student cannot be deleted')
+        return
+    }
     // 1. 先检查这个学生有没有绑定的导师
     const teacher = await axiosInstance.get(`/students/${studentDocumentId}?populate=teacher&pagination[limit]=10000`);
     // 2. 如果这个学生有绑定的导师,且大于一个，则删除当前老师
@@ -147,6 +163,10 @@ export async function updateClassStudents(classDocumentId: string, studentDocIds
 }
 
 export async function deleteClassById(classDocumentId: string) {
+    if (classDocumentId === TEST_CLASS_ID) {
+        alert('TEST_ONLY class cannot be deleted')
+        return
+    }
     const response = await axiosInstance.delete(`/classes/${classDocumentId}`);
     return response.data;
 }
