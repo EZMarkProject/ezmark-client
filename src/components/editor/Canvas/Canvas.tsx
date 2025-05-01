@@ -142,24 +142,24 @@ export function Canvas({ exam, renderMode,
                     >
                         {renderMode ? (
                             <>
-                                <Eye className="h-4 w-4" />
-                                <span>Preview</span>
-                            </>
-                        ) : (
-                            <>
                                 <Pen className="h-4 w-4" />
                                 <span>Edit</span>
                             </>
+                        ) : (
+                            <>
+                                <Eye className="h-4 w-4" />
+                                <span>Preview</span>
+                            </>
                         )}
                     </Button>
-                    <Button
+                    {/* <Button
                         variant="outline"
                         className="flex items-center gap-2"
                         onClick={copyExamToClipboard}
                     >
                         <FileJson className="h-4 w-4" />
                         <span>Copy JSON</span>
-                    </Button>
+                    </Button> */}
                 </div>
                 <div className="flex items-center gap-2">
                     <Button
