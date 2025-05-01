@@ -36,36 +36,6 @@ const NAV_ITEMS = [
         label: "Exam Schedule",
         icon: CalendarCheck,
     },
-    {
-        id: "cards",
-        label: "Cards",
-        icon: CreditCard,
-    },
-    {
-        id: "transaction",
-        label: "Transaction",
-        icon: PlusCircle,
-    },
-    {
-        id: "spend-groups",
-        label: "Spend Groups",
-        icon: Folder,
-    },
-    {
-        id: "integrations",
-        label: "Integrations",
-        icon: Share,
-    },
-    {
-        id: "payees",
-        label: "Payees",
-        icon: UserCircle,
-    },
-    {
-        id: "invoices",
-        label: "Invoices",
-        icon: CreditCard,
-    },
 ];
 
 const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
