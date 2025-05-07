@@ -110,7 +110,6 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
                                             href="/auth/forgot-password"
                                             className="text-xs text-muted-foreground underline underline-offset-4 hover:text-primary"
                                         >
-                                            Forgot password?
                                         </Link>
                                     </div>
                                     <Input
@@ -144,19 +143,19 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
                             <div className="text-center pt-2 border-t border-border w-full">
                                 <p className="text-xs text-muted-foreground mt-4">
                                     By continuing, you agree to our{" "}
-                                    <Link href="/terms" className="underline underline-offset-4 hover:text-primary">
+                                    <span className="inline-block underline underline-offset-4 hover:text-primary">
                                         Terms of Service
-                                    </Link>{" "}
+                                    </span>{" "}
                                     and{" "}
-                                    <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
+                                    <span className="inline-block underline underline-offset-4 hover:text-primary">
                                         Privacy Policy
-                                    </Link>
+                                    </span>
                                 </p>
                                 <p className="text-xs text-muted-foreground mt-2">
                                     Need help with AI-assisted grading?{" "}
-                                    <Link href="/help" className="underline underline-offset-4 hover:text-primary">
+                                    <span className="inline-block underline underline-offset-4 hover:text-primary">
                                         Visit our help center
-                                    </Link>
+                                    </span>
                                 </p>
                             </div>
                         </CardFooter>
